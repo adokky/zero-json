@@ -8,12 +8,11 @@ Fast and powerful implementation of JSON format for [kotlinx-serialization](http
 
 ## Features
 
-* **Compatibility**. can be used as drop-in replacement for [kotlinx-serialization-json](https://github.com/Kotlin/kotlinx.serialization/tree/master) (JVM and Android only).
-* **Zero-copy**: deserialize object directly from any byte buffer. This also induces major limitation described [here](#differences-from-kotlinx-serialization-json).
-* **Zero extra allocation**: only deserialized objects are allocated, except `Float`/`Double` (zero allocations in *most* cases) and some kotlinx serializers using `ChunkedDecoder`.
-* **Map and object inlining**: mark class property with `@JsonInline` to inline its serialized form. 
-Only final class and `Map` can be inlined.
-* **Value subclasses**: out-of-the-box support for polymorphic value subclasses:
+* **Compatibility**: Can be used as a drop-in replacement for [kotlinx-serialization-json](https://github.com/Kotlin/kotlinx.serialization/tree/master) (JVM and Android only).
+* **Zero-copy**: Deserialize objects directly from any byte buffer. This approach introduces a major limitation, described [here](#differences-from-kotlinx-serialization-json).
+* **Zero extra allocation**: only deserialized objects are allocated. Exceptions include `Float`/`Double` types (zero allocations in most cases) and some kotlinx serializers that use `ChunkedDecoder`.
+* **Map and object inlining**: mark a class property with `@JsonInline` to inline its serialized form. Only final classes and `Map` instances can be inlined.
+* **Value subclasses**: Out-of-the-box support for polymorphic value subclasses:
 ```kotlin
 @Serializable sealed interface Base
 @Serializable value class Foo(val int: Int): Base
@@ -27,18 +26,15 @@ println(ZeroJson.decodeFromString<Base>(s))
 
 ## Differences from `kotlinx-serialization-json`
 
-* The input JSON string must be *fully* loaded into memory before decoding. The library is not suitable for deserializing large JSON files. This limitation is irrelevant for:
-  * typical REST API (request/response size is limited anyway)
-  * non-blocking setups, as all existing serializers are blocking and share the same requirement of having the complete data in memory prior to processing.
+* The input JSON string must be fully loaded into memory before decoding. This library is not suitable for deserializing large JSON files. However, this limitation is irrelevant for:
+    * Typical REST APIs, where request and response sizes are limited
+    * Non-blocking setups, since all existing serializers are blocking and share the same requirement of having complete data in memory before processing
 * No [array polymorphism](https://kotlinlang.org/api/kotlinx.serialization/kotlinx-serialization-json/kotlinx.serialization.json/-json-builder/use-array-polymorphism.html)
 * Option to serialize structured map keys as escaped strings.
 * [External][external-ser] serializers and [partial][partial-ser] custom serializers are not supported because of the [bug][descriptor-bug].
 * Duplicate JSON object keys are not allowed
 * On JS: no `dynamic` (de)serialization 
-* On JVM: no support of `InputStream`/`OutputStream`.
-Pretty much all IO libraries and frameworks gives you access to underlying array/buffer abstraction. 
-Try wrap them first - this is intended way to use this library.
-If you really need `OutputStream` and `InputStream`, you can wrap `ArrayBuffer` and implement both of them. It is recommended to use original `kotlinx-serialization-json` for any kind of stream workload.
+* On JVM: There is no support for `InputStream`/`OutputStream`. Nearly all I/O libraries and frameworks provide access to underlying array or buffer abstractions. Wrapping these is the intended way to use this library. If you absolutely require `InputStream` or `OutputStream` functionality, you can wrap them around an `ArrayBuffer`. However, for any streaming workload, we recommend using the original `kotlinx-serialization-json` instead.
 
 
   [external-ser]: https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serializers.md#deriving-external-serializer-for-another-kotlin-class-experimental
