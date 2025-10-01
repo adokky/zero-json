@@ -51,27 +51,27 @@ If you really need `OutputStream` and `InputStream`, you can wrap `ArrayBuffer` 
 
 #### Standalone (`zero-json-core`)
 
-This option allows to use all features specific to zero-json.
+This option allows you to use all the features specific to zero-json.
 
 ```kotlin
 dependencies {
-    commonMainImplementation("io.github.adokky:zero-json-core:0.1")
+    commonMainImplementation("io.github.adokky:zero-json-core:0.1.0")
 }
 ```
 
 #### Drop-in replacement  (`zero-json-kotlinx`)
 
-Use this if you only want performance benefits and nothing more.
+Use this if you only want faster `kotlinx-serialization-json` and nothing more.
 
 ```kotlin
 dependencies {
-    commonMainImplementation("io.github.adokky:zero-json-kotlinx:0.1")
+    commonMainImplementation("io.github.adokky:zero-json-kotlinx:0.1.0")
 }
 ```
 
 #### Mixed
 
-You can use both if you have a bunch of custom serializers tied to `kotlinx-serialization-json` and you still want advanced functionality of zero-json.
+You can use both if you have a bunch of custom serializers tied to `kotlinx-serialization-json`, and you still want the advanced functionality of zero-json.
 
 ### @JsonInline
 
@@ -110,8 +110,8 @@ println(ZeroJson.encodeToString(
     "age": 20,
     "country":  "France",
     "city": "Paris",
-    "street":  "Franko",
-    "house": "23b",
+    "street":  "Bd Carnot",
+    "house": "37",
     "avatar": "https://cdn.com/avatar23535"
 }
 ```
