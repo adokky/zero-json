@@ -84,7 +84,7 @@ sealed interface ZeroJsonConfigurationBase {
      * Specifies whether [ZeroJson] instance makes use of [JsonNames] annotation.
      *
      * Disabling this flag when one does not use [JsonNames] at all may sometimes result in better performance,
-     * particularly when a large count of fields is skipped with [ignoreUnknownKeys].
+     * particularly when a large number of fields is skipped with [ignoreUnknownKeys].
      * `true` by default.
      */
     val useAlternativeNames: Boolean
@@ -93,7 +93,7 @@ sealed interface ZeroJsonConfigurationBase {
      * Specifies whether `null` values should be encoded for nullable properties and must be present in JSON object
      * during decoding.
      *
-     * When this flag is disabled properties with `null` values are not encoded;
+     * When this flag is disabled, properties with `null` values are not encoded;
      * during decoding, the absence of a field value is treated as `null` for nullable properties without a default value.
      *
      * `true` by default.
@@ -188,11 +188,11 @@ sealed interface ZeroJsonConfigurationBase {
      *
      * Comments are being skipped and are not stored anywhere; this setting does not affect encoding in any way.
      *
-     * More specifically, a comment is a substring that is not a part of JSON key or value, conforming to one of those:
+     * More specifically, a comment is a substring that is not a part of JSON key or value, conforming to one of these:
      *
      * 1. Starts with `//` characters and ends with a newline character `\n`.
      * 2. Starts with `/*` characters and ends with `*/` characters. Nesting block comments
-     *  is not supported: no matter how many `/*` characters you have, first `*/` will end the comment.
+     *    is not supported: no matter how many `/*` characters you have, the first `*/` will end the comment.
      *
      * `true` by default in [ZeroJson] builder.
      * `false` by default in [ZeroJsonCompat] builder.
@@ -216,7 +216,7 @@ sealed interface ZeroJsonConfigurationBase {
      * enum class Choice { A, B, C }
      *
      * @Serializable
-     * data class Example1(val a: String = "default", b: Choice = Choice.A, c: Choice? = null)
+     * data class Example1(val a: String = "default", val b: Choice = Choice.A, val c: Choice? = null)
      *
      * val coercingJson = ZeroJson { coerceInputValues = true }
      * // Decodes Example1("default", Choice.A, null) instance
@@ -227,7 +227,7 @@ sealed interface ZeroJsonConfigurationBase {
      *
      * val coercingImplicitJson = ZeroJson(coercingJson) { explicitNulls = false }
      * // Decodes Example2(null) instance.
-     * coercingImplicitJson.decodeFromString<Example1>("""{"c": "unknown"}""")
+     * coercingImplicitJson.decodeFromString<Example2>("""{"c": "unknown"}""")
      * ```
      *
      * `false` by default.
@@ -268,16 +268,19 @@ sealed interface ZeroJsonConfigurationBase {
     val stableDefaultProviders: Boolean
 
     /**
-     * Total maximum nesting of any JSON structure (array or object).
-     * If decoder stumbles upon a nested structure, the depth of which exceeds this limit,
-     * a [SerializationException] will be thrown.
+     * Maximum depth of nested JSON structures allowed during parsing.
      *
-     * `60` by default.
+     * Example:
+     * ```
+     * // This would fail with SerializationException
+     * val json = """[[[1, 2], [3, 4]], [[5, 6], [7, 8]]]"""
+     * ZeroJson { maxStructureDepth = 2 }.decodeFromString<List<List<List<Int>>>>(json)
+     * ```
      */
     val maxStructureDepth: Int
 
     /**
-     * The maximum length of JSON object key in bytes.
+     * Maximum allowed length of JSON object keys in bytes.
      * The limit only applied when decoding from binary source ([io.kodec.buffers.Buffer], [ByteArray], etc.).
      *
      * `1024` by default.
@@ -285,7 +288,7 @@ sealed interface ZeroJsonConfigurationBase {
     val maxKeyLengthBytes: Int
 
     /**
-     * The maximum size of the UTF-8 encoded JSON.
+     * Maximum size of JSON output in bytes.
      * The limit only applied when encoding into binary output ([io.kodec.buffers.MutableBuffer], [ByteArray], etc.)
      *
      * `102400` (`100` KiB) by default.
@@ -293,44 +296,60 @@ sealed interface ZeroJsonConfigurationBase {
     val maxOutputBytes: Int
 
     /**
-     * The maximum amount of JSON keys inlined into a single object.
-     *
+     * Maximum number of inline properties allowed per object.
      * `4096` by default.
      */
     val maxInlineProperties: Int
 
     /**
-     * If `true` [SerializationException]s may contain extra stack trace chain,
-     * mostly irrelevant for regular usage.
+     * Specifies whether full stack traces should be included in serialization exceptions.
+     * When `false`, stack traces are trimmed to reduce output size and improve performance.
      *
-     * This setting does not take any effect if [ZeroJson.captureStackTraces] is `false`.
+     * his setting does not take any effect if [ZeroJson.captureStackTraces] is `false`.
      *
      * Default: `false`
      */
     val fullStackTraces: Boolean
 
     /**
-     * Enables strict decoding of [kotlinx.serialization.json.JsonPrimitive].
+     * Controls strictness of [kotlinx.serialization.json.JsonPrimitive] parsing when [isLenient] is `true`.
+     *
+     * When `true`, unqouted literals parsed as [kotlinx.serialization.json.JsonUnquotedLiteral] when possible.
+     * When `false`, unqouted literals parsed as strings when possible.
      *
      * This is compatibility option. Disabling it will match the behaviour of [kotlinx.serialization.json.Json].
+     *
+     * Default: `true`
      */
     val strictJsonPrimitives: Boolean
 
     /**
-     * Specifies the strategy of dealing with structured objects in map keys.
+     * Defines how map keys that are not primitive JSON types should be handled.
      *
-     * Default: [StructuredMapKeysMode.ESCAPED_STRING]
+     * @see StructuredMapKeysMode
      */
     val structuredMapKeysMode: StructuredMapKeysMode
 
     /**
-     * Specifies the strategy of dealing with explicit discriminator field.
+     * Controls behavior when discriminator field conflicts with regular properties.
      *
-     * Can be overridden by [MaterializedDiscriminator] on a specific classes.
+     *  Can be overridden by [MaterializedDiscriminator] on a specific classes.
      *
      * Default: [DiscriminatorConflictDetection.SEALED]
      */
     val discriminatorConflict: DiscriminatorConflictDetection
+
+    /**
+     * Defines the caching strategy for serialization descriptors.
+     *
+     * - [CacheMode.SHARED] — Uses a shared cache across all [ZeroJson] instances (default).
+     * - [CacheMode.TWO_LEVEL] — Combines thread-local and shared caching for minimizing runtime overheads.
+     * - [CacheMode.NON_SHARED] — Uses a thread-local caches across all [ZeroJson] instances.
+     *
+     * @see CacheMode
+     */
+    val cacheMode: CacheMode
+
 }
 
 enum class StructuredMapKeysMode {
@@ -367,4 +386,35 @@ enum class DiscriminatorConflictDetection {
      * For more granular control set this to `false` and mark specific classes with [MaterializedDiscriminator].
      */
     ALL
+}
+
+/**
+ * Defines the caching strategy for serialization descriptors.
+ * @see ZeroJsonConfigurationBase.cacheMode
+ */
+enum class CacheMode {
+    /**
+     * Uses a shared cache across all [ZeroJson] instances.
+     *
+     * This is the most memory-efficient option as it allows reuse of cached data between different
+     * instances, but it may be slower in single-thread scenarios.
+     */
+    SHARED,
+
+    /**
+     * Uses a two-level caching strategy:
+     * - First checks a local cache (instance-specific)
+     * - Falls back to a shared global cache if not found
+     *
+     * This is the most memory-consuming option, but it has minimal runtime cost in steady state,
+     * regardless of whether the workload is multithreaded or not.
+     */
+    TWO_LEVEL,
+
+    /**
+     * Uses thread-local caches across all [ZeroJson] instances.
+     *
+     * Most efficient option for single-threaded workloads.
+     */
+    NON_SHARED
 }

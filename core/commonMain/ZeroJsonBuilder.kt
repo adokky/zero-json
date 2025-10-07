@@ -47,6 +47,7 @@ class ZeroJsonBuilder @PublishedApi internal constructor(config: ZeroJsonConfigu
     override var strictJsonPrimitives: Boolean                = config.strictJsonPrimitives
     override var structuredMapKeysMode: StructuredMapKeysMode = config.structuredMapKeysMode
     override var discriminatorConflict: DiscriminatorConflictDetection = config.discriminatorConflict
+    override var cacheMode: CacheMode                         = config.cacheMode
 
     inline fun serializersModule(builder: SerializersModuleBuilder.() -> Unit) {
         serializersModule = SerializersModule(builder)
@@ -75,6 +76,7 @@ class ZeroJsonBuilder @PublishedApi internal constructor(config: ZeroJsonConfigu
         fullStackTraces = fullStackTraces,
         strictJsonPrimitives = strictJsonPrimitives,
         structuredMapKeysMode = structuredMapKeysMode,
-        discriminatorConflict = discriminatorConflict
+        discriminatorConflict = discriminatorConflict,
+        cacheMode = cacheMode,
     )
 }

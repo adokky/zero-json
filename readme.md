@@ -12,7 +12,7 @@ Fast and powerful implementation of JSON format for [kotlinx-serialization](http
 * **Zero-copy**: Deserialize objects directly from any byte buffer. This approach introduces a major limitation, described [here](#differences-from-kotlinx-serialization-json).
 * **Zero extra allocation**: only deserialized objects are allocated. Exceptions include `Float`/`Double` types (zero allocations in most cases) and some kotlinx serializers that use `ChunkedDecoder`.
 * **Map and object inlining**: mark a class property with `@JsonInline` to inline its serialized form. Only final classes and `Map` instances can be inlined.
-* **Value subclasses**: Out-of-the-box support for polymorphic value subclasses:
+* **Value subclasses**: zero-json provides out-of-the-box support for polymorphic value subclasses (e.g., `@Serializable value class`), automatically serializing them with a type and value field:
 ```kotlin
 @Serializable sealed interface Base
 @Serializable value class Foo(val int: Int): Base
@@ -34,7 +34,7 @@ println(ZeroJson.decodeFromString<Base>(s))
 * [External][external-ser] serializers and [partial][partial-ser] custom serializers are not supported because of the [bug][descriptor-bug].
 * Duplicate JSON object keys are not allowed
 * On JS: no `dynamic` (de)serialization 
-* On JVM: There is no support for `InputStream`/`OutputStream`. Nearly all I/O libraries and frameworks provide access to underlying array or buffer abstractions. Wrapping these is the intended way to use this library. If you absolutely require `InputStream` or `OutputStream` functionality, you can wrap them around an `ArrayBuffer`. However, for any streaming workload, we recommend using the original `kotlinx-serialization-json` instead.
+* On JVM: There is no support for `InputStream`/`OutputStream`. Nearly all I/O libraries and frameworks provide access to underlying array or buffer abstractions. Wrapping these is the intended way to use this library. If you absolutely require `InputStream` or `OutputStream`, you can wrap them around an `ArrayBuffer`. However, for any streaming workload, we recommend using the original `kotlinx-serialization-json` instead.
 
 
   [external-ser]: https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serializers.md#deriving-external-serializer-for-another-kotlin-class-experimental

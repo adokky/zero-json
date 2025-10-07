@@ -1,18 +1,26 @@
 package dev.dokky.zerojson.internal
 
+import dev.dokky.zerojson.CacheMode
 import kotlinx.serialization.descriptors.*
 
 internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
-    // TODO perf: single ConcurrentHashMap instead of many thread-local caches
-    private val map = HashMap<SerialDescriptor, ZeroJsonDescriptor>(256)
+    private val map: MutableMap<SerialDescriptor, ZeroJsonDescriptor> =
+        when (config.cacheMode) {
+            CacheMode.SHARED if SHARED_CACHE != null -> SHARED_CACHE
+            else -> HashMap(256)
+        }
 
     fun getOrCreate(descriptor: SerialDescriptor): ZeroJsonDescriptor =
         getPredefinedDescriptor(descriptor) ?: getOrCreateUnsafe(descriptor)
 
     fun getOrCreateUnsafe(descriptor: SerialDescriptor): ZeroJsonDescriptor =
-        map[descriptor] ?: createAndRegister(descriptor)
+        map[descriptor] ?: getOrCreateSlow(descriptor)
 
-    private fun createAndRegister(descriptor: SerialDescriptor): ZeroJsonDescriptor {
+    private fun getOrCreateSlow(descriptor: SerialDescriptor): ZeroJsonDescriptor {
+        if (config.cacheMode == CacheMode.TWO_LEVEL && SHARED_CACHE != null) {
+            SHARED_CACHE[descriptor]?.let { return it }
+        }
+
         if (descriptor.isNullable) {
             // Reuse descriptor data by making cheap nullable non-deep copy.
             // fixme can create unnecessary copies on recursive structures
@@ -26,7 +34,11 @@ internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
         // Allows concurrent writes to main registry hash-map.
         val tempRegistry = HashMap<SerialDescriptor, ZeroJsonDescriptor>()
         val result = create(descriptor, tempRegistry)
+
         map.putAll(tempRegistry)
+        if (config.cacheMode == CacheMode.TWO_LEVEL && SHARED_CACHE != null) {
+            SHARED_CACHE.putAll(tempRegistry)
+        }
 
         return result
     }
@@ -75,4 +87,10 @@ internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
             is StructureKind.LIST -> ZeroJsonDescriptor.LIST
             else -> null
         }
+    
+    private companion object {
+        val SHARED_CACHE: MutableMap<SerialDescriptor, ZeroJsonDescriptor>? = createSharedCache()
+    }
 }
+
+internal expect fun createSharedCache(): MutableMap<SerialDescriptor, ZeroJsonDescriptor>?

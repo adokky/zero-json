@@ -1,77 +1,11 @@
 package dev.dokky.zerojson
 
-import dev.dokky.zerojson.framework.*
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.add
-import kotlin.jvm.JvmInline
-import kotlin.random.Random
+import dev.dokky.zerojson.framework.domainObject
+import dev.dokky.zerojson.framework.jsonObject
+import dev.dokky.zerojson.framework.randomizedTest
 import kotlin.test.Test
 
-class RealWorldTest: RandomizedJsonTest() {
-    @Serializable
-    @JvmInline
-    private value class EmployeeId(val asInt: Int)
-
-    @Serializable
-    @JvmInline
-    private value class RoleId(val asInt: Int)
-
-    @Serializable
-    @JvmInline
-    private value class DepartmentId(val asInt: Int)
-
-    @Serializable
-    private sealed interface Person {
-        val name: String
-    }
-
-    @Serializable
-    private data class Employee(
-        val id: EmployeeId,
-        override val name: String,
-        val description: String?,
-        val department: Department,
-        val participation: Map<DepartmentId, RoleId>,
-        val friends: List<EmployeeId>,
-        @JsonInline val extra: Map<String, String> = emptyMap()
-    ): Person
-
-    @Serializable
-    private data class Guest(override val name: String, val roleId: RoleId) : Person
-
-    @Serializable
-    private data class Department(val name: String, val address: String)
-
-    @Serializable
-    private data class Response<T>(
-        val data: List<T>,
-        val total: Int,
-        val version: Int
-    )
-
-    private fun randomEmployee() = Employee(
-        EmployeeId(Random.nextInt(100000)),
-        name = "FirstName SecondName ThirdName ${Random.nextInt()}",
-        description = if (Random.nextBoolean()) null else "Detailed description of employee",
-        department = Department("Dep Name ${Random.nextInt()}", "Some District 45, 67"),
-        participation = buildMap {
-            repeat(Random.nextInt(3)) {
-                put(DepartmentId(Random.nextInt(1000)), RoleId(Random.nextInt(1000)))
-            }
-        },
-        friends = buildList {
-            repeat(Random.nextInt(10)) {
-                add(EmployeeId(Random.nextInt(10000)))
-            }
-        },
-        extra = mapOf("extra" to "value")
-    )
-
-    private fun randomGuest() = Guest("Guest ${Random.nextInt()}", RoleId(Random.nextInt(1000)))
-
-    private fun randomPerson(): Person = if (Random.nextInt(8) == 0) randomGuest() else randomEmployee()
-
+class RealWorldTest: RealWorldTestBase() {
     @Test
     fun simple() {
         encodeDecode(
@@ -152,38 +86,5 @@ class RealWorldTest: RandomizedJsonTest() {
                 extra = mapOf("extra" to "value")
             )
         )
-    }
-
-    private fun Person.toJsonObject(): JsonObject = jsonObject(allowRandomKeys = false) {
-        "name" eq name
-
-        when (this@toJsonObject) {
-            is Employee -> fillJsonObject(this@toJsonObject)
-            is Guest -> {
-                discriminator<Guest>()
-                "roleId" eq this@toJsonObject.roleId.asInt
-            }
-        }
-    }
-
-    private fun DslJsonObjectBuilder.fillJsonObject(item: Employee) {
-        discriminator<Employee>()
-        "id" eq item.id.asInt
-        "description" eq item.description
-        "department" {
-            "name" eq item.department.name
-            "address" eq item.department.address
-        }
-        "participation" noRandomKeys {
-            for ((k, v) in item.participation) {
-                k.asInt.toString() eq v.asInt
-            }
-        }
-        "friends" array {
-            for (f in item.friends) {
-                add(f.asInt)
-            }
-        }
-        "extra" eq "value"
     }
 }

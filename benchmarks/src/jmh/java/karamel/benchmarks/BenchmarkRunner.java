@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class BenchmarkRunner {
     @State(Scope.Thread)
     public static class ThreadLocalState {
-        private final byte[] buffer = new byte[128 * 1024 * 1024];
+        private final byte[] buffer = new byte[64 * 1024 * 1024];
 
         public Json ktxJson = BenchmarksKt.createKotlinxJson();
 
@@ -60,6 +60,24 @@ public class BenchmarkRunner {
     @Measurement(iterations = 20, batchSize = 1, time = 10, timeUnit = TimeUnit.MILLISECONDS)
     public Object b2_json5(ThreadLocalState state) {
         return BenchmarksKt.json5Benchmark(state);
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.Throughput)
+    @Warmup(iterations = 10, time = 1)
+    @Threads(2)
+    @Measurement(iterations = 20, batchSize = 1, time = 10, timeUnit = TimeUnit.MILLISECONDS)
+    public Object b2_json5_two_level(ThreadLocalState state) {
+        return BenchmarksKt.json5BenchmarkTwoLevel(state);
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.Throughput)
+    @Warmup(iterations = 10, time = 1)
+    @Threads(2)
+    @Measurement(iterations = 20, batchSize = 1, time = 10, timeUnit = TimeUnit.MILLISECONDS)
+    public Object b2_json5_thread_local(ThreadLocalState state) {
+        return BenchmarksKt.json5BenchmarkThreadLocal(state);
     }
 
     public static void main(String... args) throws RunnerException {

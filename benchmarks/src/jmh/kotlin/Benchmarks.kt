@@ -1,5 +1,6 @@
 package karamel.benchmarks
 
+import dev.dokky.zerojson.CacheMode
 import dev.dokky.zerojson.ZeroJson
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromByteArray
@@ -16,8 +17,20 @@ private val TEST_DATA = Response<Person>(
 
 private val ENCODED_DATA = ZeroJson.encodeToByteArray(TEST_DATA)
 
+private val zJsonNonShared = ZeroJson { cacheMode = CacheMode.NON_SHARED }
+
+private val zJsonTwoLevel = ZeroJson { cacheMode = CacheMode.TWO_LEVEL }
+
 fun json5Benchmark(state: BenchmarkRunner.ThreadLocalState): Any {
     return ZeroJson.decodeFromByteArray<Response<Person>>(ENCODED_DATA)
+}
+
+fun json5BenchmarkTwoLevel(state: BenchmarkRunner.ThreadLocalState): Any {
+    return zJsonTwoLevel.decodeFromByteArray<Response<Person>>(ENCODED_DATA)
+}
+
+fun json5BenchmarkThreadLocal(state: BenchmarkRunner.ThreadLocalState): Any {
+    return zJsonNonShared.decodeFromByteArray<Response<Person>>(ENCODED_DATA)
 }
 
 @ExperimentalSerializationApi

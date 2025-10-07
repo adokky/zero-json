@@ -1,5 +1,8 @@
 package dev.dokky.zerojson
 
+import dev.dokky.zerojson.internal.isClosingBracket
+import dev.dokky.zerojson.internal.isOpeningBracket
+import dev.dokky.zerojson.internal.toClosingBracket
 import dev.dokky.zerojson.internal.toOpeningBracket
 import kotlin.test.Test
 import kotlin.test.assertEquals

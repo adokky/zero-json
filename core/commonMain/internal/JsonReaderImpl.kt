@@ -181,6 +181,10 @@ internal class JsonReaderImpl private constructor(
         skipElement(unchecked = false)
     }
 
+    override fun skipElementUnsafe() {
+        skipElement(unchecked = true)
+    }
+
     fun skipElement(unchecked: Boolean) {
         val next = nextCodePoint
         when {

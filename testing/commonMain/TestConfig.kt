@@ -95,5 +95,9 @@ data class TestConfig<T>(
             TestMode.DEFAULT -> 1_000
             TestMode.FULL -> 10_000
         }
+
+        @JvmStatic
+        operator fun invoke(builder: TestConfigBuilder.() -> Unit): TestConfig<*> =
+            TestConfigBuilder().apply(builder).toConfig<Any>()
     }
 }

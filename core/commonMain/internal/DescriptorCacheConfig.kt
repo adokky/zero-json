@@ -1,5 +1,6 @@
 package dev.dokky.zerojson.internal
 
+import dev.dokky.zerojson.CacheMode
 import dev.dokky.zerojson.ZeroJsonConfiguration
 import kotlinx.serialization.json.JsonNamingStrategy
 import kotlinx.serialization.modules.SerializersModule
@@ -10,7 +11,8 @@ internal class DescriptorCacheConfig(
     val namingStrategy: JsonNamingStrategy?,
     val classDiscriminator: String,
     val decodeEnumsCaseInsensitive: Boolean,
-    val ignoreUnknownKeys: Boolean
+    val ignoreUnknownKeys: Boolean,
+    val cacheMode: CacheMode
 ) {
     constructor(config: ZeroJsonConfiguration): this(
         serializersModule = config.serializersModule,
@@ -19,6 +21,7 @@ internal class DescriptorCacheConfig(
         classDiscriminator = config.classDiscriminator,
         decodeEnumsCaseInsensitive = config.decodeEnumsCaseInsensitive,
         ignoreUnknownKeys = config.ignoreUnknownKeys,
+        cacheMode = config.cacheMode,
     )
 
     private var _hashCode = 0

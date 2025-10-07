@@ -10,7 +10,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlin.random.Random
 
-internal class TestRunner(
+class TestRunner(
     val config: TestConfig<*>,
     stringBuilder: StringBuilder,
     decoderBuffer: ArrayDataBuffer,

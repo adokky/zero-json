@@ -32,7 +32,8 @@ class ZeroJsonConfiguration(
     override val allowTrailingComma: Boolean = false,
     override val strictJsonPrimitives: Boolean = true,
     override val structuredMapKeysMode: StructuredMapKeysMode = StructuredMapKeysMode.ESCAPED_STRING,
-    override val discriminatorConflict: DiscriminatorConflictDetection = DiscriminatorConflictDetection.SEALED
+    override val discriminatorConflict: DiscriminatorConflictDetection = DiscriminatorConflictDetection.SEALED,
+    override val cacheMode: CacheMode = CacheMode.SHARED,
 ): ZeroJsonConfigurationBase {
     init {
         require(maxStructureDepth in 2..DEPTH_LIMIT)
@@ -71,6 +72,7 @@ class ZeroJsonConfiguration(
         result = 31 * result + strictJsonPrimitives.hashCode()
         result = 31 * result + structuredMapKeysMode.hashCode()
         result = 31 * result + discriminatorConflict.hashCode()
+        result = 31 * result + cacheMode.hashCode()
         return result
     }
 
@@ -97,6 +99,7 @@ class ZeroJsonConfiguration(
         if (strictJsonPrimitives != other.strictJsonPrimitives) return false
         if (structuredMapKeysMode != other.structuredMapKeysMode) return false
         if (discriminatorConflict != other.discriminatorConflict) return false
+        if (cacheMode != other.cacheMode) return false
         return true
     }
 
