@@ -155,9 +155,10 @@ private fun randomChar(allowQuotes: Boolean): Char {
         else -> jsonTokens[Random.nextInt(jsonTokens.size - 1)]
     }
 
+    val quote = if (allowQuotes) '0' else '"'
 	var char: Char
 	do {
 		char = Random.nextInt(0x20, Char.MIN_SURROGATE.code).toChar()
-	} while (char == '0')
+	} while (char == '0' || char == quote)
 	return char
 }

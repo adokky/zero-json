@@ -38,7 +38,13 @@ class CorruptionTransformerTest: AbstractRunnerTest() {
         val composer = DefaultJsonComposer(sb)
         val input = TestInputImpl(ZeroJson, Unit, Unit.serializer().unsafeCast(), JsonNull, composer.config, composer)
 
-        repeat(10_000) {
+        repeat(
+            when(GlobalTestMode) {
+                TestMode.QUICK -> 100_000
+                TestMode.DEFAULT -> 1_000_000
+                TestMode.FULL -> 4_000_000
+            }
+        ) {
             sb.clear()
             input.clear()
             input.composerConfig = composer.config
