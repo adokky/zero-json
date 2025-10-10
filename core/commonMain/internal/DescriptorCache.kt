@@ -4,10 +4,16 @@ import dev.dokky.zerojson.CacheMode
 import kotlinx.serialization.descriptors.*
 
 internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
-    private val map: MutableMap<SerialDescriptor, ZeroJsonDescriptor> =
+    private val sharedCache: DescriptorMap? =
         when (config.cacheMode) {
-            CacheMode.SHARED if SHARED_CACHE != null -> SHARED_CACHE
-            else -> HashMap(256)
+            CacheMode.NON_SHARED -> null
+            else -> SHARED_CACHES?.getOrCreate(config)
+        }
+
+    private val map: DescriptorMap =
+        when (config.cacheMode) {
+            CacheMode.SHARED if sharedCache != null -> sharedCache
+            else -> HashMap(DEFAULT_DESCRIPTOR_MAP_CAPACITY)
         }
 
     fun getOrCreate(descriptor: SerialDescriptor): ZeroJsonDescriptor =
@@ -17,8 +23,8 @@ internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
         map[descriptor] ?: getOrCreateSlow(descriptor)
 
     private fun getOrCreateSlow(descriptor: SerialDescriptor): ZeroJsonDescriptor {
-        if (config.cacheMode == CacheMode.TWO_LEVEL && SHARED_CACHE != null) {
-            SHARED_CACHE[descriptor]?.let { return it }
+        if (config.cacheMode == CacheMode.TWO_LEVEL && sharedCache != null) {
+            sharedCache[descriptor]?.let { return it }
         }
 
         if (descriptor.isNullable) {
@@ -36,8 +42,8 @@ internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
         val result = create(descriptor, tempRegistry)
 
         map.putAll(tempRegistry)
-        if (config.cacheMode == CacheMode.TWO_LEVEL && SHARED_CACHE != null) {
-            SHARED_CACHE.putAll(tempRegistry)
+        if (config.cacheMode == CacheMode.TWO_LEVEL && sharedCache != null) {
+            sharedCache.putAll(tempRegistry)
         }
 
         return result
@@ -89,8 +95,6 @@ internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
         }
     
     private companion object {
-        val SHARED_CACHE: MutableMap<SerialDescriptor, ZeroJsonDescriptor>? = createSharedCache()
+        val SHARED_CACHES: SharedDescriptorCaches? = createSharedCaches()
     }
 }
-
-internal expect fun createSharedCache(): MutableMap<SerialDescriptor, ZeroJsonDescriptor>?

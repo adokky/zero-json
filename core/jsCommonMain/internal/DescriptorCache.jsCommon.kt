@@ -1,5 +1,5 @@
 package dev.dokky.zerojson.internal
 
-import kotlinx.serialization.descriptors.SerialDescriptor
+private val simpleCaches = SimpleSharedCaches()
 
-internal actual fun createSharedCache(): MutableMap<SerialDescriptor, ZeroJsonDescriptor>? = HashMap()
+internal actual fun createSharedCaches(): SharedDescriptorCaches? = simpleCaches

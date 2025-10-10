@@ -69,7 +69,7 @@ class RealWorldTest: RealWorldTestBase() {
                     "553": 876
                 },
                 "description": null,
-                "type": "dev.dokky.zerojson.RealWorldTest.Employee",
+                "type": "${Employee.serializer().descriptor.serialName}",
                 "name": "FirstName SecondName ThirdName -53240547"
             }
             """.trimIndent(),
