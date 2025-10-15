@@ -45,13 +45,21 @@ println(ZeroJson.decodeFromString<Base>(s))
 
 3 options: drop-in replacement, standalone library and both.
 
+All of them require google repository because zero-json uses `androidx.collection:collection`:
+
+```kotlin
+repositories {
+    google()
+}
+```
+
 #### Standalone (`zero-json-core`)
 
 This option allows you to use all the features specific to zero-json.
 
 ```kotlin
 dependencies {
-    commonMainImplementation("io.github.adokky:zero-json-core:0.1.0")
+    commonMainImplementation("io.github.adokky:zero-json-core:0.1.1")
 }
 ```
 
@@ -61,7 +69,17 @@ Use this if you only want faster `kotlinx-serialization-json` and nothing more.
 
 ```kotlin
 dependencies {
-    commonMainImplementation("io.github.adokky:zero-json-kotlinx:0.1.0")
+    commonMainImplementation("io.github.adokky:zero-json-kotlinx:0.1.1")
+}
+```
+
+If you have transitive `kotlinx-serialization-json` somewhere in dependency graph, setup capability resolution:
+
+```kotlin
+configurations.all {
+    resolutionStrategy.capabilitiesResolution.withCapability("org.jetbrains.kotlinx:kotlinx-serialization-json") {
+        select(candidates.single { (it.id as? ModuleComponentIdentifier)?.group == "io.github.adokky" })
+    }
 }
 ```
 
