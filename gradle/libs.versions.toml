@@ -1,9 +1,8 @@
 [versions]
-kotlin = "2.2.20"
+kotlin = "2.2.21"
 kotlinx-serialization = "1.9.0"
-quickMpp = "0.18"
-equalsTester = "0.13"
-karamelUtils = "0.1.1"
+quickMpp = "0.21"
+equalsTester = "1.1.0"
 jmh = "1.37"
 jmhPlugin = "0.7.3"
 
@@ -14,8 +13,8 @@ androidx-collection = { module = "androidx.collection:collection", version = "1.
 objectPool = { module = "io.github.adokky:object-pool", version = "1.0" }
 bitvector = { module = "io.github.adokky:bitvector", version = "0.9.2" }
 equalsTester = { module = "io.github.adokky:equals-tester", version.ref = "equalsTester" }
-karamelUtils-core = { module = "io.github.adokky:karamel-utils-core", version.ref = "karamelUtils" }
-karamelUtils-tsbits = { module = "io.github.adokky:karamel-utils-ts-bits", version.ref = "karamelUtils" }
+karamelUtils-core = { module = "io.github.adokky:karamel-utils-core", version = "0.2.0" }
+karamelUtils-tsbits = { module = "io.github.adokky:karamel-utils-ts-bits", version = "0.1.1" }
 kodec-struct = { module = "io.github.adokky:kodec-struct", version = "0.2.1" }
 kodec-textStream = { module = "io.github.adokky:kodec-strings-stream", version = "0.8.7" }
 kodec-strings-common = { module = "io.github.adokky:kodec-strings-common", version = "0.1.2" }

@@ -108,7 +108,7 @@ internal class ZeroJsonDescriptor private constructor(
             return
         }
 
-        if (serialDescriptorUnsafe.annotations.findFirstInstanceOfOrNull<MaterializedDiscriminator>() != null) {
+        if (serialDescriptorUnsafe.annotations.firstInstanceOfOrNull<MaterializedDiscriminator>() != null) {
             flags += FLAG_MATERIALIZED_DISCRIMINATOR
         }
 
@@ -442,7 +442,7 @@ internal class ZeroJsonDescriptor private constructor(
         ): ZeroJsonDescriptor {
             val classDiscriminator = if (serialDescriptor.kind !is PolymorphicKind) null else {
                 serialDescriptor.annotations
-                    .findFirstInstanceOfOrNull<JsonClassDiscriminator>()
+                    .firstInstanceOfOrNull<JsonClassDiscriminator>()
                     ?.discriminator ?: config.classDiscriminator
             }
 
@@ -467,7 +467,7 @@ internal class ZeroJsonDescriptor private constructor(
             }
 
             if (config.ignoreUnknownKeys ||
-                serialDescriptor.annotations.findFirstInstanceOfOrNull<JsonIgnoreUnknownKeys>() != null) {
+                serialDescriptor.annotations.firstInstanceOfOrNull<JsonIgnoreUnknownKeys>() != null) {
                 descriptor.flags += FLAG_IGNORE_UNKNOWN_KEYS
             }
 
