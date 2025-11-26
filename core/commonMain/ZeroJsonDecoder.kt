@@ -6,6 +6,7 @@ import kotlinx.serialization.encoding.ChunkedDecoder
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonElement
 
+// todo add ZeroJsonEncoder/Decoder.defer(closable: AutoClosable)
 interface ZeroJsonDecoder: JsonDecoder {
     val zeroJson: ZeroJson
 

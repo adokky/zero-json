@@ -27,7 +27,7 @@ internal class JsonReaderImpl private constructor(
         config: JsonReaderConfig = JsonReaderConfig.Default
     ): this(input.unsafeCast<RandomAccessTextReader>(), config)
 
-    var position: Int
+    override var position: Int
         get() = input.position
         set(value) { input.position = value }
 

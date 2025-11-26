@@ -14,6 +14,23 @@ import kotlin.jvm.JvmStatic
  */
 abstract class JsonReader internal constructor(val config: JsonReaderConfig) {
     /**
+     * The position of the next codepoint to read.
+     *
+     * - May start from any value, including EOF (negative).
+     * - Becomes negative (typically -1) when EOF is reached.
+     *
+     * This value can be saved and later used to restore the reader's position
+     * via the [position] setter. However, it does not represent a size or offset
+     * in any specific unit (e.g. bytes, characters, codepoints).
+     * It is an opaque marker intended for position tracking only.
+     *
+     * ⚠️ Delicate API. Incorrect usage may break the decoding process.
+     * If used incorrectly, behavior of the [JsonReader] and any [ZeroJsonDecoder]
+     * using it becomes undefined.
+     */
+    abstract var position: Int
+
+    /**
      * Reads a JSON string.
      *
      * @param requireQuotes whether the string must be quoted
