@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
-    alias(libs.plugins.quick.jvm)
+    alias(libs.plugins.quick.mpp)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.quick.publish)
 }
@@ -38,19 +38,16 @@ tasks.withType<Test> {
     systemProperty("zero-json-debug", properties["zero-json-debug"] as? String ?: "true")
 }
 
-tasks.named("compileJava", JavaCompile::class.java) {
-    val mainSourceSetOutput: FileCollection = sourceSets["main"].output
+tasks.withType<JavaCompile>().configureEach {
+    val classesDir = kotlin.sourceSets.getByName("jvmMain").kotlin.classesDirectory
     options.compilerArgumentProviders.add(CommandLineArgumentProvider {
-        listOf(
-            "--patch-module",
-            "kotlinx.serialization.json=${mainSourceSetOutput.asPath}"
-        )
+        listOf("--patch-module", "kotlinx.serialization.json=${classesDir.get().asFile.absolutePath}")
     })
 }
 
 dependencies {
-    implementation(project(":zero-json-core"))
-    api(libs.kotlinx.serialization.core)
+    commonMainImplementation(project(":zero-json-core"))
+    commonMainApi(libs.kotlinx.serialization.core)
 }
 
 configurations.all {
