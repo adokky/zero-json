@@ -5,10 +5,11 @@ plugins {
 }
 
 group = "io.github.adokky"
-version = "0.1.1"
+version = "0.1.2"
 
 subprojects {
     group = rootProject.group
+    version = rootProject.version
 }
 
 interface Injected {
@@ -42,6 +43,4 @@ allprojects {
             temporaryDir?.let { tempDirs += it }
         }
     }
-
-    version = rootProject.version
 }

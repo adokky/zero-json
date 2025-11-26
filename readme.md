@@ -59,7 +59,7 @@ This option allows you to use all the features specific to zero-json.
 
 ```kotlin
 dependencies {
-    commonMainImplementation("io.github.adokky:zero-json-core:0.1.1")
+    commonMainImplementation("io.github.adokky:zero-json-core:0.1.2")
 }
 ```
 
@@ -69,7 +69,7 @@ Use this if you only want faster `kotlinx-serialization-json` and nothing more.
 
 ```kotlin
 dependencies {
-    commonMainImplementation("io.github.adokky:zero-json-kotlinx:0.1.1")
+    commonMainImplementation("io.github.adokky:zero-json-kotlinx:0.1.2")
 }
 ```
 
