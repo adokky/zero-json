@@ -8,11 +8,11 @@ Fast and powerful implementation of JSON format for [kotlinx-serialization](http
 
 ## Features
 
-* **Compatibility**: Can be used as a drop-in replacement for [kotlinx-serialization-json](https://github.com/Kotlin/kotlinx.serialization/tree/master) (JVM and Android only).
-* **Zero-copy**: Deserialize objects directly from any byte buffer. This approach introduces a major limitation, described [here](#differences-from-kotlinx-serialization-json).
+* **Compatibility**: Can be used as a drop-in replacement for [kotlinx-serialization-json](https://github.com/Kotlin/kotlinx.serialization/tree/master).
 * **Zero extra allocation**: only deserialized objects are allocated. Exceptions include `Float`/`Double` types (zero allocations in most cases) and some kotlinx serializers that use `ChunkedDecoder`.
+* **Zero-copy**: deserialize objects without intermediate copies by wrapping any byte buffer. Buffer wrapping is done through a simple `Buffer` interface that requires only `size` property and `get` method to be implemented.
 * **Map and object inlining**: mark a class property with `@JsonInline` to inline its serialized form. Only final classes and `Map` instances can be inlined.
-* **Value subclasses**: zero-json provides out-of-the-box support for polymorphic value subclasses (e.g., `@Serializable value class`), automatically serializing them with a type and value field:
+* **Value subclasses**: zero-json provides out-of-the-box support for polymorphic value subclasses, automatically serializing them with a type and value field:
 ```kotlin
 @Serializable sealed interface Base
 @Serializable value class Foo(val int: Int): Base
@@ -45,7 +45,7 @@ println(ZeroJson.decodeFromString<Base>(s))
 
 3 options: drop-in replacement, standalone library and both.
 
-All of them require google repository because zero-json uses `androidx.collection:collection`:
+All of them require google repository because zero-json uses `androidx.collection:collection` under the hood:
 
 ```kotlin
 repositories {
@@ -101,18 +101,13 @@ class Person(
 )
 
 @Serializable
-class Location(
-  val country: String,
-  val city: String,
-  val street: String,
-  val house: String
-)
+class Location(val country: String, val city: String)
 
 println(ZeroJson.encodeToString(
     Person(
         name = "Alex",
         age = 20,
-        location = Location("France", "Paris", "Bd Carnot", "37"),
+        location = Location("France", "Paris"),
         extra = mapOf("avatar" to "https://cdn.com/avatar23535")
     )
 ))
@@ -124,8 +119,6 @@ println(ZeroJson.encodeToString(
     "age": 20,
     "country":  "France",
     "city": "Paris",
-    "street":  "Bd Carnot",
-    "house": "37",
     "avatar": "https://cdn.com/avatar23535"
 }
 ```
