@@ -23,7 +23,7 @@ data class Carrier2(
     val nullableIntHolderNullableList: List<IntHolder?>? = null
 )
 
-@Ignore("https://github.com/Kotlin/kotlinx.serialization/issues/2549")
+@Ignore // https://github.com/Kotlin/kotlinx.serialization/issues/2549
 class UseSerializersTest {
     private val jsonWithDefaults = Json { encodeDefaults = true }
 

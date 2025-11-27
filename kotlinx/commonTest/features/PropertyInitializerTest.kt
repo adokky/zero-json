@@ -32,7 +32,7 @@ internal val PROPERTY_INITIALIZER_JSON = buildJsonObject {
     put("getterDepend", 13)
 }.toString()
 
-@Ignore("https://github.com/Kotlin/kotlinx.serialization/issues/2549")
+@Ignore // https://github.com/Kotlin/kotlinx.serialization/issues/2549
 @Suppress("MemberVisibilityCanBePrivate", "unused", "ComplexRedundantLet")
 class PropertyInitializerTest {
     @Serializable

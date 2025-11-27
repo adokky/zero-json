@@ -20,7 +20,7 @@ import kotlin.test.Test
  *
  * Correct version of this test can be found in `core/commonTest/ktx`.
  */
-@Ignore("kotlinx bug")
+@Ignore // kotlinx bug
 class JsonNamingStrategyExclusionTest : JsonTestBase() {
     @SerialInfo
     @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)

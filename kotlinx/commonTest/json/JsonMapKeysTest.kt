@@ -16,6 +16,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.test.assertFailsWithSerial
 import kotlinx.serialization.test.assertFailsWithSerialMessage
 import kotlinx.serialization.test.assertStringFormAndRestored
+import kotlin.jvm.JvmInline
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

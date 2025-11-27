@@ -7,6 +7,7 @@ package kotlinx.serialization.features.inline
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
+import kotlin.jvm.JvmInline
 import kotlin.test.Test
 
 class ValueClassesInSealedHierarchyTest : JsonTestBase() {

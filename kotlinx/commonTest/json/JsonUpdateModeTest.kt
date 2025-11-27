@@ -9,7 +9,7 @@ import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@Ignore("duplicate keys are not allowed in zero-json")
+@Ignore // duplicate keys are not allowed in zero-json
 class JsonOverwriteTest : JsonTestBase() {
     @Serializable
     data class Updatable1(val l: List<Int>)

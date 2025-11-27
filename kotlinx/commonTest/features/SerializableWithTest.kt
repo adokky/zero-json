@@ -74,7 +74,7 @@ data class Carrier(
     @Serializable(with = MultiplyingIntSerializer::class) val i: Int
 )
 
-@Ignore("https://github.com/Kotlin/kotlinx.serialization/issues/2549")
+@Ignore // https://github.com/Kotlin/kotlinx.serialization/issues/2549
 class SerializableWithTest {
     @Test
     fun testOnProperties() {

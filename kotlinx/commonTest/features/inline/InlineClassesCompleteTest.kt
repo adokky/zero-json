@@ -7,6 +7,7 @@ import kotlinx.serialization.Box
 import kotlinx.serialization.IntData
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.test.assertSerializedAndRestored
+import kotlin.jvm.JvmInline
 import kotlin.test.Test
 
 @Serializable

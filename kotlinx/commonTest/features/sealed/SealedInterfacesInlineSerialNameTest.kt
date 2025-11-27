@@ -8,6 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonTestBase
 import kotlinx.serialization.serializer
+import kotlin.jvm.JvmInline
 import kotlin.test.Test
 
 class SealedInterfacesInlineSerialNameTest : JsonTestBase() {

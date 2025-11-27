@@ -46,15 +46,23 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 dependencies {
-    commonMainImplementation(project(":zero-json-core"))
     commonMainApi(libs.kotlinx.serialization.core)
+    commonMainImplementation(project(":zero-json-core")) {
+        val c = libs.kotlinx.serialization.json.get()
+        exclude(c.group, c.name)
+    }
 }
 
 configurations.all {
+    val c = libs.kotlinx.serialization.json.get()
     outgoing {
         capability("io.github.adokky:zero-json-kotlinx:$version")
-        libs.kotlinx.serialization.json.get().also { c ->
-            capability("${c.group}:${c.name}:${c.version}")
-        }
+        capability("${c.group}:${c.name}:${c.version}")
     }
+//    resolutionStrategy.dependencySubstitution {
+//        substitute(module("${c.group}:${c.name}")).using(project(":zero-json-kotlinx"))
+//    }
+//    resolutionStrategy.capabilitiesResolution.withCapability("org.jetbrains.kotlinx:kotlinx-serialization-json") {
+//        select(candidates.singleOrNull { (it.id as? ModuleComponentIdentifier)?.group == "io.github.adokky" } ?: candidates.first())
+//    }
 }

@@ -13,6 +13,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonTestBase
 import kotlinx.serialization.serializer
+import kotlin.jvm.JvmInline
 import kotlin.test.Test
 
 class InlineMapQuotedTest : JsonTestBase() {

@@ -26,7 +26,7 @@ data class WithNull(@SerialName("value") val nullable: String? = null) {
     }
 }
 
-@Ignore("https://github.com/Kotlin/kotlinx.serialization/issues/2549")
+@Ignore // https://github.com/Kotlin/kotlinx.serialization/issues/2549
 class PartiallyCustomSerializerTest {
     @Test
     fun partiallyCustom() {

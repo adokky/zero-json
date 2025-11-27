@@ -16,7 +16,7 @@ import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
-@Ignore("zero-json supports all the cases")
+@Ignore // zero-json supports all the cases
 class JsonProhibitedPolymorphicKindsTest : JsonTestBase() {
 
     @Serializable
