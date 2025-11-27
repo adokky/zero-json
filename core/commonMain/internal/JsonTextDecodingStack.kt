@@ -270,12 +270,10 @@ internal class JsonTextDecodingStack(
                 val keyStart = elementMetadataStack.getBackwards(frameStart, StackFrameFieldsBase.keyStart)
                 if (keyStart <= 0) break
 
-                if (tryAppendSegment(reader.input, keyStart)) break
+                if (tryAppendJsonPathSegment(reader.input, keyStart)) break
             }
         }
     }
-
-
 
     private fun validateElementIndex(elementIndex: Int) {
         if (DebugMode) doValidateElementIndex(elementIndex)

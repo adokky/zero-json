@@ -8,13 +8,12 @@ import dev.dokky.zerojson.DecodingException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonTestBase
 import kotlin.test.Test
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 
 class JsonPathTest : JsonTestBase() {
-
-    interface DFFD
 
     @Serializable
     class Outer(val a: Int, val i: Inner)
@@ -31,6 +30,15 @@ class JsonPathTest : JsonTestBase() {
         expectPath("$.i") { Json.decodeFromString<Outer>("""{"a":42, "i":[]}""") }
         expectPath("$.i.b") { Json.decodeFromString<Outer>("""{"a":42, "i":{"a":43, "b":42}""") }
         expectPath("$.i.b") { Json.decodeFromString<Outer>("""{"a":42, "i":{"b":42}""") }
+    }
+
+    @Test
+    fun testMissingKey() {
+        val ex = assertFailsWith<SerializationException> {
+            Json.decodeFromString<Outer>("""{"a":42, "i":{"d":{1:{}}""")
+        }
+        assertIs<MissingFieldException>(ex)
+        assertContains(ex.message!!, "$.i.d['1']")
     }
 
     @Test
@@ -68,7 +76,7 @@ class JsonPathTest : JsonTestBase() {
         expectPath("$.i.d") { Json.decodeFromString<Outer>("""{"a":42, "i":{ "d": {42: {"s":"s"}, 42.1:{}}""") }
         expectPath("$") { Json.decodeFromString<Map<Int, String>>("""{"foo":"bar"}""") }
         expectPath("$") { Json.decodeFromString<Map<Int, String>>("""{42:"bar", "foo":"bar"}""") }
-        expectPath("$[\"42\"].foo") { Json.decodeFromString<Map<Int, Map<String, Int>>>("""{42: {"foo":"bar"}""") }
+        expectPath("$['42'].foo") { Json.decodeFromString<Map<Int, Map<String, Int>>>("""{42: {"foo":"bar"}""") }
     }
 
     @Test
@@ -79,9 +87,9 @@ class JsonPathTest : JsonTestBase() {
 
     @Test
     fun testMapValue() {
-        expectPath("$.i.d[\"42\"].xx") { Json.decodeFromString<Outer>("""{"a":42, "i":{ "d": {42: {"xx":"bar"}}""") }
-        expectPath("$.i.d[\"43\"].xx") { Json.decodeFromString<Outer>("""{"a":42, "i":{ "d": {42: {"s":"s"}, 43: {"xx":"bar"}}}""") }
-        expectPath("$[\"239\"]") { Json.decodeFromString<Map<Int, String>>("""{239:bar}""") }
+        expectPath("$.i.d['42'].xx") { Json.decodeFromString<Outer>("""{"a":42, "i":{ "d": {42: {"xx":"bar"}}""") }
+        expectPath("$.i.d['43'].xx") { Json.decodeFromString<Outer>("""{"a":42, "i":{ "d": {42: {"s":"s"}, 43: {"xx":"bar"}}}""") }
+        expectPath("$['239']") { Json.decodeFromString<Map<Int, String>>("""{239:bar}""") }
     }
 
     @Serializable
@@ -99,23 +107,6 @@ class JsonPathTest : JsonTestBase() {
     @Test
     fun testUnknownEnum() {
         expectPath("$.e") { Json.decodeFromString<EH>("""{"e": "foo"}""") }
-    }
-
-    @Serializable
-    @SerialName("f")
-    sealed class Sealed {
-
-        @Serializable
-        @SerialName("n")
-        class Nesting(val f: Sealed) : Sealed()
-
-        @Serializable
-        @SerialName("b")
-        class Box(val s: String) : Sealed()
-
-        @Serializable
-        @SerialName("d")
-        class DoubleNesting(val f: Sealed, val f2: Sealed) : Sealed()
     }
 
     @Serializable

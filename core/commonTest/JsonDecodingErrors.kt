@@ -3,6 +3,8 @@
 package dev.dokky.zerojson
 
 import dev.dokky.zerojson.framework.AbstractDecoderTest
+import dev.dokky.zerojson.framework.jsonEscape
+import dev.dokky.zerojson.framework.jsonObject
 import kotlinx.serialization.Serializable
 import kotlin.test.Test
 import kotlin.test.assertContains
@@ -55,7 +57,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
             zjson.decode<Map<Int, Map<String, String>>>("""{"11":{},"22":{"k":"v",},"33":{}}""")
         }
         assertContains(ex.message, "trailing comma")
-        assertEquals("$[\"22\"]", ex.path)
+        assertEquals("$['22']", ex.path)
     }
 
     @Test
@@ -63,23 +65,35 @@ class JsonDecodingErrors: AbstractDecoderTest() {
         fun ZeroJson.test(key: String, expectedPath: String, quotedOnly: Boolean = false) {
             for (quoted in setOf(true, quotedOnly)) {
                 val q = if (quoted) '"' else ""
-                val input = """{"k1":123, $q$key$q:"not a number"}"""
+                val input = """{"k1":123, $q${key.jsonEscape()}$q:"not a number"}"""
                 val ex = assertFailsWith<ZeroJsonDecodingException> {
                     decode<Map<String, Int>>(input)
                 }
-                assertContains(ex.message, "expected integer")
-                assertEquals(expectedPath, ex.path, input)
+                val message = "text input: $input"
+                assertContains(ex.message, "expected integer", message = message)
+                assertEquals(expectedPath, ex.path, message)
             }
+            val ex = assertFailsWith<ZeroJsonDecodingException> {
+                decodeFromJsonElement<Map<String, Int>>(jsonObject {
+                    "k1" eq 123
+                    key eq "not a number"
+                })
+            }
+            val message = "tree input, key $key"
+            assertContains(ex.message, "expected integer", message = message)
+            assertEquals(expectedPath, ex.path, message)
         }
 
         zjson.test("k2",             "$.k2")
-        zjson.test("hello_world()?", "$.hello_world()?")
+        zjson.test("",               "$['']", quotedOnly = true)
+        zjson.test("'k2'",           "$['\\'k2\\'']")
+        zjson.test("hello_world()?", "$['hello_world()?']")
         zjson.test("hello-world!",   "$.hello-world!")
-        zjson.test("123",            "$[\"123\"]")
-        zjson.test("-123",           "$[\"-123\"]")
-        zjson.test("dot.key",        "$[\"dot.key\"]")
-        zjson.test("\\nkey",         "$[\"\\nkey\"]")
-        zjson.test("Привет, Мир!",   "$[\"Привет, Мир!\"]", quotedOnly = true)
+        zjson.test("123",            "$['123']")
+        zjson.test("-123",           "$['-123']")
+        zjson.test("dot.key",        "$['dot.key']")
+        zjson.test("\nkey",          "$['\\nkey']")
+        zjson.test("Привет, Мир!",   "$['Привет, Мир!']", quotedOnly = true)
     }
 
     @Test
