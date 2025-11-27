@@ -20,6 +20,7 @@ enum class TestEnum {
     `entry 3`
 }
 
+@Serializable
 enum class SampleEnum { OptionA, @Suppress("unused") OptionB, OptionC }
 
 @Serializable
