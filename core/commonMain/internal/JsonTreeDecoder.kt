@@ -379,7 +379,7 @@ internal class JsonTreeDecoder(
         var deserializer = deserializer
         var jsonElementType: KClass<out JsonElement>? = null
 
-        if (deserializer is AbstractPolymorphicSerializer<T>) {
+        if (deserializer is AbstractPolymorphicSerializer<*>) {
             assert { prepareInlineDecodingOffset == 0 }
 
             if (config.structuredMapKeysMode != StructuredMapKeysMode.LIST && isDecodingMapKey()) {
