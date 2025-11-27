@@ -74,13 +74,14 @@ class LocalClassesTest {
     @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
     @Test
     fun testClassCustomSerializer() {
-        @Serializable(with = ClassCustomSerializer::class)
-        data class Local(val i: Int)
-
-        val origin: Local? = null
-
-        // FIXME change to `noLegacyJs` when lookup of `ClassCustomSerializer` will work on Native and JS/IR
         jvmOnly {
+            @Serializable(with = ClassCustomSerializer::class)
+            data class Local(val i: Int)
+
+            val origin: Local? = null
+
+            // FIXME change to `noLegacyJs` when lookup of `ClassCustomSerializer` will work on Native and JS/IR
+
             val decoded: Local? = Json.decodeFromString(Json.encodeToString(origin))
             assertEquals(origin, decoded)
         }

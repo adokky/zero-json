@@ -8,7 +8,7 @@ enum class Platform {
     JVM, JS, NATIVE, WASM
 }
 
-fun isJs(): Boolean = false
-fun isJvm(): Boolean = true
-fun isNative(): Boolean = false
-fun isWasm(): Boolean = false
+expect fun isJs(): Boolean
+expect fun isJvm(): Boolean
+expect fun isNative(): Boolean
+expect fun isWasm(): Boolean

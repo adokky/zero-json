@@ -4,16 +4,12 @@
 
 package kotlinx.serialization
 
-import kotlinx.serialization.builtins.InstantComponentSerializer
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonTestBase
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.builtins.*
+import kotlin.time.*
+import kotlin.test.*
 import kotlin.reflect.typeOf
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 class InstantSerializationTest: JsonTestBase() {
@@ -55,7 +51,7 @@ class InstantSerializationTest: JsonTestBase() {
         }
         // by default, `nanosecondsOfSecond` is optional
         assertJsonFormAndRestored(serializer, Instant.fromEpochSeconds(987654321, 0),
-            "{\"epochSeconds\":987654321}", Json)
+            "{\"epochSeconds\":987654321}", Json.Default)
         // having a `"nanosecondsOfSecond": 0` field doesn't break deserialization
         assertEquals(Instant.fromEpochSeconds(987654321, 0),
             Json.decodeFromString(serializer,
