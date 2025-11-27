@@ -37,8 +37,8 @@ dependencies {
     jsCommonMainApi(libs.kotlinx.serialization.json)
 
     commonMainImplementation(libs.androidx.collection)
-    commonMainImplementation(libs.kodec.textStream)
     commonMainImplementation(libs.kodec.struct)
+    commonMainImplementation(libs.kodec.strings.stream)
     commonMainImplementation(libs.kodec.strings.common)
     commonMainImplementation(libs.kodec.strings.utf)
     commonMainImplementation(libs.bitvector)

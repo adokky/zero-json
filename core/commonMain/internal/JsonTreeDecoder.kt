@@ -447,7 +447,7 @@ internal class JsonTreeDecoder(
                 throw ZeroJsonDecodingException("expected string")
             }
             val discriminator = discriminatorValue.content
-            tempSubString.set(discriminator, hashCode = discriminator.hashCode())
+            tempSubString.setUnchecked(discriminator, hashCode = discriminator.hashCode())
             context.polymorphicDeserializerResolver
                 .lookup(this, deserializer, baseDescriptor, tempSubString)
                 ?: throwUnknownSubTypeError(deserializer, subType = discriminator)

@@ -109,7 +109,7 @@ class JsonInlineCoercingTest: RandomizedJsonTest() {
     }
 
     @Test
-    fun `decodeInlinedMapKeyIndex() should validate skipped value`() {
+    fun `decodeInlinedMapKeyIndex should validate skipped value`() {
         assertFailsWith<ZeroJsonDecodingException> {
             ZeroJson.decodeFromString<Root>(
                 """{int: 101, inlinedString: zzz, ghi: entry2, inlinedEnum2 :null:}"""

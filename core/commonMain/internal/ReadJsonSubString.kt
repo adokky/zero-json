@@ -38,9 +38,9 @@ internal fun JsonReaderImpl.readString(
     val stringEnd = position - quoted
 
     if (scanResult.codePoints == 0) {
-        dest1.set(reader, start = stringStart, end = stringStart, codePoints = 0)
+        dest1.setUnchecked(reader, start = stringStart, end = stringStart, codePoints = 0)
     } else {
-        dest1.set(
+        dest1.setUnchecked(
             input,
             start = stringStart + quoted,
             end = stringEnd,
@@ -87,9 +87,9 @@ internal fun JsonReaderImpl.readString(
     val stringEnd = position - quoted
 
     if (scanResult.codePoints == 0) {
-        dest.set(reader.input, start = stringStart, end = stringStart)
+        dest.setUnchecked(reader.input, start = stringStart, end = stringStart)
     } else {
-        dest.set(
+        dest.setUnchecked(
             reader.input,
             start = stringStart + quoted,
             end = stringEnd,
@@ -112,6 +112,6 @@ private fun JsonReaderImpl.readStringSlow(
         maxLength = maxLength,
         allowNull = allowNull
     )
-    dest.set(config.stringBuilder, start = 0, end = config.stringBuilder.length, hashCode = hashCode)
+    dest.setUnchecked(config.stringBuilder, start = 0, end = config.stringBuilder.length, hashCode = hashCode)
     skipWhitespace()
 }

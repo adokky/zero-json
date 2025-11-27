@@ -22,7 +22,7 @@ kotlin {
 }
 
 dependencies {
-    commonMainImplementation(libs.kodec.textStream)
+    commonMainImplementation(libs.kodec.strings.stream)
     commonMainImplementation(libs.kodec.struct)
     commonMainImplementation(libs.karamelUtils.core)
     commonMainImplementation(libs.karamelUtils.tsbits)
