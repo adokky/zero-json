@@ -2,7 +2,7 @@
 kotlin = "2.3.0-RC"
 kotlinx-serialization = "1.9.0"
 quickMpp = "0.21"
-jmh = "0.7.3"
+jmh = "1.37"
 
 [libraries]
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
@@ -17,10 +17,10 @@ kodec-struct = { module = "io.github.adokky:kodec-struct", version = "0.2.1" }
 kodec-strings-stream = { module = "io.github.adokky:kodec-strings-stream", version = "0.8.9" }
 kodec-strings-common = { module = "io.github.adokky:kodec-strings-common", version = "0.1.2" }
 kodec-strings-utf = { module = "io.github.adokky:kodec-strings-utf", version = "0.3.8" }
-jmh-processor = { module = "org.openjdk.jmh:jmh-generator-annprocess", version = "1.37" }
+jmh-processor = { module = "org.openjdk.jmh:jmh-generator-annprocess", version.ref = "jmh" }
 
 [plugins]
-jmh = { id = "me.champeau.jmh", version.ref = "jmh" }
+jmh = { id = "me.champeau.jmh", version = "0.7.3" }
 quick-mpp = { id = "io.github.adokky.quick-mpp", version.ref = "quickMpp" }
 quick-jvm = { id = "io.github.adokky.quick-jvm", version.ref = "quickMpp" }
 quick-publish = { id = "io.github.adokky.quick-publish", version.ref = "quickMpp" }

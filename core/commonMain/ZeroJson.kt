@@ -11,6 +11,7 @@ import kotlinx.serialization.json.internal.FormatLanguage
 import kotlinx.serialization.modules.SerializersModule
 import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
+import kotlin.jvm.JvmName
 import kotlin.jvm.JvmStatic
 
 /**
@@ -299,6 +300,7 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
     companion object Default: ZeroJson(ZeroJsonConfiguration.Default) {
         @InternalSerializationApi
         @JvmStatic
+        @JvmName("create")
         operator fun invoke(config: ZeroJsonConfiguration): ZeroJson = Impl(config)
 
         @OptIn(ExperimentalAtomicApi::class)

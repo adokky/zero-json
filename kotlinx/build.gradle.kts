@@ -41,7 +41,8 @@ tasks.withType<Test> {
 tasks.withType<JavaCompile>().configureEach {
     val classesDir = kotlin.sourceSets.getByName("jvmMain").kotlin.classesDirectory
     options.compilerArgumentProviders.add(CommandLineArgumentProvider {
-        listOf("--patch-module", "kotlinx.serialization.json=${classesDir.get().asFile.absolutePath}")
+        val dir = classesDir.orNull ?: return@CommandLineArgumentProvider emptyList()
+        listOf("--patch-module", "kotlinx.serialization.json=${dir.asFile.absolutePath}")
     })
 }
 

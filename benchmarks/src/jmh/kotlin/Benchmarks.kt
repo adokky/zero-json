@@ -21,25 +21,25 @@ private val zJsonNonShared = ZeroJson { cacheMode = CacheMode.NON_SHARED }
 
 private val zJsonTwoLevel = ZeroJson { cacheMode = CacheMode.TWO_LEVEL }
 
-fun json5Benchmark(state: BenchmarkRunner.ThreadLocalState): Any {
-    return ZeroJson.decodeFromByteArray<Response<Person>>(ENCODED_DATA)
+fun json5Benchmark(state: ThreadLocalState): Any {
+    return state.zJson.decodeFromByteArray<Response<Person>>(ENCODED_DATA)
 }
 
-fun json5BenchmarkTwoLevel(state: BenchmarkRunner.ThreadLocalState): Any {
+fun json5BenchmarkTwoLevel(state: ThreadLocalState): Any {
     return zJsonTwoLevel.decodeFromByteArray<Response<Person>>(ENCODED_DATA)
 }
 
-fun json5BenchmarkThreadLocal(state: BenchmarkRunner.ThreadLocalState): Any {
+fun json5BenchmarkThreadLocal(state: ThreadLocalState): Any {
     return zJsonNonShared.decodeFromByteArray<Response<Person>>(ENCODED_DATA)
 }
 
 @ExperimentalSerializationApi
-fun ktxBenchmark(state: BenchmarkRunner.ThreadLocalState): Any {
-    return state.ktxJson.decodeFromStream<Response<Person>>(ByteArrayInputStream(ENCODED_DATA.copyOf()))
+fun ktxBenchmark(state: ThreadLocalState): Any {
+    return state.ktxJson.decodeFromStream<Response<Person>>(ByteArrayInputStream(state.copyOf(ENCODED_DATA)))
 }
 
 @ExperimentalSerializationApi
-fun ktxBenchmarkNoCopy(state: BenchmarkRunner.ThreadLocalState): Any {
+fun ktxBenchmarkNoCopy(state: ThreadLocalState): Any {
     return state.ktxJson.decodeFromStream<Response<Person>>(ByteArrayInputStream(ENCODED_DATA))
 }
 
