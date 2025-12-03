@@ -17,10 +17,8 @@ import kotlin.test.Test
  * [JsonNamingStrategyExclusionTest.E.SECOND_E] is tranformed to `second_e` and [kotlinx.serialization.json.JsonBuilder.coerceInputValues] is `false`.
  *
  * Both tests should fail because of the input `"enum_bar_two":"SECOND_E"`.
- *
- * Correct version of this test can be found in `core/commonTest/ktx`.
  */
-@Ignore // kotlinx bug
+@Ignore
 class JsonNamingStrategyExclusionTest : JsonTestBase() {
     @SerialInfo
     @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY)
