@@ -54,7 +54,7 @@ internal fun JsonReaderImpl.tryReadNumberAsString(allowNaN: Boolean): String? {
         (allowNaN && (nextCodePoint == 'I'.code || c == 'N'.code)))
     {
         position = begin
-        readNumberAsString(config.stringBuilder, allowSpecialFp = allowNaN)?.let {
+        readNumberAsString(config.stringBuilder.builder, allowSpecialFp = allowNaN)?.let {
             skipWhitespace()
             return it
         }

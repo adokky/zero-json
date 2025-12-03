@@ -10,7 +10,6 @@ import io.kodec.DecodingErrorHandler
 import io.kodec.buffers.Buffer
 import io.kodec.text.*
 import karamel.utils.assert
-import karamel.utils.buildString
 import karamel.utils.unsafeCast
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
@@ -24,7 +23,7 @@ internal class JsonReaderImpl private constructor(
 ): JsonReader(config) {
     internal constructor(
         input: ZeroTextReader,
-        config: JsonReaderConfig = JsonReaderConfig.Default
+        config: JsonReaderConfig
     ): this(input.unsafeCast<RandomAccessTextReader>(), config)
 
     override var position: Int
@@ -33,7 +32,7 @@ internal class JsonReaderImpl private constructor(
 
     internal val readNumberResult = ReadNumberResult()
 
-    override fun readString(requireQuotes: Boolean): String = buildString(config.stringBuilder) {
+    override fun readString(requireQuotes: Boolean): String = config.stringBuilder.buildString {
         readString(this, requireQuotes = requireQuotes)
     }
 
@@ -51,23 +50,22 @@ internal class JsonReaderImpl private constructor(
     private val chunkedReadMaxLengthHandler = ChunkedReadMaxLengthHandler()
 
     fun readStringChunked(
-        buffer: StringBuilder,
+        buffer: StringBuilderWrapper,
         requireQuotes: Boolean = config.expectStringQuotes,
         chuckSize: Int = STRING_CHUNK_SIZE,
         acceptChunk: (String) -> Unit
     ) {
-        val bufStart = buffer.length
+        val bufStart = buffer.builder.length
         var expectQuotes = if (requireQuotes || input.nextCodePoint == '"'.code) 1 else 0
         do {
             chunkedReadMaxLengthHandler.hasMoreChunks = false
             input.readJsonString(
-                output = buffer,
+                output = buffer.builder,
                 requireQuotes = expectQuotes == 1,
                 maxLength = chuckSize,
                 onMaxLength = chunkedReadMaxLengthHandler
             )
-            acceptChunk(buffer.substring(bufStart))
-            buffer.setLength(bufStart)
+            acceptChunk(buffer.removeSubstring(startIndex = bufStart))
             expectQuotes += (expectQuotes and 1) shl 1
         } while (chunkedReadMaxLengthHandler.hasMoreChunks)
         if (expectQuotes > 0b11) expectCloseQuotes()
@@ -90,7 +88,7 @@ internal class JsonReaderImpl private constructor(
     }
 
     private fun throwExpectedNumber(numberType: String): Nothing {
-        input.fail(buildString(config.messageBuilder) {
+        input.fail(config.messageBuilder.buildString {
             append("expected ")
             append(numberType)
             append(", got ")
@@ -346,15 +344,15 @@ internal class JsonReaderImpl private constructor(
             JsonReaderImpl(input, config).also { it.skipWhitespace() }
 
         @JvmStatic
-        internal fun startReadingFrom(input: Buffer, config: JsonReaderConfig = JsonReaderConfig.Default): JsonReaderImpl {
-            val textReader = ZeroUtf8TextReader()
+        internal fun startReadingFrom(input: Buffer, config: JsonReaderConfig): JsonReaderImpl {
+            val textReader = ZeroUtf8TextReader(errorMessageBuilder = config.messageBuilder)
             textReader.startReadingFrom(input)
             return startReadingFrom(textReader, config)
         }
 
         @JvmStatic
-        internal fun startReadingFrom(input: CharSequence, config: JsonReaderConfig = JsonReaderConfig.Default): JsonReaderImpl {
-            val textReader = ZeroStringTextReader()
+        internal fun startReadingFrom(input: CharSequence, config: JsonReaderConfig): JsonReaderImpl {
+            val textReader = ZeroStringTextReader(errorMessageBuilder = config.messageBuilder)
             textReader.startReadingFrom(input)
             return startReadingFrom(textReader, config)
         }

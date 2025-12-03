@@ -107,11 +107,12 @@ private fun JsonReaderImpl.readStringSlow(
 ) {
     config.stringBuilder.setLength(0)
     val hashCode = input.readJsonString(
-        config.stringBuilder,
+        config.stringBuilder.builder,
         requireQuotes = config.expectStringQuotes,
         maxLength = maxLength,
         allowNull = allowNull
     )
-    dest.setUnchecked(config.stringBuilder, start = 0, end = config.stringBuilder.length, hashCode = hashCode)
+    config.stringBuilder.updateCapacity()
+    dest.setUnchecked(config.stringBuilder.builder, start = 0, end = config.stringBuilder.length, hashCode = hashCode)
     skipWhitespace()
 }

@@ -1,6 +1,7 @@
 package dev.dokky.zerojson
 
 import dev.dokky.zerojson.internal.JsonReaderImpl
+import dev.dokky.zerojson.internal.StringBuilderWrapper
 import dev.dokky.zerojson.internal.readJsonString
 import io.kodec.DecodingErrorHandler
 import kotlin.test.Test
@@ -30,7 +31,7 @@ class ReadJsonStringTest: AbstractJsonStringTest<String>() {
 
     private fun JsonReaderImpl.readChunks() {
         var i1 = 0
-        val buf = StringBuilder()
+        val buf = StringBuilderWrapper()
         readStringChunked(buf, requireQuotes = false, chuckSize = 3) { chunk ->
             when (++i1) {
                 1 -> assertEquals("12П", chunk)
@@ -43,7 +44,7 @@ class ReadJsonStringTest: AbstractJsonStringTest<String>() {
 
     private fun JsonReaderImpl.readSingleChunk() {
         var chunks = 0
-        val buf = StringBuilder()
+        val buf = StringBuilderWrapper()
         val s = buildString {
             readStringChunked(buf, requireQuotes = false) { chunk ->
                 append(chunk)

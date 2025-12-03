@@ -8,7 +8,7 @@ import io.kodec.text.Utf8TextReader
 internal interface ZeroTextReader: TextReader
 
 internal class ZeroUtf8TextReader(
-    private val errorMessageBuilder: StringBuilder = StringBuilder()
+    private val errorMessageBuilder: StringBuilderWrapper = StringBuilderWrapper()
 ): Utf8TextReader(), ZeroTextReader {
     override fun fail(msg: String): Nothing =
         throw ZeroJsonDecodingException(msg, position = position, path = null)
@@ -19,7 +19,7 @@ internal class ZeroUtf8TextReader(
 }
 
 internal class ZeroStringTextReader(
-    private val errorMessageBuilder: StringBuilder = StringBuilder()
+    private val errorMessageBuilder: StringBuilderWrapper = StringBuilderWrapper()
 ) : StringTextReader(), ZeroTextReader {
     override fun fail(msg: String): Nothing =
         throw ZeroJsonDecodingException(msg, position = position, path = null)

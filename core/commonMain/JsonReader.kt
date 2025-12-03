@@ -231,7 +231,7 @@ abstract class JsonReader internal constructor(val config: JsonReaderConfig) {
          * @param config the reader configuration
          */
         @JvmStatic
-        fun startReadingFrom(input: Buffer, config: JsonReaderConfig = JsonReaderConfig.Default): JsonReader =
+        fun startReadingFrom(input: Buffer, config: JsonReaderConfig = JsonReaderConfig()): JsonReader =
             JsonReaderImpl.startReadingFrom(input, config)
 
         /**
@@ -241,7 +241,7 @@ abstract class JsonReader internal constructor(val config: JsonReaderConfig) {
          * @param config the reader configuration
          */
         @JvmStatic
-        fun startReadingFrom(input: CharSequence, config: JsonReaderConfig = JsonReaderConfig.Default): JsonReader =
+        fun startReadingFrom(input: CharSequence, config: JsonReaderConfig = JsonReaderConfig()): JsonReader =
             JsonReaderImpl.startReadingFrom(input, config)
     }
 }

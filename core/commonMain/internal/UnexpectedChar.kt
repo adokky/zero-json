@@ -6,10 +6,10 @@ import io.kodec.text.ReadNumberResult
 import karamel.utils.buildString
 
 internal fun RandomAccessTextReader.unexpectedNextChar(
-    messageBuilder: StringBuilder,
+    messageBuilder: StringBuilderWrapper,
     expected: Int
 ): Nothing {
-    fail(buildString(messageBuilder) {
+    fail(messageBuilder.buildString {
         this.append("expected ")
         appendReadableJsonToken(expected)
         if (!JsonCharClasses.isWhitespace(nextCodePoint)) {
@@ -19,9 +19,9 @@ internal fun RandomAccessTextReader.unexpectedNextChar(
     })
 }
 
-internal fun RandomAccessTextReader.unexpectedChar(messageBuilder: StringBuilder, codepoint: Int): Nothing {
+internal fun RandomAccessTextReader.unexpectedChar(messageBuilder: StringBuilderWrapper, codepoint: Int): Nothing {
     if (codepoint < 0) unexpectedEof()
-    fail(buildString(messageBuilder) {
+    fail(messageBuilder.buildString {
         append("unexpected ")
         appendReadableJsonToken(codepoint)
     })

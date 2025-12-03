@@ -37,7 +37,7 @@ internal class ThreadLocalCaches private constructor() {
             val ktxJson = (json as? ZeroJson.Impl)?.json
             object : SimpleObjectPool<JsonContext>(1..5) {
                 override fun allocate() = JsonContext(
-                    this, json, ktxJson, StringBuilder(128), StringBuilder(128), descriptorCache, polymorphicSerializerCache)
+                    this, json, ktxJson, descriptorCache, polymorphicSerializerCache)
             }
         }
     }

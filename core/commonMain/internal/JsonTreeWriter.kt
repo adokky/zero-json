@@ -8,11 +8,11 @@ import kotlinx.serialization.json.*
  * @param textWriter used for encoding compound JSON inside key
  */
 internal class JsonTreeWriter(
-    private val stringBuilder: StringBuilder,
+    private val stringBuilder: StringBuilderWrapper,
     maxDepth: Int,
     private val allowNaNs: Boolean
 ): JsonWriterBase(), AutoCloseable {
-    private val textWriter = JsonTextWriter(StringTextWriter(stringBuilder))
+    private val textWriter = JsonTextWriter(StringTextWriter(stringBuilder.builder))
     private var nesting = 0
 
     private class Frame {
@@ -60,7 +60,7 @@ internal class JsonTreeWriter(
     }
 
     fun beginEncoding() {
-        stringBuilder.setLength(0)
+        stringBuilder.clear()
         stackSize = 1
         lastFrame().array!!.clear()
     }
@@ -90,7 +90,7 @@ internal class JsonTreeWriter(
             nesting >= 1 -> textWriter.endString()
             nesting == 0 -> {
                 lastFrame().key = stringBuilder.toString()
-                stringBuilder.setLength(0)
+                stringBuilder.clear()
             }
         }
     }

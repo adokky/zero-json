@@ -21,7 +21,7 @@ inline fun ZeroJsonCompat(builder: ZeroJsonBuilder.() -> Unit): ZeroJson =
 
 @ExperimentalSerializationApi
 fun ZeroJson(configuration: JsonConfiguration, serializersModule: SerializersModule): ZeroJson =
-    ZeroJson(ZeroJsonConfig(configuration, serializersModule))
+    ZeroJson(ZeroJsonConfiguration(configuration, serializersModule))
 
 class ZeroJsonBuilder @PublishedApi internal constructor(config: ZeroJsonConfiguration): ZeroJsonConfigurationBase {
     override var serializersModule: SerializersModule         = config.serializersModule

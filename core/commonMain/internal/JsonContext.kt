@@ -10,11 +10,9 @@ import io.kodec.buffers.Buffer
 import io.kodec.buffers.MutableBuffer
 import io.kodec.buffers.emptyByteArray
 import io.kodec.text.*
-import karamel.utils.buildString
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -25,8 +23,6 @@ internal class JsonContext(
     val ownerPool: SimpleObjectPool<JsonContext>,
     val zeroJson: ZeroJson,
     json: Json?,
-    val stringBuilder: StringBuilder,
-    val messageBuilder: StringBuilder,
     val descriptorCache: DescriptorCache,
     val polymorphicDeserializerResolver: PolymorphicSerializerCache
 ) {
@@ -38,22 +34,25 @@ internal class JsonContext(
         }
     }
 
-    val bufferInput = ZeroUtf8TextReader(messageBuilder)
+    val dataBuilder = StringBuilderWrapper(256, maxCapacity = config.maxOutputBytes)
+    val messageBuilder = StringBuilderWrapper(256, maxCapacity = config.maxOutputBytes)
+
+    private val bufferInput = ZeroUtf8TextReader(messageBuilder)
     val stringInput = ZeroStringTextReader(messageBuilder)
 
-    val bufferWriter = BufferTextWriter()
-    val stringWriter = StringTextWriter(stringBuilder)
+    private val bufferWriter = BufferTextWriter()
+    private val stringWriter = StringTextWriter(dataBuilder.builder)
 
-    private val stringWriterClosable = AutoCloseable { stringWriter.output = stringBuilder }
+    private val stringWriterClosable = AutoCloseable { stringWriter.output = dataBuilder.builder }
     private val bufferWriterClosable = AutoCloseable { bufferWriter.set(ArrayBuffer.Empty) }
 
-    val tempArrayWrapper = ArrayBuffer(0)
-    var tempBuffer: ArrayBuffer? = null
+    private val tempArrayWrapper = ArrayBuffer(0)
+    private var tempBuffer: ArrayBuffer? = null
 
     private val jsonTextWriter = JsonTextWriter(bufferWriter,
         allowNaNs = config.allowSpecialFloatingPointValues)
 
-    private val jsonTreeWriter = JsonTreeWriter(stringBuilder,
+    private val jsonTreeWriter = JsonTreeWriter(dataBuilder,
         allowNaNs = config.allowSpecialFloatingPointValues,
         maxDepth = config.maxStructureDepth)
     
@@ -65,7 +64,7 @@ internal class JsonContext(
             expectStringQuotes = !config.isLenient,
             allowComments = config.allowComments,
             allowSpecialFloatingPointValues = config.allowSpecialFloatingPointValues,
-            stringBuilder = stringBuilder,
+            stringBuilder = dataBuilder,
             messageBuilder = messageBuilder,
             depthLimit = config.maxStructureDepth,
             allowTrailingComma = config.allowTrailingComma
@@ -82,11 +81,11 @@ internal class JsonContext(
 
     val decoder = JsonTextDecoder(this, reader, json)
 
-    val encoderStack: AutoCloseableStack<JsonEncoderImpl> = AutoCloseableStack(config,
+    private val encoderStack: AutoCloseableStack<JsonEncoderImpl> = AutoCloseableStack(config,
         first = JsonEncoderImpl(this, parent = null, json),
         create = { parent -> JsonEncoderImpl(this, parent = parent, json) })
 
-    val treeDecoderStack: AutoCloseableStack<JsonTreeDecoder> = AutoCloseableStack(config,
+    private val treeDecoderStack: AutoCloseableStack<JsonTreeDecoder> = AutoCloseableStack(config,
         first = JsonTreeDecoder(this, parent = null, json),
         create = { parent -> JsonTreeDecoder(this, parent = parent, json) })
 
@@ -147,12 +146,15 @@ internal class JsonContext(
     fun <T> encode(value: T, serializationStrategy: SerializationStrategy<T>, output: StringBuilder) {
         stringWriter.output = output
         encode(serializationStrategy, value, stringWriter, stringWriterClosable) {}
+        dataBuilder.clearAndShrink()
     }
 
     fun <T> encode(value: T, serializationStrategy: SerializationStrategy<T>, output: MutableBuffer, offset: Int = 0): Int {
         bufferWriter.set(output, offset)
         return encode(serializationStrategy, value, bufferWriter, bufferWriterClosable) {
-            bufferWriter.position
+            bufferWriter.position.also {
+                dataBuilder.clearAndShrink()
+            }
         }
     }
 
@@ -160,7 +162,9 @@ internal class JsonContext(
         jsonWriter = jsonTreeWriter
         jsonTreeWriter.beginEncoding()
         return encode(serializationStrategy, value, jsonTreeWriter) {
-            jsonTreeWriter.endEncoding()
+            jsonTreeWriter.endEncoding().also {
+                dataBuilder.clearAndShrink()
+            }
         }
     }
 
@@ -241,19 +245,21 @@ internal class JsonContext(
             rethrowWithPath(e, textDecoderJsonPath())
         }
         finally {
+            dataBuilder.clearAndShrink()
             input.resetInput()
             decoder.close()
         }
     }
 
     private fun rethrowWithPath(e: MissingFieldException, path: String): Nothing {
-        val msg = buildString(messageBuilder) {
+        val msg = messageBuilder.buildString {
             if (e.message != null) {
                 append(e.message)
                 append(" at ")
             }
             append(path)
         }
+        messageBuilder.clearAndShrink()
         throw MissingFieldException(e.missingFields, message = msg, cause = null)
     }
 
@@ -263,9 +269,12 @@ internal class JsonContext(
     }
 
     fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
-        stringBuilder.setLength(0)
-        encode(value, serializer, stringBuilder)
-        return stringBuilder.toString()
+        dataBuilder.clear()
+        stringWriter.output = dataBuilder.builder
+        encode(serializer, value, stringWriter, stringWriterClosable) {}
+        return dataBuilder.toString().also {
+            dataBuilder.clearAndShrink()
+        }
     }
 
     fun <T> encodeToByteArray(serializer: SerializationStrategy<T>, value: T): ByteArray {
@@ -301,45 +310,18 @@ internal class JsonContext(
         } catch (e: MissingFieldException) {
             rethrowWithPath(e, treeDecoderJsonPath())
         } finally {
+            dataBuilder.clearAndShrink()
             treeDecodingStack.clear()
             treeDecoderStack.close()
         }
     }
 
-    private fun textDecoderJsonPath(): String = buildString(stringBuilder) {
+    private fun textDecoderJsonPath(): String = messageBuilder.buildString {
         textDecodingStack.currentJsonPath(reader, this)
     }
 
-    private fun treeDecoderJsonPath(): String = buildString(stringBuilder) { treeDecoderJsonPath(this) }
-
-    private fun treeDecoderJsonPath(output: StringBuilder) = output.run {
-        append('$')
-        for (i in 1 until treeDecoderStack.acquired) {
-            val decoder = treeDecoderStack.get(i)
-            if (decoder.elementIndex < 0) break
-
-            when(decoder.descriptor.kind) {
-                StructureKind.MAP -> decoder.currentKey?.let { appendSegment(it) } ?: break
-                StructureKind.LIST -> append('[').append(decoder.elementIndex).append(']')
-                StructureKind.CLASS -> {
-                    if (decoder.elementIndex >= decoder.descriptor.elementsCount) break
-                    if (decoder.descriptor.isElementJsonInline(decoder.elementIndex)) continue
-                    val key = decoder.currentKey
-                    if (key == null) append("[null]") else appendSegment(key)
-                }
-                else -> break
-            }
-        }
-    }
-
-    private fun StringBuilder.appendSegment(key: String) {
-        if (key.jsonPathSegmentRequireEscaping(segmentStart = 0)) {
-            append("['")
-            appendJsonPathSegment(key, segmentStart = 0, segmentEnd = key.length)
-            append("']")
-        } else {
-            append('.').append(key)
-        }
+    private fun treeDecoderJsonPath(): String = messageBuilder.buildString {
+        treeDecoderJsonPath(treeDecoderStack, this)
     }
 
     companion object {

@@ -140,7 +140,7 @@ class ZeroJsonConfiguration(
 
 @Suppress("FunctionName")
 @InternalSerializationApi
-fun ZeroJsonConfig(configuration: JsonConfiguration, serializersModule: SerializersModule): ZeroJsonConfiguration = ZeroJsonConfiguration(
+fun ZeroJsonConfiguration(configuration: JsonConfiguration, serializersModule: SerializersModule): ZeroJsonConfiguration = ZeroJsonConfiguration(
     serializersModule = serializersModule,
     namingStrategy = configuration.namingStrategy,
     ignoreUnknownKeys = configuration.ignoreUnknownKeys,

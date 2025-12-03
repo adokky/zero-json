@@ -696,7 +696,7 @@ internal class JsonTextDecoder(
     override fun decodeString(): String = reader.readString()
 
     override fun decodeStringChunked(consumeChunk: (chunk: String) -> Unit) {
-        reader.readStringChunked(context.stringBuilder, acceptChunk = consumeChunk)
+        reader.readStringChunked(context.dataBuilder, acceptChunk = consumeChunk)
     }
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int {
@@ -731,10 +731,11 @@ internal class JsonTextDecoder(
         if (compoundChildDecoder != null) {
             error("attempt to decoder composite key, but previous composite decoding is not finished with endStructure()")
         }
-        val builder = reader.config.stringBuilder
-        builder.setLength(0)
-        reader.readString(output = builder)
-        return compoundKeyDecoder(zeroJson, parent = this, source = builder).also {
+        val builder = context.dataBuilder
+        builder.clear()
+        reader.readString(output = builder.builder)
+        builder.updateCapacity()
+        return compoundKeyDecoder(zeroJson, parent = this, source = builder.builder).also {
             compoundChildDecoder = it
         }
     }

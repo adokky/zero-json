@@ -6,12 +6,15 @@ import io.kodec.buffers.MutableBuffer
 import karamel.utils.assertionsEnabled
 import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.internal.FormatLanguage
+import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.jvm.JvmName
+import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
 /**
@@ -302,6 +305,17 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
         @JvmStatic
         @JvmName("create")
         operator fun invoke(config: ZeroJsonConfiguration): ZeroJson = Impl(config)
+
+        @InternalSerializationApi
+        @JvmStatic
+        @JvmName("create")
+        @JvmOverloads
+        operator fun invoke(
+            config: JsonConfiguration,
+            serializersModule: SerializersModule = EmptySerializersModule()
+        ): ZeroJson {
+            return Impl(ZeroJsonConfiguration(config, serializersModule))
+        }
 
         @OptIn(ExperimentalAtomicApi::class)
         private val _captureStackTraces = AtomicBoolean(assertionsEnabled)

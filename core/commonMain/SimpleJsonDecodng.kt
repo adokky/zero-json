@@ -46,7 +46,7 @@ fun JsonReader.readPrimitive(expectQuotes: Boolean = config.expectStringQuotes):
 }
 
 internal fun RandomAccessTextReader.readPrimitive(
-    stringBuilder: StringBuilder,
+    stringBuilder: StringBuilderWrapper,
     tempResultBuffer: ReadNumberResult,
     expectStringQuotes: Boolean,
     allowSpecialFloatingPointValues: Boolean,
@@ -63,9 +63,7 @@ internal fun RandomAccessTextReader.readPrimitive(
 
     if (!nextIs('"') && JsonCharClasses.isStringTerminator(nextCodePoint)) throwExpectedJsonElement()
 
-    val start = stringBuilder.length
-    readJsonString(stringBuilder, requireQuotes = expectStringQuotes)
-    val result = stringBuilder.substring(start)
-    stringBuilder.setLength(start)
-    return result
+    return stringBuilder.buildString {
+        readJsonString(this, requireQuotes = expectStringQuotes)
+    }
 }

@@ -16,7 +16,7 @@ ErrorsCommon.kt
 ErrorsDecoding.kt
 ErrorsEncoding.kt
 
-Most decoding errors sshould come in two forms: debug and fast/safe to expose.
+Most decoding errors should come in two forms: debug and fast/safe to expose.
 Some errors should have unique exception class fot distinguishing.
 */
 
@@ -82,7 +82,7 @@ internal fun throwExpectedKotlinxEndec(decoder: Boolean): Nothing {
     error(
         "Serializer expected $type to be kotlinx.serialization.Json$type. " +
         "Use 'zero-json-kotlinx' artifact (JVM only) or " +
-        "update the serializer to use ZeroJson API counterppart"
+        "update the serializer to use ZeroJson API counterpart"
     )
 }
 

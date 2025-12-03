@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class SimpleReaderTest {
     private val input = ZeroStringTextReader()
-    private val reader = JsonReaderImpl(input)
+    private val reader = JsonReaderImpl(input, config = JsonReaderConfig())
 
     private fun check(s: String, expected: ZeroJsonElement?) {
         input.startReadingFrom(s)
