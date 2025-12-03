@@ -17,6 +17,7 @@ kodec-struct = { module = "io.github.adokky:kodec-struct", version = "0.2.1" }
 kodec-strings-stream = { module = "io.github.adokky:kodec-strings-stream", version = "0.8.9" }
 kodec-strings-common = { module = "io.github.adokky:kodec-strings-common", version = "0.1.2" }
 kodec-strings-utf = { module = "io.github.adokky:kodec-strings-utf", version = "0.3.8" }
+kodec-buffers-core = { module = "io.github.adokky:kodec-buffers-core", version = "0.5.3" }
 jmh-processor = { module = "org.openjdk.jmh:jmh-generator-annprocess", version.ref = "jmh" }
 
 [plugins]
