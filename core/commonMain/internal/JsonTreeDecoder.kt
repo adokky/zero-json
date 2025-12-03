@@ -17,6 +17,7 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.internal.AbstractPolymorphicSerializer
 import kotlinx.serialization.json.*
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.modules.SerializersModule
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -30,8 +31,7 @@ internal class JsonTreeDecoder(
     var descriptor: ZeroJsonDescriptor = ZeroJsonDescriptor.NOP
     private var inlineParentDecoder: JsonTreeDecoder = this
     var parentElement: JsonElement = JsonNull
-    // todo JsonElement -> Any. Write primitive content directly if possible and type-check on every read
-    var element: JsonElement = JsonNull
+    var element: Any = JsonNull // String | JsonElement
     var elementIndex: Int = -1
     private var discriminatorKey: String = ""
     private var lookupResult: PolymorphicSerializerCache.DeserializerLookupResult? = null
@@ -145,12 +145,20 @@ internal class JsonTreeDecoder(
         compoundKeyDecoder = null
     }
 
-    private fun compoundKeyDecoder(element: JsonElement, keyDescriptor: SerialDescriptor): JsonTextDecoder {
+    private fun compoundKeyDecoder(element: Any, keyDescriptor: SerialDescriptor): JsonTextDecoder {
         config.throwIfStructuredKeysDisabled(keyDescriptor)
         if (compoundKeyDecoder != null) {
             error("attempt to decoder composite key, but previous composite decoding is not finished with endStructure()")
         }
-        return JsonTextDecoder.compoundKeyDecoder(zeroJson, parent = this, source = element.jsonPrimitiveOrFail().content).also {
+        return JsonTextDecoder.compoundKeyDecoder(
+            zeroJson, 
+            parent = this,
+            source = when(element) {
+                is String -> element
+                is JsonPrimitive -> element.content
+                else -> throwExpectedPrimitive(element)
+            }
+        ).also {
             compoundKeyDecoder = it
         }
     }
@@ -208,7 +216,7 @@ internal class JsonTreeDecoder(
                 currentKey = entry.key
                 mapEntryValue = entry.value
                 if (config.coerceInputValues && trySkipMapKey(serialDescriptor, entry.value)) continue
-                JsonPrimitive(entry.key)
+                entry.key
             }
 
             elementIndex = newIndex
@@ -236,7 +244,7 @@ internal class JsonTreeDecoder(
             currentKey = entry.key
             mapEntryValue = entry.value
             if (config.coerceInputValues && trySkipMapKey(serialDescriptor, entry.value)) continue
-            element = JsonPrimitive(entry.key)
+            element = entry.key
             elementIndex = newIndex
             return newIndex
         }
@@ -399,7 +407,7 @@ internal class JsonTreeDecoder(
                 deserializer.unsafeCast<AbstractPolymorphicSerializer<T & Any>>()
             )
         } else {
-            jsonElementType = jsonElementSerializerToClass[deserializer]
+            jsonElementType = elementSerializerToClass[deserializer]
         }
 
         polySubClassWrapping = polySubClassWrapping && lookupResult!!.descriptor.needWrappingIfSubclass()
@@ -422,7 +430,7 @@ internal class JsonTreeDecoder(
         return decoder.element as T
     }
 
-    private val jsonElementSerializerToClass = buildMap<DeserializationStrategy<*>, KClass<out JsonElement>>(4) {
+    private val elementSerializerToClass = buildMap<DeserializationStrategy<*>, KClass<out JsonElement>>(4) {
         put(JsonPrimitive.serializer(), JsonPrimitive::class)
         put(JsonArray.serializer(), JsonArray::class)
         put(JsonObject.serializer(), JsonObject::class)
@@ -464,10 +472,13 @@ internal class JsonTreeDecoder(
 
     private fun subDecoder(descriptor: ZeroJsonDescriptor): JsonTreeDecoder {
         val parentElement = if (prepareInlineDecodingOffset == 0) element else parentElement
-        if (parentElement is JsonPrimitive && descriptor != ZeroJsonDescriptor.ROOT) {
-            throwExpectedStructure(structureDescriptor = descriptor, actualElement = parentElement)
+        if (parentElement !is JsonObject &&
+            parentElement !is JsonArray &&
+            descriptor != ZeroJsonDescriptor.ROOT)
+        {
+            throwExpectedStructure(expectedDescriptor = descriptor, actualElement = parentElement)
         }
-        return context.nextTreeDecoder(descriptor, parentElement).also {
+        return context.nextTreeDecoder(descriptor, parentElement.unsafeCast()).also {
             it.inlineParentDecoder = if (prepareInlineDecodingOffset == 0) it else inlineParentDecoder
             it.inlineOffset = prepareInlineDecodingOffset
             prepareInlineDecodingOffset = 0
@@ -486,7 +497,8 @@ internal class JsonTreeDecoder(
 
     override fun decodeJsonElement(): JsonElement = when(val e = element) {
         is JsonObject -> decodeJsonObject(e)
-        else -> e
+        is String -> JsonPrimitive(e)
+        else -> e.unsafeCast()
     }
 
     override fun decodeJsonObject(): JsonObject {
@@ -504,7 +516,11 @@ internal class JsonTreeDecoder(
 
     override fun decodeJsonArray(): JsonArray = element.jsonArrayOrFail()
 
-    override fun decodeJsonPrimitive(): JsonPrimitive = element.jsonPrimitiveOrFail()
+    override fun decodeJsonPrimitive(): JsonPrimitive = when(val e = element) {
+        is JsonPrimitive -> e
+        is String -> JsonPrimitive(e)
+        else -> throwExpectedPrimitive(element)
+    }
 
     private fun valueSubClassDecoder(): JsonTreeDecoder {
         polySubClassWrapping = false
@@ -532,16 +548,20 @@ internal class JsonTreeDecoder(
     )
 
     private inline fun <R> decodePrimitive(expectedType: String, body: (JsonReaderImpl) -> R): R {
-        val primitive = element.jsonPrimitiveOrFail()
-        if (!primitive.isString && isDecodingMapKey() && !config.isLenient) {
-            throwExpectedString()
+        val primitiveContent: String = when(val e = element) {
+            is JsonPrimitive -> {
+                if (!e.isString && isDecodingMapKey() && !config.isLenient) throwExpectedString()
+                e.content
+            }
+            is String -> e
+            else -> throwExpectedPrimitive(e)
         }
 
         val pool = context.ownerPool
         val ctx = pool.acquire()
         acquiredContext = ctx
 
-        val input = ctx.stringInput.also { it.startReadingFrom(primitive.content) }
+        val input = ctx.stringInput.also { it.startReadingFrom(primitiveContent) }
         val reader = ctx.reader.also { it.input = input }
         val result = body(reader)
         if (reader.nextCodePoint != -1) expectedType(expectedType)
@@ -552,9 +572,15 @@ internal class JsonTreeDecoder(
     }
 
     private inline fun <R> decodeStringPrimitive(body: JsonTreeDecoder.(String) -> R): R {
-        val primitive = element.jsonPrimitiveOrFail()
-        if (!primitive.isString && !(config.isLenient && primitive !== JsonNull)) throwExpectedString()
-        return this.body(primitive.content)
+        val primitiveContent: String = when(val e = element) {
+            is JsonPrimitive -> {
+                if (!e.isString && !(config.isLenient && e !== JsonNull)) throwExpectedString()
+                e.content
+            }
+            is String -> e
+            else -> throwExpectedPrimitive(e)
+        }
+        return this.body(primitiveContent)
     }
 
     override fun decodeBoolean(): Boolean = decodePrimitive("boolean") {
@@ -612,39 +638,52 @@ internal class JsonTreeDecoder(
         return this
     }
 
-    private fun throwExpectedStructure(actualElement: JsonPrimitive, structureDescriptor: ZeroJsonDescriptor): Nothing {
-        val expectedType = if (structureDescriptor.kind == StructureKind.LIST) "list" else "object"
-        throw ZeroJsonDecodingException("expected $expectedType, got $actualElement")
-    }
-
-    private fun throwInvalidElementType(expectedType: KClass<out JsonElement>, actual: JsonElement): Nothing {
-        val type = when (expectedType) {
-            JsonArray::class -> "array"
-            JsonObject::class -> "object"
-            else -> "element"
-        }
-        throw ZeroJsonDecodingException("expected $type, got ${actual.readableType()}")
+    private fun throwExpectedStructure(expectedDescriptor: ZeroJsonDescriptor, actualElement: Any): Nothing {
+        throwInvalidElementType(
+            expectedType = if (expectedDescriptor.kind == StructureKind.LIST) "array" else "object",
+            actualElement = actualElement
+        )
     }
 
     private fun expectedType(expectedType: String): Nothing =
         throw ZeroJsonDecodingException("expected $expectedType")
 
-    private fun throwExpectedString(): Nothing {
-        throw ZeroJsonDecodingException("expected string, got ${element.readableType()}")
-    }
+    private fun throwExpectedString(): Nothing =
+        throw ZeroJsonDecodingException("expected string, got ${element.readableElementType()}")
 
-    private fun JsonElement.jsonObjectOrFail(): JsonObject = this as? JsonObject
-        ?: throw ZeroJsonDecodingException("expected object, got ${readableType()}")
+    private fun Any.jsonObjectOrFail(): JsonObject = this as? JsonObject
+        ?: throwInvalidElementType(expectedType = "object", actualElement = this)
 
-    private fun JsonElement.jsonArrayOrFail(): JsonArray = this as? JsonArray
-        ?: throw ZeroJsonDecodingException("expected array, got ${readableType()}")
-
-    private fun JsonElement.jsonPrimitiveOrFail(): JsonPrimitive = this as? JsonPrimitive
-        ?: throw ZeroJsonDecodingException("unexpected ${readableType()}")
+    private fun Any.jsonArrayOrFail(): JsonArray = this as? JsonArray
+        ?: throwInvalidElementType(expectedType = "array", actualElement = this)
 
     private val JsonElement.string: String get() {
-        if (!isString()) throw ZeroJsonDecodingException("expected string, got ${readableType()}")
+        if (!isString()) throw ZeroJsonDecodingException("expected string, got ${readableElementType()}")
         return content
+    }
+
+    private fun throwInvalidElementType(expectedType: KClass<out JsonElement>, actual: Any): Nothing =
+        throwInvalidElementType(
+            expectedType = when (expectedType) {
+                JsonArray::class -> "array"
+                JsonObject::class -> "object"
+                else -> "primitive"
+            },
+            actualElement = actual
+        )
+
+    private fun throwInvalidElementType(expectedType: String, actualElement: Any): Nothing =
+        throw ZeroJsonDecodingException("expected $expectedType, got ${actualElement.readableElementType()}")
+
+    private fun throwExpectedPrimitive(actualElement: Any): Nothing =
+        throwInvalidElementType(expectedType = "primitive", actualElement = actualElement)
+
+    private fun Any.readableElementType(): String = when(this) {
+        is JsonPrimitive -> if (isString) "string" else toString()
+        is JsonObject -> "object"
+        is JsonArray -> "array"
+        is String -> "string"
+        else -> this.toString()
     }
 
     @OptIn(ExperimentalContracts::class)
@@ -654,12 +693,6 @@ internal class JsonTreeDecoder(
         }
         return this is JsonPrimitive && (this.isString || config.isLenient)
     }
-}
-
-private fun JsonElement.readableType(): String = when(this) {
-    is JsonPrimitive -> this.toString()
-    is JsonObject -> "object"
-    is JsonArray -> "array"
 }
 
 private val JsonTrue = JsonPrimitive(true)
