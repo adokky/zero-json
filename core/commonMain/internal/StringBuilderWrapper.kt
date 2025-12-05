@@ -36,12 +36,6 @@ internal class StringBuilderWrapper(
     }
 
     inline fun buildString(body: StringBuilder.() -> Unit): String {
-//        setLengthRaw(0)
-//        builder.body()
-//        updateCapacity()
-//        return builder.toString().also {
-//            setLengthRaw(0)
-//        }
         val oldLength = builder.length
         builder.body()
         updateCapacity()

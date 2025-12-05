@@ -17,7 +17,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.internal.AbstractPolymorphicSerializer
 import kotlinx.serialization.json.*
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.modules.SerializersModule
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -364,7 +363,7 @@ internal class JsonTreeDecoder(
         serialDesc: SerialDescriptor,
         elementIndex: Int,
         childElementsOffset: Int
-    ): Boolean = anyElementExistsInInlineSubTreeTemplate(
+    ): Boolean = anyElementExistsInInlineSubTree(
         rootDesc = inlineParentDecoder.descriptor,
         serialDesc = serialDesc,
         elementIndex = elementIndex,

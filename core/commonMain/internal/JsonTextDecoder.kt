@@ -417,7 +417,7 @@ internal class JsonTextDecoder(
         serialDesc: SerialDescriptor,
         elementIndex: Int,
         childElementsOffset: Int
-    ): Boolean = anyElementExistsInInlineSubTreeTemplate(
+    ): Boolean = anyElementExistsInInlineSubTree(
         rootDesc = rootDesc,
         serialDesc = serialDesc,
         elementIndex = elementIndex,

@@ -44,12 +44,12 @@ internal fun JsonReaderImpl.tryReadNumberAsString(allowNaN: Boolean): String? {
     val c = nextCodePoint
     val begin = position
 
-    // fast path cehck #1
+    // fast path #1
     if (c == '-'.code || c == '.'.code) {
         input.readCodePoint()
     }
 
-    // fast path cehck #2
+    // fast path #2
     if (DefaultCharClasses.isDigit(nextCodePoint) ||
         (allowNaN && (nextCodePoint == 'I'.code || c == 'N'.code)))
     {

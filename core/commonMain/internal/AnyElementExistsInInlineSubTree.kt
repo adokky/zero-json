@@ -3,7 +3,7 @@ package dev.dokky.zerojson.internal
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 
-internal inline fun anyElementExistsInInlineSubTreeTemplate(
+internal inline fun anyElementExistsInInlineSubTree(
     rootDesc: ZeroJsonDescriptor,
     serialDesc: SerialDescriptor,
     elementIndex: Int,

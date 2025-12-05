@@ -120,12 +120,12 @@ class ZeroJsonConfiguration internal constructor(
         @JvmField
         val Default: ZeroJsonConfiguration = ZeroJsonConfiguration()
 
-        const val DEPTH_LIMIT: Int = 200
+        internal const val DEPTH_LIMIT: Int = 200
 
         internal const val ELEMENT_INDEX_NUM_BITS = 15
 
         // WARN: must be a continuous 1-bit sequence
-        const val MAX_PROPERTY_ELEMENT_INDEX: Int = (0.inv() shl ELEMENT_INDEX_NUM_BITS).inv()
+        internal const val MAX_PROPERTY_ELEMENT_INDEX: Int = (0.inv() shl ELEMENT_INDEX_NUM_BITS).inv()
     }
 }
 
@@ -149,5 +149,5 @@ fun ZeroJsonConfiguration(
     allowTrailingComma = configuration.allowTrailingComma,
     strictJsonPrimitives = false,
     structuredMapKeysMode = if (configuration.allowStructuredMapKeys) StructuredMapKeysMode.LIST else StructuredMapKeysMode.DISABLED,
-    discriminatorConflict = DiscriminatorConflictDetection.SEALED
+    discriminatorConflict = DiscriminatorConflictDetection.SEALED,
 )
