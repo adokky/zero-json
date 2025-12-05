@@ -39,7 +39,7 @@ class SerializersLookupTest : JsonTestBase() {
     fun testListWithT() {
         val source = """[{"intV":42}]"""
         val serial = serializer<List<IntData>>()
-        assertEquals(listOf(IntData(42)), ZeroJson.decodeFromString(serial, source))
+        assertEquals(listOf(IntData(42)), TestZeroJson.decodeFromString(serial, source))
     }
 
     @Test
@@ -275,14 +275,14 @@ class SerializersLookupTest : JsonTestBase() {
     fun testContextualLookupNullable() {
         val module = SerializersModule { contextual(CustomIntSerializer(true).cast<IntBox>()) }
         val serializer = module.serializer<List<List<IntBox?>>>()
-        assertEquals("[[41]]", ZeroJson.encodeToString(serializer, listOf(listOf<IntBox?>(null))))
+        assertEquals("[[41]]", TestZeroJson.encodeToString(serializer, listOf(listOf<IntBox?>(null))))
     }
 
     @Test
     fun testContextualLookupNonNullable() {
         val module = SerializersModule { contextual(CustomIntSerializer(false).cast<IntBox>()) }
         val serializer = module.serializer<List<List<IntBox?>>>()
-        assertEquals("[[null]]", ZeroJson.encodeToString(serializer, listOf(listOf<IntBox?>(null))))
+        assertEquals("[[null]]", TestZeroJson.encodeToString(serializer, listOf(listOf<IntBox?>(null))))
     }
 
     @Test

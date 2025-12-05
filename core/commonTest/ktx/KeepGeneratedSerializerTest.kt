@@ -2,7 +2,7 @@
 
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -215,20 +215,20 @@ class KeepGeneratedSerializerTest {
         serializer: KSerializer<T>,
         generatedSerializer: KSerializer<T>?
     ) {
-        val implicitJson = ZeroJson.encodeToString(value)
-        assertEquals(customJson, implicitJson, "ZeroJson.encodeToString(value: ${T::class.simpleName})")
-        val implicitDecoded = ZeroJson.decodeFromString<T>(implicitJson)
-        assertEquals(value, implicitDecoded, "ZeroJson.decodeFromString(json): ${T::class.simpleName}")
+        val implicitJson = TestZeroJson.encodeToString(value)
+        assertEquals(customJson, implicitJson, "TestZeroJson.encodeToString(value: ${T::class.simpleName})")
+        val implicitDecoded = TestZeroJson.decodeFromString<T>(implicitJson)
+        assertEquals(value, implicitDecoded, "TestZeroJson.decodeFromString(json): ${T::class.simpleName}")
 
-        val explicitJson = ZeroJson.encodeToString(serializer, value)
-        assertEquals(customJson, explicitJson, "ZeroJson.encodeToString(${T::class.simpleName}.serializer(), value)")
-        val explicitDecoded = ZeroJson.decodeFromString(serializer, explicitJson)
-        assertEquals(value, explicitDecoded, "ZeroJson.decodeFromString(${T::class.simpleName}.serializer(), json)")
+        val explicitJson = TestZeroJson.encodeToString(serializer, value)
+        assertEquals(customJson, explicitJson, "TestZeroJson.encodeToString(${T::class.simpleName}.serializer(), value)")
+        val explicitDecoded = TestZeroJson.decodeFromString(serializer, explicitJson)
+        assertEquals(value, explicitDecoded, "TestZeroJson.decodeFromString(${T::class.simpleName}.serializer(), json)")
 
         if (generatedSerializer == null) return
-        val keep = ZeroJson.encodeToString(generatedSerializer, value)
-        assertEquals(keepJson, keep, "ZeroJson.encodeToString(${T::class.simpleName}.generatedSerializer(), value)")
-        val keepDecoded = ZeroJson.decodeFromString(generatedSerializer, keep)
-        assertEquals(value, keepDecoded, "ZeroJson.decodeFromString(${T::class.simpleName}.generatedSerializer(), json)")
+        val keep = TestZeroJson.encodeToString(generatedSerializer, value)
+        assertEquals(keepJson, keep, "TestZeroJson.encodeToString(${T::class.simpleName}.generatedSerializer(), value)")
+        val keepDecoded = TestZeroJson.decodeFromString(generatedSerializer, keep)
+        assertEquals(value, keepDecoded, "TestZeroJson.decodeFromString(${T::class.simpleName}.generatedSerializer(), json)")
     }
 }

@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -44,7 +44,7 @@ class DerivedContextualSerializerTest {
         val module = SerializersModule {
             contextual(MessageAsStringSerializer)
         }
-        val format = ZeroJson { serializersModule = module }
+        val format = TestZeroJson { serializersModule = module }
         val data = Holder(SimpleMessage("hello"))
         val serialized = format.encodeToString(data)
         assertEquals("""{"message":"hello"}""", serialized)

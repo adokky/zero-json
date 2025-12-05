@@ -9,11 +9,14 @@ import kotlinx.serialization.modules.SerializersModuleBuilder
 inline fun ZeroJson(
     prototype: ZeroJson = ZeroJson.Default,
     builder: ZeroJsonBuilder.() -> Unit
-): ZeroJson = ZeroJson(
-    ZeroJsonBuilder(prototype.configuration)
-        .apply { builder() }
-        .toConfig()
-)
+): ZeroJson =
+    ZeroJson(ZeroJsonConfiguration(prototype.configuration, builder))
+
+inline fun ZeroJsonConfiguration(
+    prototype: ZeroJsonConfigurationBase = ZeroJson.configuration,
+    builder: ZeroJsonBuilder.() -> Unit
+): ZeroJsonConfiguration =
+    ZeroJsonBuilder(prototype).apply(builder).toConfig()
 
 @Suppress("FunctionName")
 inline fun ZeroJsonCompat(builder: ZeroJsonBuilder.() -> Unit): ZeroJson =
@@ -23,7 +26,7 @@ inline fun ZeroJsonCompat(builder: ZeroJsonBuilder.() -> Unit): ZeroJson =
 fun ZeroJson(configuration: JsonConfiguration, serializersModule: SerializersModule): ZeroJson =
     ZeroJson(ZeroJsonConfiguration(configuration, serializersModule))
 
-class ZeroJsonBuilder @PublishedApi internal constructor(config: ZeroJsonConfiguration): ZeroJsonConfigurationBase {
+class ZeroJsonBuilder @PublishedApi internal constructor(config: ZeroJsonConfigurationBase): ZeroJsonConfigurationBase {
     override var serializersModule: SerializersModule         = config.serializersModule
     override var namingStrategy: JsonNamingStrategy?          = config.namingStrategy
     override var ignoreUnknownKeys: Boolean                   = config.ignoreUnknownKeys

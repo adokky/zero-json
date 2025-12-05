@@ -23,7 +23,7 @@ class JsonInlineCoercingTest: RandomizedJsonTest() {
         @JsonInline val map: Map<String, TestEnum> = mapOf()
     )
 
-    private val coercingJson = ZeroJson { coerceInputValues = true }
+    private val coercingJson = TestZeroJson { coerceInputValues = true }
 
     @Test
     fun no_coercing() {
@@ -111,7 +111,7 @@ class JsonInlineCoercingTest: RandomizedJsonTest() {
     @Test
     fun `decodeInlinedMapKeyIndex should validate skipped value`() {
         assertFailsWith<ZeroJsonDecodingException> {
-            ZeroJson.decodeFromString<Root>(
+            TestZeroJson.decodeFromString<Root>(
                 """{int: 101, inlinedString: zzz, ghi: entry2, inlinedEnum2 :null:}"""
             )
         }

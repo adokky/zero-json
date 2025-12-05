@@ -6,10 +6,10 @@ import dev.dokky.zerojson.framework.jsonObject
 import kotlinx.serialization.Serializable
 import kotlin.test.Test
 
-class CoercingTest: AbstractDecoderTest(ZeroJsonConfiguration(
-    coerceInputValues = true,
+class CoercingTest: AbstractDecoderTest(TestConfiguration {
+    coerceInputValues = true
     structuredMapKeysMode = StructuredMapKeysMode.LIST
-)) {
+}) {
     @Test
     fun coercing_inside_composite_key() {
         assertDecodedEquals(

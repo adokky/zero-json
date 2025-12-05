@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.framework.jvmOnly
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -44,7 +44,7 @@ class LocalClassesTest {
 
         val origin = Local(42)
 
-        val decoded: Local = ZeroJson.decodeFromString(ZeroJson.encodeToString(origin))
+        val decoded: Local = TestZeroJson.decodeFromString(TestZeroJson.encodeToString(origin))
         assertEquals(origin, decoded)
     }
 
@@ -56,7 +56,7 @@ class LocalClassesTest {
 
             val origin = Local(it)
 
-            val decoded: Local = ZeroJson.decodeFromString(ZeroJson.encodeToString(origin))
+            val decoded: Local = TestZeroJson.decodeFromString(TestZeroJson.encodeToString(origin))
             assertEquals(origin, decoded)
         }
     }
@@ -69,7 +69,7 @@ class LocalClassesTest {
 
         val origin: Local? = null
 
-        val decoded: Local? = ZeroJson.decodeFromString(ZeroJson.encodeToString(origin))
+        val decoded: Local? = TestZeroJson.decodeFromString(TestZeroJson.encodeToString(origin))
         assertEquals(origin, decoded)
     }
 
@@ -83,7 +83,7 @@ class LocalClassesTest {
 
         // FIXME change to `noLegacyJs` when lookup of `ClassCustomSerializer` will work on Native and JS/IR
         jvmOnly {
-            val decoded: Local? = ZeroJson.decodeFromString(ZeroJson.encodeToString(origin))
+            val decoded: Local? = TestZeroJson.decodeFromString(TestZeroJson.encodeToString(origin))
             assertEquals(origin, decoded)
         }
     }

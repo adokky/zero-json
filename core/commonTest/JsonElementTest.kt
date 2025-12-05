@@ -27,7 +27,7 @@ class JsonElementTest: RandomizedJsonTest() {
         val box2: InlineBox<@Serializable(with = JsonElementSerializer::class) JsonElement?>?
     )
 
-    private val explicitNullsJson = ZeroJson { explicitNulls = true }
+    private val explicitNullsJson = TestZeroJson { explicitNulls = true }
 
     private inline fun test(builder: TestConfigBuilder.() -> Unit) {
         randomizedTest {

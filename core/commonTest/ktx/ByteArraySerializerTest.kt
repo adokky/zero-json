@@ -1,7 +1,7 @@
 package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.Id
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ByteArraySerializer
 import kotlin.test.Test
@@ -26,18 +26,18 @@ class ByteArraySerializerTest {
     @Test
     fun testByteArrayJson() {
         val bytes = byteArrayOf(42, 43, 44, 45)
-        val s = ZeroJson.encodeToString(ByteArraySerializer(), bytes)
+        val s = TestZeroJson.encodeToString(ByteArraySerializer(), bytes)
         assertEquals(s, """[42,43,44,45]""")
-        val bytes2 = ZeroJson.decodeFromString(ByteArraySerializer(), s)
+        val bytes2 = TestZeroJson.decodeFromString(ByteArraySerializer(), s)
         assertTrue(bytes.contentEquals(bytes2))
     }
 
     @Test
     fun testWrappedByteArrayJson() {
         val obj = ByteArrayCarrier(byteArrayOf(42, 100))
-        val s = ZeroJson.encodeToString(ByteArrayCarrier.serializer(), obj)
+        val s = TestZeroJson.encodeToString(ByteArrayCarrier.serializer(), obj)
         assertEquals("""{"data":[42,100]}""", s)
-        val obj2 = ZeroJson.decodeFromString(ByteArrayCarrier.serializer(), s)
+        val obj2 = TestZeroJson.decodeFromString(ByteArrayCarrier.serializer(), s)
         assertEquals(obj, obj2)
     }
 }

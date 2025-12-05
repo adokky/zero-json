@@ -13,7 +13,7 @@ class MultiThreadingTest: RealWorldTestBase() {
 
     private fun runTest(cacheMode: CacheMode) = repeat(iterations) {
         dev.dokky.zerojson.internal.DescriptorCache.SHARED_CACHES?.clear()
-        val json = ZeroJson { this.cacheMode = cacheMode }
+        val json = TestZeroJson { this.cacheMode = cacheMode }
 
         val futures = (1..Runtime.getRuntime().availableProcessors()).map {
             val subIterations = when(GlobalTestMode) {
@@ -60,6 +60,6 @@ class MultiThreadingTest: RealWorldTestBase() {
     fun two_level() = runTest(CacheMode.TWO_LEVEL)
 
     @Test
-    fun exclusive() = runTest(CacheMode.EXCLUSIVE)
+    fun exclusive() = runTest(CacheMode.THREAD_LOCAL)
 }
 

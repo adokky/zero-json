@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.framework.assertFailsWithMessage
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.SerialName
@@ -36,7 +36,7 @@ class ObjectSerializationTest : JsonTestBase() {
 
     @Test
     fun testSealedClassSerialization() {
-        val json = ZeroJson { serializersModule = module }
+        val json = TestZeroJson { serializersModule = module }
         val carrier1 = ApiCarrier(ApiResponse.Error)
         val carrier2 = ApiCarrier(ApiResponse.Response("OK"))
         // {"response":{"type":"ApiError"}}
@@ -53,12 +53,12 @@ class ObjectSerializationTest : JsonTestBase() {
     fun testUnknownKeys() {
         val string = """{"metadata":"foo"}"""
         assertFailsWithMessage<SerializationException>("ignoreUnknownKeys") {
-            ZeroJson.decodeFromString(
+            TestZeroJson.decodeFromString(
                 ApiResponse.Error.serializer(),
                 string
             )
         }
-        val json = ZeroJson { ignoreUnknownKeys = true }
+        val json = TestZeroJson { ignoreUnknownKeys = true }
         assertEquals(ApiResponse.Error, json.decodeFromString(ApiResponse.Error.serializer(), string))
     }
 }

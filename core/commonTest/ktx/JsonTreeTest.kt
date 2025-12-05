@@ -2,7 +2,7 @@
 
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.MissingFieldException
 import kotlinx.serialization.Serializable
@@ -49,7 +49,7 @@ class JsonTreeTest : JsonTestBase() {
         val S: String
     )
 
-    private val json = ZeroJson { explicitNulls = true }
+    private val json = TestZeroJson { explicitNulls = true }
 
     private fun prepare(input: String): JsonElement {
         val expected = ktxJson.decodeFromString<JsonElement>(input)

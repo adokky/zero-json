@@ -1,13 +1,15 @@
 package dev.dokky.zerojson
 
-import kotlinx.serialization.*
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 import kotlinx.serialization.json.JsonNames
 import kotlinx.serialization.json.JsonNamingStrategy
 import kotlinx.serialization.modules.SerializersModule
 
-@InternalSerializationApi
 sealed interface ZeroJsonConfigurationBase {
     /**
      * Module with contextual and polymorphic serializers to be used in the resulting [ZeroJson] instance.
@@ -314,8 +316,8 @@ sealed interface ZeroJsonConfigurationBase {
     /**
      * Controls strictness of [kotlinx.serialization.json.JsonPrimitive] parsing when [isLenient] is `true`.
      *
-     * When `true`, unqouted literals parsed as [kotlinx.serialization.json.JsonUnquotedLiteral] when possible.
-     * When `false`, unqouted literals parsed as strings when possible.
+     * When `true`, unquoted literals parsed as [kotlinx.serialization.json.JsonUnquotedLiteral] when possible.
+     * When `false`, unquoted literals parsed as strings when possible.
      *
      * This is compatibility option. Disabling it will match the behaviour of [kotlinx.serialization.json.Json].
      *
@@ -344,7 +346,7 @@ sealed interface ZeroJsonConfigurationBase {
      *
      * - [CacheMode.SHARED] — Uses a shared cache across all [ZeroJson] instances (default).
      * - [CacheMode.TWO_LEVEL] — Combines thread-local and shared caching for minimizing runtime overheads.
-     * - [CacheMode.EXCLUSIVE] — Uses a thread-local caches across all [ZeroJson] instances.
+     * - [CacheMode.THREAD_LOCAL] — Uses a thread-local caches across all [ZeroJson] instances.
      *
      * @see CacheMode
      */
@@ -389,32 +391,27 @@ enum class DiscriminatorConflictDetection {
 }
 
 /**
- * Defines the caching strategy for serialization descriptors.
- * @see ZeroJsonConfigurationBase.cacheMode
+ * Defines the caching strategy for internal data structures used during serialization.
  */
 enum class CacheMode {
     /**
-     * Uses a shared cache across all [ZeroJson] instances.
+     * Shared cache that is used across all threads.
      *
-     * This is the most memory-efficient option as it allows reuse of cached data between different
-     * instances, but it may be slower in single-thread scenarios.
+     * Recommended default option that provides good balance between memory usage and performance.
      */
     SHARED,
-
     /**
-     * Uses a two-level caching strategy:
-     * - First checks a local cache (instance-specific)
-     * - Falls back to a shared global cache if not found
+     * Two-level cache with thread-local and shared levels.
      *
-     * This is the most memory-consuming option, but it has minimal runtime cost in steady state,
-     * regardless of whether the workload is multithreaded or not.
+     * Generally performs worse than [SHARED] due to memory efficiency overhead
+     * outweighing runtime benefits. Performance characteristics may change
+     * with larger CPU caches and fewer cached descriptors (few serializable classes).
+     *
+     * Behaves better than [THREAD_LOCAL] in multithreaded scenarios because the descriptors themselves are shared.
      */
     TWO_LEVEL,
-
     /**
-     * Uses thread-local caches across all [ZeroJson] instances.
-     *
-     * Most efficient option for single-threaded workloads.
+     * Provides the best performance in single-threaded scenarios.
      */
-    EXCLUSIVE
+    THREAD_LOCAL
 }

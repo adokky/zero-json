@@ -18,7 +18,7 @@ private var ENCODED_DATA_STRING = ZeroJson.encodeToString(TEST_DATA)
 
 private var ENCODED_DATA_TREE = ZeroJson.encodeToJsonElement(TEST_DATA)
 
-private val zJsonNonShared = ZeroJson { cacheMode = CacheMode.EXCLUSIVE }
+private val zJsonNonShared = ZeroJson { cacheMode = CacheMode.THREAD_LOCAL }
 
 private val zJsonTwoLevel = ZeroJson { cacheMode = CacheMode.TWO_LEVEL }
 

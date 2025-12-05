@@ -97,7 +97,7 @@ class ZeroJsonDescriptorTest {
     @Test
     fun enum_case_insensitive_ascii_test() {
         val serialDesc = serialDescriptor<EnumTest>()
-        val cache = DescriptorCache(ZeroJsonConfiguration(decodeEnumsCaseInsensitive = true))
+        val cache = DescriptorCache(TestConfiguration { decodeEnumsCaseInsensitive = true })
         val desc = cache.getOrCreateUnsafe(serialDesc)
 
         checkSerialDescriptor(serialDesc, desc)
@@ -126,7 +126,7 @@ class ZeroJsonDescriptorTest {
     @Test
     fun enum_case_insensitive_utf_test() {
         val serialDesc = serialDescriptor<EnumTestNonAscii>()
-        val cache = DescriptorCache(ZeroJsonConfiguration(decodeEnumsCaseInsensitive = true))
+        val cache = DescriptorCache(TestConfiguration { decodeEnumsCaseInsensitive = true })
         val desc = cache.getOrCreateUnsafe(serialDesc)
 
         checkSerialDescriptor(serialDesc, desc)

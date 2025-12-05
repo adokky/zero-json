@@ -19,7 +19,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MultiThreadingCacheTest: RealWorldTestBase() {
-    private val conf = ZeroJson { cacheMode = CacheMode.SHARED }.configuration
+    private val conf = TestZeroJson { cacheMode = CacheMode.SHARED }.configuration
 
     private val iterations: Int = when(GlobalTestMode) {
         TestMode.QUICK -> 10

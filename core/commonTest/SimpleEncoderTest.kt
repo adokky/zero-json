@@ -63,7 +63,7 @@ class SimpleEncoderTest: EncoderTest() {
             "\"nullableLong\":null," +
             "\"nestedSimple\":{\"key\":\"simple\"}," +
             "\"selfNested\":null}",
-            ZeroJson { explicitNulls = true }.encodeToString(
+            TestZeroJson { explicitNulls = true }.encodeToString(
                 ComplexClass(
                     `поле 1` = "zzz",
                     int = Int.MAX_VALUE,

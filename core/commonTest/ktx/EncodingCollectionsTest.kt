@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -26,6 +26,6 @@ class EncodingCollectionsTest {
 
     @Test
     fun testEncoding() {
-        assertEquals("""["Hello","World!"]""", ZeroJson.encodeToString(ListSerializer, listOf("Hello", "World!")))
+        assertEquals("""["Hello","World!"]""", TestZeroJson.encodeToString(ListSerializer, listOf("Hello", "World!")))
     }
 }

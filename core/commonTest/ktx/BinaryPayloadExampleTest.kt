@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -70,9 +70,9 @@ class BinaryPayloadExampleTest {
     @Test
     fun payloadEquivalence() {
         val payload1 = BinaryPayload(byteArrayOf(0, 0, 0), byteArrayOf(127, 127))
-        val s = ZeroJson.encodeToString(BinaryPayload.serializer(), payload1)
+        val s = TestZeroJson.encodeToString(BinaryPayload.serializer(), payload1)
         assertEquals("""{"req":"000000","res":"7f7f"}""", s)
-        val payload2 = ZeroJson.decodeFromString(BinaryPayload.serializer(), s)
+        val payload2 = TestZeroJson.decodeFromString(BinaryPayload.serializer(), s)
         assertEquals(payload1, payload2)
     }
 }

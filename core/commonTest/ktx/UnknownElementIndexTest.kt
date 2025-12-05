@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -37,7 +37,7 @@ class UnknownElementIndexTest {
     fun testErrorMessage() {
         val message = "kotlinx.serialization.UnknownElementIndexTest.Choices does not contain element with name 'D'"
         assertFailsWith(SerializationException::class, message) {
-            ZeroJson.decodeFromString(Holder.serializer(), """{"c":"D"}""")
+            TestZeroJson.decodeFromString(Holder.serializer(), """{"c":"D"}""")
         }
     }
 }

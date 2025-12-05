@@ -6,7 +6,7 @@ import kotlinx.serialization.descriptors.*
 internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
     private val sharedCache: DescriptorMap? =
         when (config.cacheMode) {
-            CacheMode.EXCLUSIVE -> null
+            CacheMode.THREAD_LOCAL -> null
             else -> SHARED_CACHES?.getOrCreate(config)
         }
 

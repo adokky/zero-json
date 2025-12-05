@@ -12,8 +12,8 @@ import kotlin.test.assertNotEquals
 // This test is kinda useless now because most test cases using randomized testing framework,
 // which has TrailingCommaInputTransformer enabled by default.
 class TrailingCommaTest: RandomizedJsonTest() {
-    private val zJsonTcDisabled = ZeroJson { allowTrailingComma = false }
-    private val zJsonTcEnabled = ZeroJson { allowTrailingComma = true }
+    private val zJsonTcDisabled = TestZeroJson { allowTrailingComma = false }
+    private val zJsonTcEnabled = TestZeroJson { allowTrailingComma = true }
 
     private inline fun <reified T> test(data: T, jsonInput: String) {
         assertFailsWithSerialMessage("trailing") {

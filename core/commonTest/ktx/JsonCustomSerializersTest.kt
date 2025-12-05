@@ -4,7 +4,7 @@
 package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.Id
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
@@ -130,7 +130,7 @@ class JsonCustomSerializersTest : JsonTestBase() {
 
     private val moduleWithB = serializersModuleOf(B::class, BSerializer)
 
-    private fun createJsonWithB() = ZeroJson { serializersModule = moduleWithB }
+    private fun createJsonWithB() = TestZeroJson { serializersModule = moduleWithB }
 
     @Test
     fun testWriteCustom() = parametrizedTest {

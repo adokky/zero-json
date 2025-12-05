@@ -1,5 +1,6 @@
 package dev.dokky.zerojson.ktx
 
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.ZeroJson
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
@@ -37,24 +38,24 @@ class SerializerForNullableTypeTest : JsonTestBase() {
     @Test
     fun testNullableBoxWithNotNull() {
         val b = Box(StringHolder("box"))
-        val string = ZeroJson.encodeToString(b)
+        val string = TestZeroJson.encodeToString(b)
         assertEquals("""{"s":"non-nullable"}""", string)
-        val deserialized = ZeroJson.decodeFromString<Box>(string)
+        val deserialized = TestZeroJson.decodeFromString<Box>(string)
         assertEquals(Box(StringHolder("non-null: non-nullable")), deserialized)
     }
 
     @Test
     fun testNullableBoxWithNull() {
         val b = Box(null)
-        val string = ZeroJson.encodeToString(b)
+        val string = TestZeroJson.encodeToString(b)
         assertEquals("""{"s":"nullable"}""", string)
-        val deserialized = ZeroJson.decodeFromString<Box>(string)
+        val deserialized = TestZeroJson.decodeFromString<Box>(string)
         assertEquals(Box(StringHolder("non-null: nullable")), deserialized)
     }
 
     @Test
     fun testNullableBoxDeserializeNull() {
-        val deserialized = ZeroJson.decodeFromString<Box>("""{"s":null}""")
+        val deserialized = TestZeroJson.decodeFromString<Box>("""{"s":null}""")
         assertEquals(Box(StringHolder("nullable")), deserialized)
     }
 

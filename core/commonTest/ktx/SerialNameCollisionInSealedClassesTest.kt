@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -16,7 +16,7 @@ class SerialNameCollisionInSealedClassesTest {
         data class Child(val type: String, @SerialName("type2") val f: String = "2") : Base()
     }
 
-    private fun Json(discriminator: String) = ZeroJson { classDiscriminator = discriminator }
+    private fun Json(discriminator: String) = TestZeroJson { classDiscriminator = discriminator }
 
     @Test
     fun testCollisionWithDiscriminator() {

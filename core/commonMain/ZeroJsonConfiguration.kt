@@ -9,7 +9,7 @@ import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlin.jvm.JvmField
 
-class ZeroJsonConfiguration(
+class ZeroJsonConfiguration internal constructor(
     override val serializersModule: SerializersModule = EmptySerializersModule(),
     override val namingStrategy: JsonNamingStrategy? = null,
     override val ignoreUnknownKeys: Boolean = false,
@@ -138,9 +138,11 @@ class ZeroJsonConfiguration(
     }
 }
 
-@Suppress("FunctionName")
 @InternalSerializationApi
-fun ZeroJsonConfiguration(configuration: JsonConfiguration, serializersModule: SerializersModule): ZeroJsonConfiguration = ZeroJsonConfiguration(
+fun ZeroJsonConfiguration(
+    configuration: JsonConfiguration,
+    serializersModule: SerializersModule
+): ZeroJsonConfiguration = ZeroJsonConfiguration(
     serializersModule = serializersModule,
     namingStrategy = configuration.namingStrategy,
     ignoreUnknownKeys = configuration.ignoreUnknownKeys,

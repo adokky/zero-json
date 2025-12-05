@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -40,11 +40,11 @@ class EncodingExtensionsTest {
 
     @Test
     fun testEncodingExceptionNotSwallowed() {
-        assertFailsWith<ArithmeticException> { ZeroJson.encodeToString(Box(1)) }
+        assertFailsWith<ArithmeticException> { TestZeroJson.encodeToString(Box(1)) }
     }
 
     @Test
     fun testDecodingExceptionNotSwallowed() {
-        assertFailsWith<ArithmeticException> { ZeroJson.decodeFromString<Box>("""{"i":1}""") }
+        assertFailsWith<ArithmeticException> { TestZeroJson.decodeFromString<Box>("""{"i":1}""") }
     }
 }

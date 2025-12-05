@@ -13,7 +13,7 @@ import kotlin.test.assertFailsWith
 class StructuredKeysTest: RandomizedJsonTest() {
     private fun test(mode: StructuredMapKeysMode, customize: TestConfigBuilder.() -> Unit) {
         randomizedTest {
-            json = ZeroJson { structuredMapKeysMode = mode }
+            json = TestZeroJson { structuredMapKeysMode = mode }
             domainObject(
                 mapOf(
                     mapOf(
@@ -36,7 +36,7 @@ class StructuredKeysTest: RandomizedJsonTest() {
     @Test
     fun garbage_at_the_end_structured_key() {
         assertFailsWith<SerializationException> {
-            ZeroJson.decodeFromString<Map<SimpleDataClass, String>>(
+            TestZeroJson.decodeFromString<Map<SimpleDataClass, String>>(
                 """
                     {
                         "{\"key\":\"v\"}------" : "hello"
@@ -67,7 +67,7 @@ class StructuredKeysTest: RandomizedJsonTest() {
                     put("key", "v")
                 }
             },
-            json = ZeroJson { structuredMapKeysMode = StructuredMapKeysMode.LIST },
+            json = TestZeroJson { structuredMapKeysMode = StructuredMapKeysMode.LIST },
             message = "pairs following each other"
         )
     }

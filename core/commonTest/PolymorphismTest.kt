@@ -96,7 +96,7 @@ class PolymorphismTest: RandomizedJsonTest() {
     @Test
     fun fixture() {
         assertFailsWith<SerializationException> {
-            println(ZeroJson.decodeFromString<PolyInterface>(
+            println(TestZeroJson.decodeFromString<PolyInterface>(
                 "{type:dev.dokky.zerojson.PolyInterface.SubInterface.Value2,value:235.ꈣ0}"
             ))
         }

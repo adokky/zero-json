@@ -93,7 +93,7 @@ class JsonInlineRandomizedTest: RandomizedJsonTest() {
 
         randomizedTest {
             domainObject(obj)
-            json = ZeroJson { coerceInputValues = coercing }
+            json = TestZeroJson { coerceInputValues = coercing }
             // can not be auto tested because of default values and implicit nulls
             excludeTargetIf { it.input == TestTarget.DataType.Domain }
             disable<RandomKeysInputTransformer>()

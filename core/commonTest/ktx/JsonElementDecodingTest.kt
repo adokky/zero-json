@@ -1,5 +1,6 @@
 package dev.dokky.zerojson.ktx
 
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.ZeroJson
 import dev.dokky.zerojson.decodeFromJsonElement
 import dev.dokky.zerojson.framework.assertFailsWithMessage
@@ -45,7 +46,7 @@ class JsonElementDecodingTest : JsonTestBase() {
         assertSerializedForm<List<Int>?>(null, """null""")
     }
 
-    private val json = ZeroJson { explicitNulls = true; isLenient = false }
+    private val json = TestZeroJson { explicitNulls = true; isLenient = false }
 
     private inline fun <reified T> assertSerializedForm(value: T, expectedString: String) {
         val element = Json.encodeToJsonElement(value)
@@ -60,7 +61,7 @@ class JsonElementDecodingTest : JsonTestBase() {
         var json = """{ "a": %}"""
         repeat(5) { json = json.replace("%", json) }
         json = json.replace("%", "0")
-        ZeroJson.parseToJsonElement(json)
+        TestZeroJson.parseToJsonElement(json)
     }
 
     private open class NullAsElementSerializer<T : JsonElement>(private val serializer: KSerializer<out JsonElement>) : KSerializer<T?> {
@@ -142,7 +143,7 @@ class JsonElementDecodingTest : JsonTestBase() {
             }
         }
 
-        assertEquals("""{"e":{"nested":{"k":"v"}}}""", ZeroJson.encodeToString(
+        assertEquals("""{"e":{"nested":{"k":"v"}}}""", TestZeroJson.encodeToString(
             NestedJsonObject.serializer(dev.dokky.zerojson.JsonElementSerializer),
             NestedJsonObject(obj))
         )

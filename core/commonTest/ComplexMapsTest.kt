@@ -166,7 +166,7 @@ class ComplexMapsTest: RandomizedJsonTest() {
                 "RND4" eq generateRandomJsonElement()
             }
             assertFailsWith<ZeroJsonDecodingException> {
-                ZeroJson.decodeFromJsonElement(Maps.serializer(), obj)
+                TestZeroJson.decodeFromJsonElement(Maps.serializer(), obj)
             }
         }
     }

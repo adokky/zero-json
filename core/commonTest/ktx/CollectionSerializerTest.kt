@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -17,10 +17,10 @@ class CollectionSerializerTest {
     fun testListJson() {
         val list = listOf("foo", "bar", "foo", "bar")
 
-        val string = ZeroJson.encodeToString(CollectionWrapper(list))
+        val string = TestZeroJson.encodeToString(CollectionWrapper(list))
         assertEquals("""{"collection":["foo","bar","foo","bar"]}""", string)
 
-        val wrapper = ZeroJson.decodeFromString<CollectionWrapper>(string)
+        val wrapper = TestZeroJson.decodeFromString<CollectionWrapper>(string)
         assertEquals(list, wrapper.collection)
     }
 
@@ -28,10 +28,10 @@ class CollectionSerializerTest {
     fun testSetJson() {
         val set = setOf("foo", "bar", "foo", "bar")
 
-        val string = ZeroJson.encodeToString(CollectionWrapper(set))
+        val string = TestZeroJson.encodeToString(CollectionWrapper(set))
         assertEquals("""{"collection":["foo","bar"]}""", string)
 
-        val wrapper = ZeroJson.decodeFromString<CollectionWrapper>(string)
+        val wrapper = TestZeroJson.decodeFromString<CollectionWrapper>(string)
         assertEquals(set.toList(), wrapper.collection)
     }
 }

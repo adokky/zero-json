@@ -32,7 +32,7 @@ class PolymorphicSerializerCacheTest {
     )
     private val baseSerializer = PolymorphicSerializer(Any::class)
     private val baseDescriptor = descriptorCache.getOrCreate(baseSerializer.descriptor)
-    private val json = ZeroJson { serializersModule = this@PolymorphicSerializerCacheTest.serializersModule }
+    private val json = TestZeroJson { serializersModule = this@PolymorphicSerializerCacheTest.serializersModule }
 
     @Test
     fun default_serializer_lookup() {

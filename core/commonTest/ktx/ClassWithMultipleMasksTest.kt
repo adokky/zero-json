@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.Required
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -64,7 +64,7 @@ class ClassWithMultipleMasksTest {
 
     @Test
     fun testMoreThan32Fields() {
-        val restored = ZeroJson.decodeFromString(BigDummyData.serializer(), """{"regular": "0","requiredLast":"r"}""")
+        val restored = TestZeroJson.decodeFromString(BigDummyData.serializer(), """{"regular": "0","requiredLast":"r"}""")
         with(restored) {
             assertEquals("0", regular)
             assertEquals("b", field40)
@@ -72,13 +72,13 @@ class ClassWithMultipleMasksTest {
             assertEquals("r", requiredLast)
         }
 
-        val restored2 = ZeroJson.decodeFromString(BigDummyData.serializer(), """{"regular": "0", "field39":"f","requiredLast":"required"}""")
+        val restored2 = TestZeroJson.decodeFromString(BigDummyData.serializer(), """{"regular": "0", "field39":"f","requiredLast":"required"}""")
         with(restored2) {
             assertEquals("0", regular)
             assertEquals("b", field40)
             assertEquals("f", field39)
             assertEquals("required", requiredLast)
         }
-        assertFailsWith<SerializationException> { ZeroJson.decodeFromString(BigDummyData.serializer(), """{"regular": "0"}""") }
+        assertFailsWith<SerializationException> { TestZeroJson.decodeFromString(BigDummyData.serializer(), """{"regular": "0"}""") }
     }
 }

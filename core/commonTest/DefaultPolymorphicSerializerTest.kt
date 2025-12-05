@@ -34,7 +34,7 @@ class DefaultPolymorphicSerializerTest {
         }
     }
 
-    private val json = ZeroJson { serializersModule = module; discriminatorConflict = DiscriminatorConflictDetection.SEALED }
+    private val json = TestZeroJson { serializersModule = module; discriminatorConflict = DiscriminatorConflictDetection.SEALED }
     private val jsonAllConflict = ZeroJson(json) { discriminatorConflict = DiscriminatorConflictDetection.ALL }
     private val jsonNoConflict = ZeroJson(json) { discriminatorConflict = DiscriminatorConflictDetection.DISABLED }
 

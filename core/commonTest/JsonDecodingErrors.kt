@@ -169,7 +169,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
 
     @Test
     fun path_within_inlined() {
-        val json = ZeroJson { isLenient = false }
+        val json = TestZeroJson { isLenient = false }
 
         fun test(
             expectedPath: String,

@@ -84,7 +84,7 @@ class JsonInlineNestingTest: RandomizedJsonTest() {
     fun deep_optional_map_tree() {
         assertEquals(
             RM(null, IM1(inlined2 = IM2(null, null, mapOf("xxx" to "yyy")), null)),
-            ZeroJson.decodeFromJsonElement<RM>(jsonObject { "xxx" eq "yyy" })
+            TestZeroJson.decodeFromJsonElement<RM>(jsonObject { "xxx" eq "yyy" })
         )
     }
 }

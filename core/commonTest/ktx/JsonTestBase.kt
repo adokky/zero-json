@@ -1,5 +1,6 @@
 package dev.dokky.zerojson.ktx
 
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.ZeroJson
 import dev.dokky.zerojson.ZeroJsonCompat
 import kotlinx.serialization.*
@@ -86,10 +87,10 @@ abstract class JsonTestBase {
         check: (T, T) -> Boolean
     ) {
         parametrizedTest {
-            val serialized = ZeroJson.encodeToStringTest(serializer, data)
+            val serialized = TestZeroJson.encodeToStringTest(serializer, data)
             assertEquals(expected, serialized)
 
-            val deserialized: T = ZeroJson.decodeFromStringTest(serializer, serialized)
+            val deserialized: T = TestZeroJson.decodeFromStringTest(serializer, serialized)
             assertTrue("source value =$data\n\tdeserialized value=$deserialized") {
                 check(data, deserialized)
             }

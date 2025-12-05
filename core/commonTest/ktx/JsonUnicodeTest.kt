@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.framework.assertSerializedAndRestored
 import dev.dokky.zerojson.framework.generateRandomUnicodeString
 import dev.dokky.zerojson.framework.noJs
@@ -26,7 +26,7 @@ class JsonUnicodeTest : JsonTestBase() {
     fun testUnicodeKeys() {
         val data = UnicodeKeys("1", "2", "3", "4")
         val s = """{"\uD83E\uDD14":"1","\uD83E\uDD14?":"2","\uD83E\uDD15":"3","\"":"4"}"""
-        assertEquals(data, ZeroJson.decodeFromString(s))
+        assertEquals(data, TestZeroJson.decodeFromString(s))
     }
 
     @Test
@@ -35,7 +35,7 @@ class JsonUnicodeTest : JsonTestBase() {
             "\uD83E\uDD14", "\" \uD83E\uDD14", "\uD83E\uDD14",
             "slow-path-in-\"-the-middle\""
         )
-        assertEquals(data, ZeroJson.decodeFromString(ZeroJson.encodeToString(data)))
+        assertEquals(data, TestZeroJson.decodeFromString(TestZeroJson.encodeToString(data)))
     }
 
     @Serializable
