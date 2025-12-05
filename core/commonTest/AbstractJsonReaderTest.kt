@@ -13,7 +13,8 @@ abstract class AbstractJsonReaderTest {
     private val buffer = ArrayBuffer(0)
     internal val bufferInput = ZeroUtf8TextReader()
     internal val stringInput = ZeroStringTextReader()
-    internal val reader = JsonReaderImpl(bufferInput, config = JsonReaderConfig())
+    internal val reader = JsonReaderImpl(bufferInput,
+        config = JsonReaderConfig(expectStringQuotes = false))
 
     protected fun setBufferJson(json: String, offset: Int = Random.nextInt(7)) {
         buffer.setArray(ByteArray(offset) + json.encodeToByteArray())

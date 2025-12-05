@@ -2,7 +2,6 @@ package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.Id
 import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.ZeroJsonCompat
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
@@ -66,7 +65,7 @@ class PolymorphismTestKtx : JsonTestBase() {
 
     @Test
     fun testDefaultSerializer() = parametrizedTest {
-        val json = ZeroJsonCompat {
+        val json = ZeroJson {
             serializersModule = module + SerializersModule {
                 polymorphicDefaultSerializer(PolyBase::class) { value ->
                     if (value.id % 2 == 0) EvenDefaultSerializer else OddDefaultSerializer
@@ -93,7 +92,7 @@ class PolymorphismTestKtx : JsonTestBase() {
         data class Simple(val value: String) : Conf()
     }
 
-    private val jsonForConf = ZeroJsonCompat {
+    private val jsonForConf = ZeroJson {
         isLenient = false
         ignoreUnknownKeys = true
         serializersModule = SerializersModule {

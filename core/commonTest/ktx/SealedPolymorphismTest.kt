@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJsonCompat
+import dev.dokky.zerojson.ZeroJson
 import dev.dokky.zerojson.framework.assertStringFormAndRestored
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.PolymorphicSerializer
@@ -36,7 +36,7 @@ class SealedPolymorphismTest {
         }
     }
 
-    private val json = ZeroJsonCompat { serializersModule = sealedModule }
+    private val json = ZeroJson { serializersModule = sealedModule }
 
     @Test
     fun testSaveSealedClassesList() {

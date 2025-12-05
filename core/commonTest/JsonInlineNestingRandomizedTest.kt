@@ -110,7 +110,7 @@ class JsonInlineNestingRandomizedTest: RandomizedJsonTest() {
     fun invalid_inline_map_entry_key() {
         assertFailsWithSerialMessage("expected integer, got '11_name'") {
             println(
-                ZeroJson{ ignoreUnknownKeys = false }.decodeFromString<Root>(
+                TestZeroJson { ignoreUnknownKeys = false }.decodeFromString<Root>(
                     """{
                         |string:"a string",
                         |11_name:nll,

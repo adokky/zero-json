@@ -2,7 +2,7 @@
 
 package dev.dokky.zerojson.framework
 
-import dev.dokky.zerojson.ZeroJsonConfiguration
+import dev.dokky.zerojson.DefaultTestConfiguration
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.descriptors.serialDescriptor
@@ -105,7 +105,7 @@ value class DslJsonObjectBuilder(@PublishedApi internal val builder: JsonObjectB
         builder.put(this, jsonObject(allowRandomKeys = allowRandomKeys) { inner() })
     }
 
-    inline fun <reified T> discriminator(name: String = ZeroJsonConfiguration.Default.classDiscriminator) {
+    inline fun <reified T> discriminator(name: String = DefaultTestConfiguration.classDiscriminator) {
         builder.put(name, serialDescriptor<T>().serialName)
     }
 

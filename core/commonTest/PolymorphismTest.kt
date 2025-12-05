@@ -169,7 +169,7 @@ class PolymorphismTest: RandomizedJsonTest() {
         concreteSerializer: KSerializer<T>,
         concreteValueBuilder: DslJsonObjectBuilder.(T) -> Unit
     ) {
-        val contextualJson = ZeroJson {
+        val contextualJson = TestZeroJson {
             serializersModule {
                 contextual(Any::class, concreteSerializer.unsafeCast<KSerializer<Any>>())
             }

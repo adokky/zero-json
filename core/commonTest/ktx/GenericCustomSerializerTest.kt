@@ -3,7 +3,6 @@
 package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.ZeroJsonCompat
 import dev.dokky.zerojson.framework.assertStringFormAndRestored
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.ByteArraySerializer
@@ -124,18 +123,18 @@ class GenericCustomSerializerTest {
     @Test
     fun testStringData() {
         val original = DataWithString(CheckedData("my data", byteArrayOf(42, 32)))
-        val s = ZeroJson.KtxCompat.encodeToString(DataWithString.serializer(), original)
+        val s = ZeroJson.encodeToString(DataWithString.serializer(), original)
         assertEquals("""{"data":{"data":"my data","checkSum":"2a20"}}""", s)
-        val restored = ZeroJson.KtxCompat.decodeFromString(DataWithString.serializer(), s)
+        val restored = ZeroJson.decodeFromString(DataWithString.serializer(), s)
         assertEquals(original, restored)
     }
 
     @Test
     fun testIntData() {
         val original = DataWithInt(CheckedData(42, byteArrayOf(42)))
-        val s = ZeroJson.KtxCompat.encodeToString(DataWithInt.serializer(), original)
+        val s = ZeroJson.encodeToString(DataWithInt.serializer(), original)
         assertEquals("""{"data":{"data":42,"checkSum":"2a"}}""", s)
-        val restored = ZeroJson.KtxCompat.decodeFromString(DataWithInt.serializer(), s)
+        val restored = ZeroJson.decodeFromString(DataWithInt.serializer(), s)
         assertEquals(original, restored)
     }
 
@@ -150,7 +149,7 @@ class GenericCustomSerializerTest {
             """{"data":{"data":"my data","checkSum":"2a20"}}""",
             DataWithStringContext(CheckedData("my data", byteArrayOf(42, 32))),
             DataWithStringContext.serializer(),
-            ZeroJsonCompat { serializersModule = module }
+            ZeroJson { serializersModule = module }
         )
     }
 
@@ -164,7 +163,7 @@ class GenericCustomSerializerTest {
              https://youtrack.jetbrains.com/issue/KT-50718
              https://github.com/Kotlin/kotlinx.serialization/issues/1843
          */
-        val encoded = ZeroJson.KtxCompat.encodeToString(OptionalHolder(Optional.Value(42)))
+        val encoded = ZeroJson.encodeToString(OptionalHolder(Optional.Value(42)))
         assertEquals("""{"optionalInt":42}""", encoded)
     }
 }

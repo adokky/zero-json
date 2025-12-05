@@ -1,5 +1,6 @@
 package dev.dokky.zerojson.framework
 
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.ZeroJson
 import io.kodec.buffers.Buffer
 import io.kodec.buffers.MutableDataBuffer
@@ -158,7 +159,7 @@ internal class TestInputImpl(
         private val empty = empty()
 
         fun empty() = TestInputImpl(
-            json = ZeroJson,
+            json = TestZeroJson,
             domainObject = null,
             serializer = Unit.serializer().unsafeCast(),
             jsonElement = JsonNull,

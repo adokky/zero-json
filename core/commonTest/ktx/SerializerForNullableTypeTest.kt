@@ -89,17 +89,17 @@ class SerializerForNullableTypeTest : JsonTestBase() {
     @Test
     fun testNullableLongWithNotNull() {
         val data = NullablePrimitive(42)
-        val json = ZeroJson.KtxCompat.encodeToString(data)
-        assertEquals("""{"value":{"initialized":true,"value":42}}""", ZeroJson.KtxCompat.encodeToString(data))
-        assertEquals(data, ZeroJson.KtxCompat.decodeFromString(json))
+        val json = ZeroJson.encodeToString(data)
+        assertEquals("""{"value":{"initialized":true,"value":42}}""", ZeroJson.encodeToString(data))
+        assertEquals(data, ZeroJson.decodeFromString(json))
     }
 
     @Test
     fun testNullableLongWithNull() {
         val data = NullablePrimitive(null)
-        val json = ZeroJson.KtxCompat.encodeToString(data)
-        assertEquals("""{"value":{"initialized":false,"value":null}}""", ZeroJson.KtxCompat.encodeToString(data))
-        assertEquals(data, ZeroJson.KtxCompat.decodeFromString(json))
+        val json = ZeroJson.encodeToString(data)
+        assertEquals("""{"value":{"initialized":false,"value":null}}""", ZeroJson.encodeToString(data))
+        assertEquals(data, ZeroJson.decodeFromString(json))
     }
 
     // Now generics
@@ -112,27 +112,27 @@ class SerializerForNullableTypeTest : JsonTestBase() {
     @Test
     fun testGenericBoxNullable() {
         val data = GenericBox<StringHolder?>(null)
-        val json = ZeroJson.KtxCompat.encodeToString(data)
-        assertEquals("""{"value":"nullable"}""", ZeroJson.KtxCompat.encodeToString(data))
-        assertEquals(GenericBox(StringHolder("non-null: nullable")), ZeroJson.KtxCompat.decodeFromString(json))
+        val json = ZeroJson.encodeToString(data)
+        assertEquals("""{"value":"nullable"}""", ZeroJson.encodeToString(data))
+        assertEquals(GenericBox(StringHolder("non-null: nullable")), ZeroJson.decodeFromString(json))
     }
 
     @Test
     fun testGenericNullableBoxFromNull() {
-        assertEquals(GenericBox(StringHolder("nullable")), ZeroJson.KtxCompat.decodeFromString("""{"value":null}"""))
+        assertEquals(GenericBox(StringHolder("nullable")), ZeroJson.decodeFromString("""{"value":null}"""))
     }
 
     @Test
     fun testGenericNullableBoxNullable() {
         val data = GenericNullableBox<StringHolder>(null)
-        val json = ZeroJson.KtxCompat.encodeToString(data)
-        assertEquals("""{"value":"nullable"}""", ZeroJson.KtxCompat.encodeToString(data))
-        assertEquals(GenericNullableBox(StringHolder("non-null: nullable")), ZeroJson.KtxCompat.decodeFromString(json))
+        val json = ZeroJson.encodeToString(data)
+        assertEquals("""{"value":"nullable"}""", ZeroJson.encodeToString(data))
+        assertEquals(GenericNullableBox(StringHolder("non-null: nullable")), ZeroJson.decodeFromString(json))
     }
 
     @Test
     fun testGenericBoxNullableFromNull() {
         assertEquals(GenericNullableBox(StringHolder("nullable")),
-            ZeroJson.KtxCompat.decodeFromString("""{"value":null}"""))
+            ZeroJson.decodeFromString("""{"value":null}"""))
     }
 }

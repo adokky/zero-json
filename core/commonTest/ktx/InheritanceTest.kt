@@ -2,7 +2,7 @@
 
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJsonCompat
+import dev.dokky.zerojson.ZeroJson
 import dev.dokky.zerojson.framework.assertFailsWithMissingField
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -72,7 +72,7 @@ private class Derived2(@SerialName("state2") override var state1: String): Base1
 }
 
 class InheritanceTest {
-    private val json = ZeroJsonCompat { encodeDefaults = true }
+    private val json = ZeroJson { encodeDefaults = true }
 
     @Test
     fun canBeSerializedAsDerived() {

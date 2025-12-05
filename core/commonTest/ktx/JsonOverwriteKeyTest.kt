@@ -29,7 +29,7 @@ class JsonOverwriteKeyTest : JsonTestBase() {
 
     @Test
     fun testLatestKeyInMap() {
-        val parsed = ZeroJson.KtxCompat.decodeFromString(
+        val parsed = ZeroJson.decodeFromString(
             WrappedMap.serializer(Int.serializer()),
             """{"mp": { "x" : 23, "x" : 42, "y": 4 }}"""
         )
@@ -38,7 +38,7 @@ class JsonOverwriteKeyTest : JsonTestBase() {
 
     @Test
     fun testLatestListValueInMap() {
-        val parsed = ZeroJson.KtxCompat.decodeFromString(
+        val parsed = ZeroJson.decodeFromString(
             WrappedMap.serializer(ListSerializer(Int.serializer())),
             """{"mp": { "x" : [23], "x" : [42], "y": [4] }}"""
         )

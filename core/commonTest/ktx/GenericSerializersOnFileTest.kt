@@ -35,11 +35,11 @@ class GenericSerializersOnFileTest {
     fun testSerialize() {
         assertEquals(
             """{"notnull":"Not Null","nullable":null}""",
-            ZeroJson.KtxCompat.encodeToString(Holder(notnull = GenericClass("Not Null"), nullable = null))
+            ZeroJson.encodeToString(Holder(notnull = GenericClass("Not Null"), nullable = null))
         )
         assertEquals(
             """{"notnull":"Not Null","nullable":"Nullable"}""",
-            ZeroJson.KtxCompat.encodeToString(
+            ZeroJson.encodeToString(
                 Holder(
                     notnull = GenericClass("Not Null"),
                     nullable = GenericClass("Nullable")
@@ -52,11 +52,11 @@ class GenericSerializersOnFileTest {
     fun testDeserialize() {
         assertEquals(
             Holder(notnull = GenericClass("Not Null"), nullable = null),
-            ZeroJson.KtxCompat.decodeFromString("""{"notnull":"Not Null","nullable":null}""")
+            ZeroJson.decodeFromString("""{"notnull":"Not Null","nullable":null}""")
         )
         assertEquals(
             Holder(notnull = GenericClass("Not Null"), nullable = GenericClass("Nullable")),
-            ZeroJson.KtxCompat.decodeFromString("""{"notnull":"Not Null","nullable":"Nullable"}""")
+            ZeroJson.decodeFromString("""{"notnull":"Not Null","nullable":"Nullable"}""")
         )
     }
 }

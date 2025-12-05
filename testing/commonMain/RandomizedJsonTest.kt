@@ -3,12 +3,13 @@
 
 package dev.dokky.zerojson.framework
 
+import dev.dokky.zerojson.DefaultTestConfiguration
 import dev.dokky.zerojson.ZeroJsonConfiguration
 import io.kodec.buffers.ArrayDataBuffer
 import kotlinx.serialization.InternalSerializationApi
 
 abstract class RandomizedJsonTest(
-    config: ZeroJsonConfiguration = ZeroJsonConfiguration.Default,
+    config: ZeroJsonConfiguration = DefaultTestConfiguration,
     decoderBufferSize: Int = 50 * 1024,
     encoderBufferSize: Int = 10 * 1024
 ): AbstractDecoderTest(config) {

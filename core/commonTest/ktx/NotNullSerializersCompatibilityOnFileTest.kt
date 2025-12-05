@@ -5,7 +5,6 @@
 package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.ZeroJsonCompat
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -72,18 +71,18 @@ class NotNullSerializersCompatibilityOnFileTest {
     @Test
     fun testFileLevel() {
         assertEquals("""{"nullable":null,"nonNullable":52}""",
-            ZeroJson.KtxCompat.encodeToString(Holder(nullable = null, nonNullable = 50)))
+            ZeroJson.encodeToString(Holder(nullable = null, nonNullable = 50)))
         assertEquals("""{"nullable":2,"nonNullable":2}""",
-            ZeroJson.KtxCompat.encodeToString(Holder(nullable = 0, nonNullable = 0)))
+            ZeroJson.encodeToString(Holder(nullable = 0, nonNullable = 0)))
         assertEquals("""{"nullable":12,"nonNullable":52}""",
-            ZeroJson.KtxCompat.encodeToString(Holder(nullable = 10, nonNullable = 50)))
+            ZeroJson.encodeToString(Holder(nullable = 10, nonNullable = 50)))
 
         assertEquals(Holder(nullable = 0, nonNullable = 50),
-            ZeroJson.KtxCompat.decodeFromString("""{"nullable":2,"nonNullable":52}"""))
+            ZeroJson.decodeFromString("""{"nullable":2,"nonNullable":52}"""))
         assertEquals(Holder(nullable = null, nonNullable = 50),
-            ZeroJson.KtxCompat.decodeFromString("""{"nullable":null,"nonNullable":52}"""))
+            ZeroJson.decodeFromString("""{"nullable":null,"nonNullable":52}"""))
         assertEquals(Holder(nullable = 10, nonNullable = 50),
-            ZeroJson.KtxCompat.decodeFromString("""{"nullable":12,"nonNullable":52}"""))
+            ZeroJson.decodeFromString("""{"nullable":12,"nonNullable":52}"""))
     }
 
     @Test
@@ -92,7 +91,7 @@ class NotNullSerializersCompatibilityOnFileTest {
             contextual(FileContextualSerializer)
         }
 
-        val json = ZeroJsonCompat { serializersModule = module }
+        val json = ZeroJson { serializersModule = module }
 
         assertEquals("""{"nullable":null,"nonNullable":"foo"}""", json.encodeToString(FileContextualHolder(null, FileContextualType("foo"))))
         assertEquals("""{"nullable":"foo","nonNullable":"bar"}""", json.encodeToString(
@@ -111,7 +110,7 @@ class NotNullSerializersCompatibilityOnFileTest {
             contextual(ContextualSerializer)
         }
 
-        val json = ZeroJsonCompat { serializersModule = module }
+        val json = ZeroJson { serializersModule = module }
 
         assertEquals("""{"nullable":null,"nonNullable":"foo"}""", json.encodeToString(ContextualHolder(null, ContextualType("foo"))))
         assertEquals("""{"nullable":"foo","nonNullable":"bar"}""", json.encodeToString(ContextualHolder(ContextualType("foo"), ContextualType("bar"))))

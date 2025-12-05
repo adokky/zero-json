@@ -1,7 +1,6 @@
 package dev.dokky.zerojson
 
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.StructureKind
@@ -196,12 +195,17 @@ sealed interface ZeroJsonConfigurationBase {
      * 2. Starts with `/*` characters and ends with `*/` characters. Nesting block comments
      *    is not supported: no matter how many `/*` characters you have, the first `*/` will end the comment.
      *
-     * `true` by default in [ZeroJson] builder.
-     * `false` by default in [ZeroJsonCompat] builder.
+     * `false` by default.
      */
     val allowComments: Boolean
 
-    @ExperimentalSerializationApi
+    /**
+     * Allows parser to accept trailing (ending) commas in JSON objects and arrays,
+     * making inputs like `[1, 2, 3,]` and `{"key": "value",}` valid.
+     * Does not affect encoding.
+     *
+     * `false` by default.
+     */
     val allowTrailingComma: Boolean
 
     /**
@@ -246,8 +250,7 @@ sealed interface ZeroJsonConfigurationBase {
      * Its relaxations can be expanded in the future, so that lenient parser becomes even more
      * permissive to invalid values in the input.
      *
-     * `true` by default in [ZeroJson] builder.
-     * `false` by default in [ZeroJsonCompat] builder.
+     * `false` by default.
      */
     val isLenient: Boolean
 

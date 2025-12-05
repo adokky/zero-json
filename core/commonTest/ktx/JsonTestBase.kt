@@ -1,16 +1,26 @@
 package dev.dokky.zerojson.ktx
 
+import dev.dokky.zerojson.StructuredMapKeysMode
 import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.ZeroJsonCompat
 import kotlinx.serialization.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 
 abstract class JsonTestBase {
-    protected val default = ZeroJsonCompat { encodeDefaults = true; isLenient = false }
-    protected val lenient = ZeroJsonCompat { ignoreUnknownKeys = true; allowSpecialFloatingPointValues = true; isLenient = true }
+    protected val default = ZeroJson {
+        encodeDefaults = true
+        isLenient = false
+        structuredMapKeysMode = StructuredMapKeysMode.ESCAPED_STRING
+    }
+
+    protected val lenient = ZeroJson {
+        ignoreUnknownKeys = true
+        allowSpecialFloatingPointValues = true
+        isLenient = true
+        structuredMapKeysMode = StructuredMapKeysMode.ESCAPED_STRING
+    }
 
     private enum class JsonTestingMode { STRING, BINARY }
 

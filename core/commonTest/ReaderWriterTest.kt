@@ -14,7 +14,7 @@ import kotlin.test.assertTrue
 class ReaderWriterTest {
     private val buffer = ArrayBuffer(100)
     private val input = ZeroUtf8TextReader().also { it.startReadingFrom(buffer) }
-    private val reader = JsonReaderImpl(input, config = JsonReaderConfig())
+    private val reader = JsonReaderImpl(input, config = JsonReaderConfig(expectStringQuotes = false))
 
     private val writerBuffer = ArrayBuffer(1000)
     private val writer = JsonTextWriter(BufferTextWriter(writerBuffer))

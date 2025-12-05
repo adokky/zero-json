@@ -1,7 +1,6 @@
 package dev.dokky.zerojson
 
 import dev.dokky.zerojson.internal.DescriptorCacheConfig
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.json.JsonNamingStrategy
@@ -15,12 +14,12 @@ class ZeroJsonConfiguration internal constructor(
     override val ignoreUnknownKeys: Boolean = false,
     override val decodeEnumsCaseInsensitive: Boolean = false,
     override val useAlternativeNames: Boolean = true,
-    override val explicitNulls: Boolean = false,
+    override val explicitNulls: Boolean = true,
     override val encodeDefaults: Boolean = false,
     override val allowSpecialFloatingPointValues: Boolean = false,
     override val allowComments: Boolean = false,
     override val coerceInputValues: Boolean = false,
-    override val isLenient: Boolean = true,
+    override val isLenient: Boolean = false,
     override val classDiscriminator: String = "type",
     override val stableDefaultProviders: Boolean = false,
     override val maxStructureDepth: Int = 60,
@@ -28,10 +27,9 @@ class ZeroJsonConfiguration internal constructor(
     override val maxOutputBytes: Int = 100 * 1024,
     override val maxInlineProperties: Int = 4096,
     override val fullStackTraces: Boolean = false,
-    @ExperimentalSerializationApi
     override val allowTrailingComma: Boolean = false,
     override val strictJsonPrimitives: Boolean = true,
-    override val structuredMapKeysMode: StructuredMapKeysMode = StructuredMapKeysMode.ESCAPED_STRING,
+    override val structuredMapKeysMode: StructuredMapKeysMode = StructuredMapKeysMode.LIST,
     override val discriminatorConflict: DiscriminatorConflictDetection = DiscriminatorConflictDetection.SEALED,
     override val cacheMode: CacheMode = CacheMode.SHARED,
 ): ZeroJsonConfigurationBase {
@@ -121,13 +119,6 @@ class ZeroJsonConfiguration internal constructor(
     companion object {
         @JvmField
         val Default: ZeroJsonConfiguration = ZeroJsonConfiguration()
-
-        @JvmField
-        val KotlinxJson: ZeroJsonConfiguration = ZeroJsonConfiguration(
-            isLenient = false,
-            allowComments = false,
-            explicitNulls = true
-        )
 
         const val DEPTH_LIMIT: Int = 200
 

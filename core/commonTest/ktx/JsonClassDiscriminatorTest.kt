@@ -2,7 +2,7 @@
 
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJsonCompat
+import dev.dokky.zerojson.ZeroJson
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
@@ -63,7 +63,7 @@ class JsonClassDiscriminatorTest : JsonTestBase() {
                 subclass(AbstractMessage.IntMessage.serializer())
             }
         }
-        val json = ZeroJsonCompat { serializersModule = module }
+        val json = ZeroJson { serializersModule = module }
         val expected = """[{"abstractType":"Message.StringMessage","description":"string message","message":"foo"},{"abstractType":"Message.IntMessage","description":"int message","message":42}]"""
         assertJsonFormAndRestored(
             ListSerializer(AbstractMessage.serializer()), messages, expected, json
@@ -98,7 +98,7 @@ class JsonClassDiscriminatorTest : JsonTestBase() {
                 subclass(GenericError.serializer())
             }
         }
-        val json = ZeroJsonCompat { serializersModule = module }
+        val json = ZeroJson { serializersModule = module }
         assertJsonFormAndRestored(
             Message.serializer(),
             Message(BaseMessage("not found"), GenericError(404)),

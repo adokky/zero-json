@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJsonCompat
+import dev.dokky.zerojson.ZeroJson
 import dev.dokky.zerojson.ZeroJsonDecoder
 import dev.dokky.zerojson.ZeroJsonEncoder
 import kotlinx.serialization.KSerializer
@@ -50,7 +50,7 @@ class PolymorphismForCustomTest : JsonTestBase() {
 
     @Test
     fun test() = parametrizedTest {
-        val json = ZeroJsonCompat {
+        val json = ZeroJson {
             serializersModule = SerializersModule {
                 polymorphic(Any::class, VImpl::class, customSerializer)
             }

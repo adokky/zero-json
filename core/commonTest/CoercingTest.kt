@@ -50,7 +50,7 @@ class CoercingTest: AbstractDecoderTest(TestConfiguration {
     @Test
     fun coercing_off() {
         fun test(input: DslJsonObjectBuilder.() -> Unit) {
-            assertDecodingFails(OptionalEnum.serializer(), jsonObject(buildJson = input), message = "unknown entry", json = ZeroJson)
+            assertDecodingFails(OptionalEnum.serializer(), jsonObject(buildJson = input), message = "unknown entry", json = TestZeroJson)
         }
 
         test { "enum1" eq "zzz" }

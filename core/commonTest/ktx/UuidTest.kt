@@ -3,7 +3,6 @@
 package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.ZeroJsonCompat
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
@@ -32,7 +31,7 @@ class UuidTest : JsonTestBase() {
             Holder.serializer(),
             Holder(fixed),
             """{"uuid":"bc501c76-d806-4578-b45e-97a264e280f1"}""",
-            ZeroJson.KtxCompat
+            ZeroJson
         )
     }
 
@@ -43,7 +42,7 @@ class UuidTest : JsonTestBase() {
             HolderContextual.serializer(),
             HolderContextual(fixed),
             """{"uuid":"bc501c76-d806-4578-b45e-97a264e280f1"}""",
-            json = ZeroJsonCompat { serializersModule = serializersModuleOf(Uuid.serializer()) }
+            json = ZeroJson { serializersModule = serializersModuleOf(Uuid.serializer()) }
         )
     }
 }

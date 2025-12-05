@@ -14,7 +14,13 @@ import kotlin.test.assertTrue
 
 class JsonTreePrimitivesTest {
     private val stringReader = ZeroStringTextReader()
-    private val reader = JsonReaderImpl(stringReader, JsonReaderConfig(allowSpecialFloatingPointValues = true))
+    private val reader = JsonReaderImpl(
+        stringReader,
+        JsonReaderConfig(
+            expectStringQuotes = false,
+            allowSpecialFloatingPointValues = true
+        )
+    )
 
     private fun decode(input: String): JsonPrimitive {
         stringReader.startReadingFrom(input)

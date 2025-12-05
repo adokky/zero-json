@@ -19,15 +19,15 @@ class SerializableOnTypeUsageTest {
     @Test
     fun testAnnotationIsApplied() {
         val data = SerializableOnArguments(listOf(1, 2), listOf(listOf(IntHolder(42))))
-        val str = ZeroJson.KtxCompat.encodeToString(SerializableOnArguments.serializer(), data)
+        val str = ZeroJson.encodeToString(SerializableOnArguments.serializer(), data)
         assertEquals("""{"list1":[2,4],"list2":[[84]]}""", str)
-        val restored = ZeroJson.KtxCompat.decodeFromString(SerializableOnArguments.serializer(), str)
+        val restored = ZeroJson.decodeFromString(SerializableOnArguments.serializer(), str)
         assertEquals(data, restored)
     }
 
     @Test
     fun testOnProperties() {
-        val str = ZeroJson.KtxCompat.encodeToString(Carrier.serializer(), Carrier(IntHolder(42), 2))
+        val str = ZeroJson.encodeToString(Carrier.serializer(), Carrier(IntHolder(42), 2))
         assertEquals("""{"a":84,"i":4}""", str)
     }
 

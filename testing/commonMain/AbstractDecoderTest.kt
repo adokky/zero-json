@@ -1,9 +1,6 @@
 package dev.dokky.zerojson.framework
 
-import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.ZeroJsonConfiguration
-import dev.dokky.zerojson.ZeroJsonDecodingException
-import dev.dokky.zerojson.decodeFromJsonElement
+import dev.dokky.zerojson.*
 import io.kodec.buffers.ArrayDataBuffer
 import io.kodec.buffers.asDataBuffer
 import karamel.utils.readableName
@@ -20,8 +17,8 @@ import kotlin.test.assertFails
 import kotlin.test.fail
 
 @OptIn(ExperimentalSerializationApi::class, InternalSerializationApi::class)
-abstract class AbstractDecoderTest(config: ZeroJsonConfiguration = ZeroJsonConfiguration.Default) {
-    protected val zjson: ZeroJson = ZeroJson.Default(config)
+abstract class AbstractDecoderTest(config: ZeroJsonConfiguration = DefaultTestConfiguration) {
+    protected val zjson: ZeroJson = ZeroJson(config)
     protected val ktxJson: Json = Json(config)
 
     protected fun String.encodeToArrayBuffer(): ArrayDataBuffer =

@@ -18,10 +18,6 @@ inline fun ZeroJsonConfiguration(
 ): ZeroJsonConfiguration =
     ZeroJsonBuilder(prototype).apply(builder).toConfig()
 
-@Suppress("FunctionName")
-inline fun ZeroJsonCompat(builder: ZeroJsonBuilder.() -> Unit): ZeroJson =
-    ZeroJson(prototype = ZeroJson.KtxCompat, builder)
-
 @ExperimentalSerializationApi
 fun ZeroJson(configuration: JsonConfiguration, serializersModule: SerializersModule): ZeroJson =
     ZeroJson(ZeroJsonConfiguration(configuration, serializersModule))

@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJsonCompat
+import dev.dokky.zerojson.ZeroJson
 import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.EncodeDefault.Mode.ALWAYS
 import kotlinx.serialization.EncodeDefault.Mode.NEVER
@@ -10,8 +10,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class SkipDefaultsTest {
-    private val jsonDropDefaults = ZeroJsonCompat { encodeDefaults = false }
-    private val jsonEncodeDefaults = ZeroJsonCompat { encodeDefaults = true }
+    private val jsonDropDefaults = ZeroJson { encodeDefaults = false }
+    private val jsonEncodeDefaults = ZeroJson { encodeDefaults = true }
 
     @Suppress("unused")
     @Serializable

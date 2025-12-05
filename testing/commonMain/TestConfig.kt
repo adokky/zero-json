@@ -1,5 +1,6 @@
 package dev.dokky.zerojson.framework
 
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.ZeroJson
 import dev.dokky.zerojson.ZeroJsonDecodingException
 import dev.dokky.zerojson.framework.transformers.*
@@ -16,7 +17,7 @@ data class TestConfig<T>(
     val domainObject: T,
     val jsonElement: JsonElement,
     val serializer: KSerializer<T>,
-    val json: ZeroJson = ZeroJson,
+    val json: ZeroJson = TestZeroJson,
     val compareToString: Boolean = false,
     val exclude: Set<TestTarget> = emptySet(),
     val expectTargetFailure: Map<TestTarget, ExpectedFailure> = emptyMap(),

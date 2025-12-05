@@ -2,7 +2,7 @@
 
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonPrimitive
@@ -13,13 +13,13 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class JsonCommentsTest: JsonTestBase() {
-    val json = ZeroJson {
+    val json = TestZeroJson {
         encodeDefaults = true
         allowComments = true
         allowTrailingComma = true
     }
 
-    val withLenient = ZeroJson {
+    val withLenient = TestZeroJson {
         encodeDefaults = true
         allowComments = true
         ignoreUnknownKeys = true
@@ -131,7 +131,8 @@ class JsonCommentsTest: JsonTestBase() {
                 value5,
                 //before end
             }"""
-            assertEquals(target("value//comment_cannot_break_value_apart"), withLenient.decodeFromStringTest(input))
+            assertEquals(target("value//comment_cannot_break_value_apart"),
+                withLenient.decodeFromStringTest(input))
         }
     }
 

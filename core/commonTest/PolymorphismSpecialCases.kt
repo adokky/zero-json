@@ -39,7 +39,7 @@ class PolymorphismSpecialCases {
 
     @Test
     fun contextual_sub_class_with_custom_serializer() {
-        val json = ZeroJsonCompat {
+        val json = ZeroJson {
             serializersModule = SerializersModule {
                 contextual(SimpleDataClass::class, Base.SimpleDataClassAsString)
             }
@@ -53,14 +53,14 @@ class PolymorphismSpecialCases {
     @Test
     fun primitive_sub_class() {
         val value = Base.Primitive(123)
-        val encoded = ZeroJson.KtxCompat.encodeToString<Base>(value)
-        assertEquals(value, ZeroJson.KtxCompat.decodeFromString<Base>(encoded))
+        val encoded = TestZeroJson.encodeToString<Base>(value)
+        assertEquals(value, TestZeroJson.decodeFromString<Base>(encoded))
     }
 
     @Test
     fun primitive_sub_class_inside_holder() {
         val value = PolyHolder(Base.Primitive(123))
-        val encoded = ZeroJson.KtxCompat.encodeToString<PolyHolder>(value)
-        assertEquals(value, ZeroJson.KtxCompat.decodeFromString<PolyHolder>(encoded))
+        val encoded = TestZeroJson.encodeToString<PolyHolder>(value)
+        assertEquals(value, TestZeroJson.decodeFromString<PolyHolder>(encoded))
     }
 }

@@ -2,7 +2,6 @@ package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.IntData
 import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.ZeroJsonCompat
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -38,7 +37,7 @@ class PolymorphismWithAnyTest: JsonTestBase() {
         checkNotRegisteredMessage(
             "dev.dokky.zerojson.IntData", "Any",
             assertFailsWith<SerializationException>("not registered") {
-                ZeroJson.KtxCompat.encodeToString(
+                ZeroJson.encodeToString(
                     MyPolyData.serializer(),
                     MyPolyData(mapOf("a" to IntData(42)))
                 )
@@ -48,7 +47,7 @@ class PolymorphismWithAnyTest: JsonTestBase() {
 
     @Test
     fun testWithModules() {
-        val json = ZeroJsonCompat {
+        val json = ZeroJson {
             serializersModule = SerializersModule { polymorphic(Any::class) { subclass(IntData.serializer()) } }
         }
         assertJsonFormAndRestored(
@@ -64,7 +63,7 @@ class PolymorphismWithAnyTest: JsonTestBase() {
      */
     @Test
     fun testFailWithModulesNotInAnyScope() = parametrizedTest {
-        val json = ZeroJsonCompat { serializersModule = BaseAndDerivedModule }
+        val json = ZeroJson { serializersModule = BaseAndDerivedModule }
         checkNotRegisteredMessage(
             "dev.dokky.zerojson.ktx.PolyDerived", "Any",
             assertFailsWith<SerializationException> {
@@ -84,7 +83,7 @@ class PolymorphismWithAnyTest: JsonTestBase() {
 
     @Test
     fun testRebindModules() {
-        val json = ZeroJsonCompat { serializersModule = baseAndDerivedModuleAtAny }
+        val json = ZeroJson { serializersModule = baseAndDerivedModuleAtAny }
         assertJsonFormAndRestored(
             expected = """{"data":{"a":{"type":"dev.dokky.zerojson.ktx.PolyDerived","id":1,"s":"foo"}}}""",
             data = MyPolyData(mapOf("a" to PolyDerived("foo"))),
@@ -98,7 +97,7 @@ class PolymorphismWithAnyTest: JsonTestBase() {
      */
     @Test
     fun testFailWithModulesNotInParticularScope() = parametrizedTest {
-        val json = ZeroJsonCompat { serializersModule = baseAndDerivedModuleAtAny }
+        val json = ZeroJson { serializersModule = baseAndDerivedModuleAtAny }
         checkNotRegisteredMessage(
             "dev.dokky.zerojson.ktx.PolyDerived", "dev.dokky.zerojson.ktx.PolyBase",
             assertFailsWith {
@@ -115,7 +114,7 @@ class PolymorphismWithAnyTest: JsonTestBase() {
 
     @Test
     fun testBindModules() {
-        val json = ZeroJsonCompat { serializersModule = (baseAndDerivedModuleAtAny + BaseAndDerivedModule) }
+        val json = ZeroJson { serializersModule = (baseAndDerivedModuleAtAny + BaseAndDerivedModule) }
         assertJsonFormAndRestored(
             expected = """{"data":{"a":{"type":"dev.dokky.zerojson.ktx.PolyDerived","id":1,"s":"foo"}},
                 |"polyBase":{"type":"dev.dokky.zerojson.ktx.PolyDerived","id":1,"s":"foo"}}""".trimMargin().lines().joinToString(
@@ -132,7 +131,7 @@ class PolymorphismWithAnyTest: JsonTestBase() {
 
     @Test
     fun testTypeKeyLastInInput() = parametrizedTest {
-        val json = ZeroJsonCompat { serializersModule = (baseAndDerivedModuleAtAny + BaseAndDerivedModule) }
+        val json = ZeroJson { serializersModule = (baseAndDerivedModuleAtAny + BaseAndDerivedModule) }
         val input = """{"data":{"a":{"id":1,"s":"foo","type":"dev.dokky.zerojson.ktx.PolyDerived"}},
                 |"polyBase":{"id":1,"s":"foo","type":"dev.dokky.zerojson.ktx.PolyDerived"}}""".trimMargin().lines().joinToString(
             "")

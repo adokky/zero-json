@@ -52,17 +52,17 @@ class SerializationForNullableTypeOnFileTest {
     @Test
     fun testFileLevel() {
         assertEquals("""{"nullable":null,"nonNullable":52}""",
-            ZeroJson.KtxCompat.encodeToString(Holder(nullable = null, nonNullable = 50)))
+            ZeroJson.encodeToString(Holder(nullable = null, nonNullable = 50)))
         assertEquals("""{"nullable":1,"nonNullable":2}""",
-            ZeroJson.KtxCompat.encodeToString(Holder(nullable = 0, nonNullable = 0)))
+            ZeroJson.encodeToString(Holder(nullable = 0, nonNullable = 0)))
         assertEquals("""{"nullable":11,"nonNullable":52}""",
-            ZeroJson.KtxCompat.encodeToString(Holder(nullable = 10, nonNullable = 50)))
+            ZeroJson.encodeToString(Holder(nullable = 10, nonNullable = 50)))
 
         assertEquals(Holder(nullable = 0, nonNullable = 50),
-            ZeroJson.KtxCompat.decodeFromString("""{"nullable":1,"nonNullable":52}"""))
+            ZeroJson.decodeFromString("""{"nullable":1,"nonNullable":52}"""))
         assertEquals(Holder(nullable = null, nonNullable = 50),
-            ZeroJson.KtxCompat.decodeFromString("""{"nullable":null,"nonNullable":52}"""))
+            ZeroJson.decodeFromString("""{"nullable":null,"nonNullable":52}"""))
         assertEquals(Holder(nullable = 10, nonNullable = 50),
-            ZeroJson.KtxCompat.decodeFromString("""{"nullable":11,"nonNullable":52}"""))
+            ZeroJson.decodeFromString("""{"nullable":11,"nonNullable":52}"""))
     }
 }

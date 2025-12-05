@@ -2,7 +2,7 @@ package dev.dokky.zerojson
 
 import kotlinx.serialization.modules.EmptySerializersModule
 
-private val DefaultTestConfiguration = ZeroJsonConfiguration {
+val DefaultTestConfiguration = ZeroJsonConfiguration {
     serializersModule = EmptySerializersModule()
     namingStrategy = null
     ignoreUnknownKeys = false

@@ -2,7 +2,7 @@
 
 package dev.dokky.zerojson.ktx
 
-import dev.dokky.zerojson.ZeroJsonCompat
+import dev.dokky.zerojson.ZeroJson
 import kotlinx.serialization.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -51,7 +51,7 @@ class PropertyInitializerTest {
         var getterDepend: Int = valGetter + 8
     }
 
-    private val format = ZeroJsonCompat { encodeDefaults = true }
+    private val format = ZeroJson { encodeDefaults = true }
 
     private data class ExternalClass(
         val valProperty: Int,

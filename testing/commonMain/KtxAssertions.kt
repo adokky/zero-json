@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.framework
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.StringFormat
@@ -13,7 +13,7 @@ inline fun <reified T : Any> assertStringFormAndRestored(
     expected: String,
     original: T,
     serializer: KSerializer<T>,
-    format: StringFormat = ZeroJson.Default,
+    format: StringFormat = TestZeroJson,
     printResult: Boolean = false
 ) {
     val string = format.encodeToString(serializer, original)
@@ -27,7 +27,7 @@ inline fun <reified T : Any> assertStringFormAndRestored(
 fun <T : Any> assertSerializedAndRestored(
     original: T,
     serializer: KSerializer<T>,
-    format: StringFormat = ZeroJson.Default,
+    format: StringFormat = TestZeroJson,
     printResult: Boolean = false
 ) {
     if (printResult) println("[Input] $original")

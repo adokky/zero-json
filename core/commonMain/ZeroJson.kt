@@ -333,12 +333,6 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
             set(value) { _captureStackTraces.store(value) }
             get() = _captureStackTraces.load()
     }
-
-    /**
-     * Similar to [ZeroJson.Default] but configured for
-     * maximum compatibility with [kotlinx.serialization.json.Json].
-     */
-    object KtxCompat: ZeroJson(ZeroJsonConfiguration.KotlinxJson)
 }
 
 // decode shortcuts

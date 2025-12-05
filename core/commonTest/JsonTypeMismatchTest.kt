@@ -11,7 +11,7 @@ import kotlinx.serialization.json.add
 import kotlinx.serialization.json.buildJsonArray
 import kotlin.test.Test
 
-class JsonTypeMismatchTest: AbstractDecoderTest(ZeroJsonConfiguration.KotlinxJson) {
+class JsonTypeMismatchTest: AbstractDecoderTest(ZeroJsonConfiguration.Default) {
     @Test
     fun expected_int() = assertDecodingFails<Int>(JsonPrimitive("hello"), "expected integer, got 'hello'")
 
@@ -36,13 +36,13 @@ class JsonTypeMismatchTest: AbstractDecoderTest(ZeroJsonConfiguration.KotlinxJso
     @Test
     fun expected_string_got_int() {
         assertDecodingFails<String>(JsonPrimitive(3443), "expected")
-        assertDecoded<String>("3443", JsonPrimitive(3443), ZeroJson)
+        assertDecoded<String>("3443", JsonPrimitive(3443), TestZeroJson)
     }
 
     @Test
     fun expected_string_got_bool() {
         assertDecodingFails<String>(JsonPrimitive(true), "expected")
-        assertDecoded<String>("true", JsonPrimitive(true), ZeroJson)
+        assertDecoded<String>("true", JsonPrimitive(true), TestZeroJson)
     }
 
     @Test

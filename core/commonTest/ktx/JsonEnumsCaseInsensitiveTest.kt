@@ -4,7 +4,6 @@ package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.Box
 import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.ZeroJsonCompat
 import dev.dokky.zerojson.framework.assertFailsWithMessage
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -103,7 +102,7 @@ class JsonEnumsCaseInsensitiveTest: JsonTestBase() {
 
     @Test
     fun testDocSample() {
-        val j = ZeroJsonCompat { decodeEnumsCaseInsensitive = true }
+        val j = ZeroJson { decodeEnumsCaseInsensitive = true }
         @Serializable
         data class Outer(val enums: List<E>)
         assertEquals(

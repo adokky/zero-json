@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.framework
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.framework.transformers.CorruptionInputTransformer
 import dev.dokky.zerojson.framework.transformers.WrapperInputTransformer
 import karamel.utils.unsafeCast
@@ -36,7 +36,7 @@ class CorruptionTransformerTest: AbstractRunnerTest() {
         val data = jsonObject { "key" eq "value" }
         val sb = StringBuilder()
         val composer = DefaultJsonComposer(sb)
-        val input = TestInputImpl(ZeroJson, Unit, Unit.serializer().unsafeCast(), JsonNull, composer.config, composer)
+        val input = TestInputImpl(TestZeroJson, Unit, Unit.serializer().unsafeCast(), JsonNull, composer.config, composer)
 
         repeat(
             when(GlobalTestMode) {

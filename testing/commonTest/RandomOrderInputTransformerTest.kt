@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.framework
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.framework.transformers.RandomOrderInputTransformer
 import karamel.utils.unsafeCast
 import kotlinx.serialization.builtins.serializer
@@ -9,7 +9,7 @@ import kotlin.test.*
 
 class RandomOrderInputTransformerTest {
     private val input = TestInputImpl(
-        ZeroJson,
+        TestZeroJson,
         Unit,
         Unit.serializer().unsafeCast(),
         JsonNull,

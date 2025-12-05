@@ -109,7 +109,7 @@ class SealedClassesSerializationTest : JsonTestBase() {
     fun manualSerializer() {
         assertEquals(
             "{\"type\":\"dev.dokky.zerojson.SimpleSealed.SubSealedB\",\"i\":42}",
-            ZeroJson.KtxCompat.encodeToString(ManualSerializer, SimpleSealed.SubSealedB(42))
+            ZeroJson.encodeToString(ManualSerializer, SimpleSealed.SubSealedB(42))
         )
     }
 
@@ -117,7 +117,7 @@ class SealedClassesSerializationTest : JsonTestBase() {
     fun onTopLevel() {
         assertEquals(
             "{\"type\":\"dev.dokky.zerojson.SimpleSealed.SubSealedB\",\"i\":42}",
-            ZeroJson.KtxCompat.encodeToString(SimpleSealed.serializer(), SimpleSealed.SubSealedB(42))
+            ZeroJson.encodeToString(SimpleSealed.serializer(), SimpleSealed.SubSealedB(42))
         )
     }
 
@@ -127,7 +127,7 @@ class SealedClassesSerializationTest : JsonTestBase() {
             SealedHolder.serializer(),
             SealedHolder(SimpleSealed.SubSealedA("foo")),
             """{"s":{"type":"dev.dokky.zerojson.SimpleSealed.SubSealedA","s":"foo"}}""",
-            ZeroJson.KtxCompat
+            ZeroJson
         )
     }
 
@@ -137,13 +137,13 @@ class SealedClassesSerializationTest : JsonTestBase() {
             Box.serializer(SimpleSealed.serializer()),
             Box<SimpleSealed>(SimpleSealed.SubSealedA("foo")),
             """{"value":{"type":"dev.dokky.zerojson.SimpleSealed.SubSealedA","s":"foo"}}""",
-            ZeroJson.KtxCompat
+            ZeroJson
         )
         assertJsonFormAndRestored(
             SealedBoxHolder.serializer(),
             SealedBoxHolder(Box(SimpleSealed.SubSealedA("foo"))),
             """{"b":{"value":{"type":"dev.dokky.zerojson.SimpleSealed.SubSealedA","s":"foo"}}}""",
-            ZeroJson.KtxCompat
+            ZeroJson
         )
     }
 
@@ -160,7 +160,7 @@ class SealedClassesSerializationTest : JsonTestBase() {
             |{"type":"SealedProtocol.IntMessage","description":"int_message","message":42},
             |{"type":"SealedProtocol.ErrorMessage","error":"requesting_termination"},
             |{"type":"EOF"}]""".trimMarginAndRemoveWhitespaces()
-        assertJsonFormAndRestored(ListSerializer(SealedProtocol.serializer()), messages, expected, ZeroJson.KtxCompat)
+        assertJsonFormAndRestored(ListSerializer(SealedProtocol.serializer()), messages, expected, ZeroJson)
     }
 
     @Test
@@ -190,7 +190,7 @@ class SealedClassesSerializationTest : JsonTestBase() {
             ListSerializer(ProtocolWithAbstractClass.serializer()),
             messages,
             expected,
-            ZeroJsonCompat { serializersModule = abstractContext })
+            ZeroJson { serializersModule = abstractContext })
     }
 
     @Test
@@ -207,7 +207,7 @@ class SealedClassesSerializationTest : JsonTestBase() {
             |{"type":"ProtocolWithSealedClass.ErrorMessage","error":"requesting_termination"},
             |{"type":"EOF"}]""".trimMarginAndRemoveWhitespaces()
         assertJsonFormAndRestored(ListSerializer(ProtocolWithSealedClass.serializer()), messages, expected,
-            ZeroJson.KtxCompat
+            ZeroJson
         )
     }
 
@@ -224,11 +224,11 @@ class SealedClassesSerializationTest : JsonTestBase() {
 
         assertJsonFormAndRestored(
             ListSerializer(ProtocolWithSealedClass.serializer()),
-            messages, expected, ZeroJson.KtxCompat
+            messages, expected, ZeroJson
         )
         assertJsonFormAndRestored(
             ListSerializer(ProtocolWithSealedClass.Message.serializer()),
-            messages, expected, ZeroJson.KtxCompat
+            messages, expected, ZeroJson
         )
     }
 

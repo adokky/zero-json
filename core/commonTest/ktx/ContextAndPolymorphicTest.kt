@@ -3,7 +3,6 @@
 package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.ZeroJsonCompat
 import kotlinx.serialization.*
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
@@ -52,7 +51,7 @@ class ContextAndPolymorphicTest {
     fun initContext() {
         val scope = SerializersModule {  }
         val bPolymorphicModule = SerializersModule { polymorphic(Any::class) { subclass(serializer<Payload>()) } }
-        json = ZeroJsonCompat {
+        json = ZeroJson {
             encodeDefaults = true
             serializersModule = scope + bPolymorphicModule
         }
@@ -91,8 +90,8 @@ class ContextAndPolymorphicTest {
         val simpleModule = SerializersModule {  }
         val binaryModule = serializersModuleOf(BinaryPayloadSerializer)
 
-        val json1 = ZeroJsonCompat { serializersModule = simpleModule }
-        val json2 = ZeroJsonCompat { serializersModule = binaryModule }
+        val json1 = ZeroJson { serializersModule = simpleModule }
+        val json2 = ZeroJson { serializersModule = binaryModule }
 
         // in json1, Payload would be serialized with PayloadSerializer,
         // in json2, Payload would be serialized with BinaryPayloadSerializer
@@ -122,7 +121,7 @@ class ContextAndPolymorphicTest {
 
     @Test
     fun testContextualSerializerUsesDefaultIfModuleIsEmpty() {
-        val jsonArrayWithDefaults = ZeroJsonCompat { encodeDefaults = true }
+        val jsonArrayWithDefaults = ZeroJson { encodeDefaults = true }
         val s = jsonArrayWithDefaults.encodeToString(EnhancedData.serializer(), value)
         assertEquals("""{"data":{"a":100500,"b":42},"stringPayload":{"s":"string"},"binaryPayload":"62696e617279"}""", s)
     }

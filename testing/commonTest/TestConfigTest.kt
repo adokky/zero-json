@@ -1,6 +1,6 @@
 package dev.dokky.zerojson.framework
 
-import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.TestZeroJson
 import dev.dokky.zerojson.framework.transformers.CorruptionInputTransformer
 import dev.dokky.zerojson.framework.transformers.RandomKeysInputTransformer
 import dev.dokky.zerojson.framework.transformers.WrapperInputTransformer
@@ -20,7 +20,7 @@ class TestConfigTest {
             domainObject(Unit)
             jsonElement = JsonNull
             iterations = 875
-            json = ZeroJson { allowSpecialFloatingPointValues = true }
+            json = TestZeroJson { allowSpecialFloatingPointValues = true }
             compareToString = true
             name = "foo"
             exclude(TestTarget.TextToObject, TestTarget.BinaryToObject)

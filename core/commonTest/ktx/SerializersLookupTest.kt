@@ -247,7 +247,7 @@ class SerializersLookupTest : JsonTestBase() {
     @Test
     fun testContextualLookup() {
         val module = SerializersModule { contextual(CustomIntSerializer(false).cast<IntBox>()) }
-        val json = ZeroJsonCompat { serializersModule = module }
+        val json = ZeroJson { serializersModule = module }
         val data = listOf(listOf(IntBox(1)))
         assertEquals("[[42]]", json.encodeToString(data))
     }
@@ -298,7 +298,7 @@ class SerializersLookupTest : JsonTestBase() {
                 fail()
             }
         }
-        val json = ZeroJsonCompat { serializersModule = SerializersModule { contextual(contextual) } }
+        val json = ZeroJson { serializersModule = SerializersModule { contextual(contextual) } }
         assertEquals("[[1]]", json.encodeToString(listOf(listOf<Int>(1))))
         assertEquals("42", json.encodeToString(42))
     }
