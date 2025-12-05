@@ -4,7 +4,7 @@ package kotlinx.serialization.json
 
 import dev.dokky.zerojson.JsonReader
 import dev.dokky.zerojson.ZeroJsonDecodingException
-import dev.dokky.zerojson.internal.printJsonTo
+import dev.dokky.zerojson.internal.appendJsonTo
 import dev.dokky.zerojson.internal.toJsonString
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -190,7 +190,7 @@ public class JsonObject(
 ) : JsonElement(), Map<String, JsonElement> by content {
     public override fun equals(other: Any?): Boolean = content == other
     public override fun hashCode(): Int = content.hashCode()
-    public override fun toString(): String = buildString { printJsonTo(this) }
+    public override fun toString(): String = buildString { appendJsonTo(this) }
 }
 
 /**
@@ -204,7 +204,7 @@ public class JsonObject(
 public class JsonArray(private val content: List<JsonElement>) : JsonElement(), List<JsonElement> by content {
     public override fun equals(other: Any?): Boolean = content == other
     public override fun hashCode(): Int = content.hashCode()
-    public override fun toString(): String = buildString { printJsonTo(this) }
+    public override fun toString(): String = buildString { appendJsonTo(this) }
 }
 
 /**

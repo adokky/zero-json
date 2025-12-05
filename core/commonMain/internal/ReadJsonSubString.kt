@@ -12,13 +12,13 @@ import kotlin.jvm.JvmOverloads
 @JvmOverloads
 internal fun JsonReaderImpl.readString(
     reader: Utf8TextReader,
-    dest1: RandomAccessTextReaderSubString,
+    dest1: TextReaderSubString,
     dest2: SimpleSubString,
     requireQuotes: Boolean = config.expectStringQuotes,
     allowNull: Boolean = false,
     maxLength: Int = DEFAULT_MAX_STRING_LENGTH,
     onMaxLength: DecodingErrorHandler<String> = fail
-): AbstractMutableSubString {
+): AbstractSubString {
     val stringStart = position
     val scanResult = scanString(
         requireQuotes = requireQuotes,

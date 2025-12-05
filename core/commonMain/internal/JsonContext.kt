@@ -246,7 +246,7 @@ internal class JsonContext(
         }
         finally {
             dataBuilder.clearAndShrink()
-            input.resetInput()
+            input.close()
             decoder.close()
         }
     }

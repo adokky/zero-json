@@ -38,7 +38,6 @@ internal class ZeroJsonDescriptor private constructor(
     private var elementOffsets: ShortArray?,
     val kindFlags: SerialKindFlags,
     val classDiscriminator: String?,
-    val classDiscriminatorUtf8Encoded: AbstractSubString?,
     val classDiscriminatorSubString: SimpleSubString?
 ) {
     /**
@@ -89,7 +88,6 @@ internal class ZeroJsonDescriptor private constructor(
             elementOffsets = elementOffsets,
             kindFlags = kindFlags,
             classDiscriminator = classDiscriminator,
-            classDiscriminatorUtf8Encoded = classDiscriminatorUtf8Encoded,
             classDiscriminatorSubString = classDiscriminatorSubString
         )
     }
@@ -356,7 +354,7 @@ internal class ZeroJsonDescriptor private constructor(
     fun getElementDescriptor(index: Int): ZeroJsonDescriptor? =
         elements.getOrNull(index)
 
-    private fun getElementByCaseInsensitiveAsciiName(name: RandomAccessTextReaderSubString, tempBuffer: ArrayBuffer): ElementInfo {
+    private fun getElementByCaseInsensitiveAsciiName(name: TextReaderSubString, tempBuffer: ArrayBuffer): ElementInfo {
         val nameLength = name.sourceLength
         var hash = 1
         name.reader.readAtPosition(name.start) {
@@ -381,7 +379,7 @@ internal class ZeroJsonDescriptor private constructor(
 
     fun getElementInfoByName(name: AbstractSubString, tempBuffer: ArrayBuffer): ElementInfo =
         if (caseInsensitiveEnum) {
-            if (allNamesAreAscii && name is RandomAccessTextReaderSubString) {
+            if (allNamesAreAscii && name is TextReaderSubString) {
                 getElementByCaseInsensitiveAsciiName(name, tempBuffer)
             } else {
                 // slow path: may allocate 2 strings at worst
@@ -457,7 +455,6 @@ internal class ZeroJsonDescriptor private constructor(
                 elementOffsets = null,
                 kindFlags = serialDescriptor.kind.getFlags(),
                 classDiscriminator = classDiscriminator,
-                classDiscriminatorUtf8Encoded = classDiscriminator?.asUtf8SubString(),
                 classDiscriminatorSubString = classDiscriminator?.substringWrapper()
             )
 
@@ -524,10 +521,3 @@ internal val ZeroJsonDescriptor.kind: SerialKind    get() = serialDescriptorUnsa
 
 internal fun ZeroJsonDescriptor.needWrappingIfSubclass(): Boolean =
     isNullable || !kind.let { it == StructureKind.CLASS || it == StructureKind.OBJECT }
-
-internal fun ZeroJsonDescriptor.discriminatorSubStringFor(textReader: RandomAccessTextReader): AbstractSubString? =
-    if (textReader is Utf8TextReader) {
-        classDiscriminatorUtf8Encoded
-    } else {
-        classDiscriminatorSubString
-    }

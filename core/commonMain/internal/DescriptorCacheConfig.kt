@@ -30,7 +30,6 @@ internal class DescriptorCacheConfig(
         var result = useAlternativeNames.hashCode()
         result = 31 * result + decodeEnumsCaseInsensitive.hashCode()
         result = 31 * result + ignoreUnknownKeys.hashCode()
-        result = 31 * result + _hashCode
         result = 31 * result + serializersModule.hashCode()
         result = 31 * result + (namingStrategy?.hashCode() ?: 0)
         result = 31 * result + classDiscriminator.hashCode()
@@ -43,7 +42,9 @@ internal class DescriptorCacheConfig(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is DescriptorCacheConfig) return false
-        if (_hashCode != 0 && other._hashCode != 0 && _hashCode != other._hashCode) return false
+        val c0 = _hashCode
+        val c1 = other._hashCode
+        if (c0 != 0 && c1 != 0 && c0 != c1) return false
 
         if (useAlternativeNames != other.useAlternativeNames) return false
         if (decodeEnumsCaseInsensitive != other.decodeEnumsCaseInsensitive) return false

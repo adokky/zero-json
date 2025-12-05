@@ -6,7 +6,7 @@ import kotlinx.serialization.descriptors.*
 internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
     private val sharedCache: DescriptorMap? =
         when (config.cacheMode) {
-            CacheMode.NON_SHARED -> null
+            CacheMode.EXCLUSIVE -> null
             else -> SHARED_CACHES?.getOrCreate(config)
         }
 
@@ -36,8 +36,7 @@ internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
             return result
         }
 
-        // Using temporary hash-map to make atomic changes to main registry hash-map.
-        // Allows concurrent writes to main registry hash-map.
+        // Using temporary hash-map to make consistent changes to shared registry hash-map.
         val tempRegistry = HashMap<SerialDescriptor, ZeroJsonDescriptor>()
         val result = create(descriptor, tempRegistry)
 
@@ -94,7 +93,7 @@ internal class DescriptorCache(internal val config: DescriptorCacheConfig) {
             else -> null
         }
     
-    private companion object {
+    companion object {
         val SHARED_CACHES: SharedDescriptorCaches? = createSharedCaches()
     }
 }

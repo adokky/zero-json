@@ -14,7 +14,7 @@ equalsTester = { module = "io.github.adokky:equals-tester", version = "1.1.0" }
 karamelUtils-core = { module = "io.github.adokky:karamel-utils-core", version = "0.2.0" }
 karamelUtils-tsbits = { module = "io.github.adokky:karamel-utils-ts-bits", version = "0.1.1" }
 kodec-struct = { module = "io.github.adokky:kodec-struct", version = "0.2.1" }
-kodec-strings-stream = { module = "io.github.adokky:kodec-strings-stream", version = "0.8.9" }
+kodec-strings-stream = { module = "io.github.adokky:kodec-strings-stream", version = "0.9.0" }
 kodec-strings-common = { module = "io.github.adokky:kodec-strings-common", version = "0.1.2" }
 kodec-strings-utf = { module = "io.github.adokky:kodec-strings-utf", version = "0.3.8" }
 kodec-buffers-core = { module = "io.github.adokky:kodec-buffers-core", version = "0.5.3" }

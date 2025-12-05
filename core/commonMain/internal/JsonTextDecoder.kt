@@ -35,7 +35,7 @@ internal class JsonTextDecoder(
 
     private val tempJsonKeyBuffer = ArrayBuffer(config.maxKeyLengthBytes)
     private val tempSimpleSubString: SimpleSubString = "".substringWrapper()
-    private val tempTrSubString = RandomAccessTextReaderSubString()
+    private val tempTrSubString = TextReaderSubString()
 
     val config: ZeroJsonConfiguration get() = context.config
     override val zeroJson: ZeroJson get() = context.zeroJson
@@ -92,8 +92,8 @@ internal class JsonTextDecoder(
         prepareInlineDecodingOffset = 0
         firstNonDiscKeyStart = 0
         clearDiscriminatorState()
-        tempTrSubString.clear()
-        tempSimpleSubString.clear()
+        tempTrSubString.close()
+        tempSimpleSubString.close()
         compoundChildDecoder?.let {
             it.close()
             compoundChildDecoder = null
@@ -649,7 +649,7 @@ internal class JsonTextDecoder(
     internal fun JsonReaderImpl.readJsonSubString(
         requireQuotes: Boolean = config.expectStringQuotes,
         allowNull: Boolean = false,
-    ): AbstractMutableSubString =
+    ): AbstractSubString =
         when (val input = input) {
             is Utf8TextReader ->
                 readString(input, tempTrSubString, tempSimpleSubString, requireQuotes = requireQuotes, allowNull = allowNull)
@@ -659,7 +659,7 @@ internal class JsonTextDecoder(
             }
         }
 
-    private fun ZeroJsonDescriptor.getElementInfo(substring: AbstractMutableSubString): ElementInfo =
+    private fun ZeroJsonDescriptor.getElementInfo(substring: AbstractSubString): ElementInfo =
         getElementInfoByName(substring, tempJsonKeyBuffer)
 
     private val unsignedDecoder = JsonTextDecoderForUnsignedTypes(this)
@@ -706,7 +706,7 @@ internal class JsonTextDecoder(
         return elementInfo.index
     }
 
-    private fun getElementInfo(descriptor: SerialDescriptor, name: AbstractMutableSubString): ElementInfo =
+    private fun getElementInfo(descriptor: SerialDescriptor, name: AbstractSubString): ElementInfo =
         context.descriptorCache
             .getOrCreateUnsafe(descriptor)
             .getElementInfo(name)
@@ -806,7 +806,7 @@ internal class JsonTextDecoder(
 
         var lookupResult: PolymorphicSerializerCache.DeserializerLookupResult? = null
         if (!reader.nextIs('}')) {
-            val discriminator = baseDescriptor.discriminatorSubStringFor(reader.input)!!
+            val discriminator = baseDescriptor.classDiscriminatorSubString
             do {
                 val keyStart = reader.position
                 val key = reader.readJsonSubString()

@@ -344,7 +344,7 @@ sealed interface ZeroJsonConfigurationBase {
      *
      * - [CacheMode.SHARED] — Uses a shared cache across all [ZeroJson] instances (default).
      * - [CacheMode.TWO_LEVEL] — Combines thread-local and shared caching for minimizing runtime overheads.
-     * - [CacheMode.NON_SHARED] — Uses a thread-local caches across all [ZeroJson] instances.
+     * - [CacheMode.EXCLUSIVE] — Uses a thread-local caches across all [ZeroJson] instances.
      *
      * @see CacheMode
      */
@@ -416,5 +416,5 @@ enum class CacheMode {
      *
      * Most efficient option for single-threaded workloads.
      */
-    NON_SHARED
+    EXCLUSIVE
 }

@@ -8,6 +8,7 @@ internal const val DEFAULT_DESCRIPTOR_MAP_CAPACITY = 256
 
 internal interface SharedDescriptorCaches {
     fun getOrCreate(config: DescriptorCacheConfig): DescriptorMap?
+    fun clear()
 }
 
 internal class SimpleSharedCaches: SharedDescriptorCaches {
@@ -15,6 +16,10 @@ internal class SimpleSharedCaches: SharedDescriptorCaches {
 
     override fun getOrCreate(config: DescriptorCacheConfig): DescriptorMap =
         caches.getOrPut(config) { HashMap(DEFAULT_DESCRIPTOR_MAP_CAPACITY) }
+
+    override fun clear() {
+        caches.clear()
+    }
 }
 
 internal expect fun createSharedCaches(): SharedDescriptorCaches?

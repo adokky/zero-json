@@ -111,7 +111,7 @@ class KeyValueSerializersTest : JsonTestBase() {
     }
 
     @Test
-    fun testKeyValuePair() = jvmOnly { // todo incorrect MapEntrySerializer.MapEntry.equals() implementation
+    fun testKeyValuePair() = jvmOnly {
         parametrizedTest { jsonTestingMode ->
             testEntry(
                 Entry(42, 43),

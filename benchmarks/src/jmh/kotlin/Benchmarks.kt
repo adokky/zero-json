@@ -1,20 +1,8 @@
 package karamel.benchmarks
 
-import dev.dokky.zerojson.CacheMode
-import dev.dokky.zerojson.ZeroJson
-import dev.dokky.zerojson.decodeFromJsonElement
-import dev.dokky.zerojson.encode
-import dev.dokky.zerojson.encodeToJsonElement
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.decodeFromByteArray
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToByteArray
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.decodeFromStream
-import kotlinx.serialization.json.encodeToJsonElement
-import kotlinx.serialization.json.encodeToStream
+import dev.dokky.zerojson.*
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
@@ -30,7 +18,7 @@ private var ENCODED_DATA_STRING = ZeroJson.encodeToString(TEST_DATA)
 
 private var ENCODED_DATA_TREE = ZeroJson.encodeToJsonElement(TEST_DATA)
 
-private val zJsonNonShared = ZeroJson { cacheMode = CacheMode.NON_SHARED }
+private val zJsonNonShared = ZeroJson { cacheMode = CacheMode.EXCLUSIVE }
 
 private val zJsonTwoLevel = ZeroJson { cacheMode = CacheMode.TWO_LEVEL }
 

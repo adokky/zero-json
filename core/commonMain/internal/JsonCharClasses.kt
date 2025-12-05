@@ -14,42 +14,42 @@ internal object JsonCharClasses: AutoBitDescriptors(capacity = 8) {
     val INVALID = uniqueBit() + STR_TERM
 
     val mapper = CharToClassMapper<JsonCharClasses>().apply {
-        putBits(-1, WORD_TERM) // EOF
+        assignClasses(-1, WORD_TERM) // EOF
 
         // ASCII control characters
         for (i in 0 ..< 0x20) {
-            putBits(i, INVALID)
+            assignClasses(i, INVALID)
         }
 
         // whitespace
-        putBits(0x09, WHITESPACE) // HT
-        putBits(0x0a, WHITESPACE) // LF
-        putBits(0x0d, WHITESPACE) // CR
-        putBits(0x20, WHITESPACE) // space
+        assignClasses(0x09, WHITESPACE) // HT
+        assignClasses(0x0a, WHITESPACE) // LF
+        assignClasses(0x0d, WHITESPACE) // CR
+        assignClasses(0x20, WHITESPACE) // space
 
         for (c in '0'..'9') {
-            putBits(c, DIGIT)
+            assignClasses(c, DIGIT)
         }
 
-        putBits('e', FLOAT)
-        putBits('E', FLOAT)
+        assignClasses('e', FLOAT)
+        assignClasses('E', FLOAT)
 
-        putBits('N', FLOAT)
-        putBits('a', FLOAT)
+        assignClasses('N', FLOAT)
+        assignClasses('a', FLOAT)
 
-        putBits(',', TOKEN + WORD_TERM)
-        putBits('.', FLOAT)
-        putBits('-', FLOAT)
-        putBits('+', FLOAT)
-        putBits(':', TOKEN + WORD_TERM)
-        putBits('{', TOKEN + WORD_TERM)
-        putBits('}', TOKEN + WORD_TERM)
-        putBits('[', TOKEN + WORD_TERM)
-        putBits(']', TOKEN + WORD_TERM)
-        putBits('"', DOUBLE_QUOTES + TOKEN + WORD_TERM)
+        assignClasses(',', TOKEN + WORD_TERM)
+        assignClasses('.', FLOAT)
+        assignClasses('-', FLOAT)
+        assignClasses('+', FLOAT)
+        assignClasses(':', TOKEN + WORD_TERM)
+        assignClasses('{', TOKEN + WORD_TERM)
+        assignClasses('}', TOKEN + WORD_TERM)
+        assignClasses('[', TOKEN + WORD_TERM)
+        assignClasses(']', TOKEN + WORD_TERM)
+        assignClasses('"', DOUBLE_QUOTES + TOKEN + WORD_TERM)
     }
 
-    fun isToken(codePoint: Int): Boolean = TOKEN in mapper.getBits(codePoint)
-    fun isWhitespace(codePoint: Int): Boolean = WHITESPACE in mapper.getBits(codePoint)
-    fun isStringTerminator(codePoint: Int): Boolean = STR_TERM in mapper.getBits(codePoint)
+    fun isToken(codePoint: Int): Boolean = TOKEN in mapper.getClasses(codePoint)
+    fun isWhitespace(codePoint: Int): Boolean = WHITESPACE in mapper.getClasses(codePoint)
+    fun isStringTerminator(codePoint: Int): Boolean = STR_TERM in mapper.getClasses(codePoint)
 }

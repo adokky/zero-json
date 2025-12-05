@@ -33,7 +33,7 @@ internal value class ElementInfo(val asInt: Int) {
             else -> "INVALID($asInt)"
         }
 
-        return "ElementInfo(index=$index, inlineElementIndex=$inlineSiteIndex)"
+        return "ElementInfo(index=$index, inlineSiteIndex=$inlineSiteIndex)"
     }
 
     companion object {

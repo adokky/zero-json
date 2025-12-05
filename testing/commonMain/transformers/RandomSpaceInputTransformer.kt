@@ -4,7 +4,7 @@ import dev.dokky.zerojson.framework.MutableTestInput
 import dev.dokky.zerojson.framework.TestInputTransformer
 import dev.dokky.zerojson.framework.TestTarget
 
-class RandomSpaceInputTransformer(
+open class RandomSpaceInputTransformer(
 	val maxRandomSpaces: Int = 3
 ): TestInputTransformer(
 	name = "Randomized space",
@@ -18,4 +18,6 @@ class RandomSpaceInputTransformer(
 	override fun transform(input: MutableTestInput) {
 		input.composerConfig = input.composerConfig.copy(maxRandomSpaces = maxRandomSpaces)
 	}
+
+    companion object Default: RandomSpaceInputTransformer()
 }

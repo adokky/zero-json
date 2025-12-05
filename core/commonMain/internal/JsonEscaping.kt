@@ -70,17 +70,17 @@ internal fun TextWriter.appendJsonString(value: String, start: Int, end: Int, es
 }
 
 @InternalSerializationApi
-fun String.printJsonStringTo(destination: StringBuilder) {
+fun String.appendJsonStringTo(destination: StringBuilder) {
     JsonTextWriter(StringTextWriter(destination)).writeString(this)
 }
 
 @InternalSerializationApi
-fun JsonElement.printJsonTo(destination: StringBuilder) {
+fun JsonElement.appendJsonTo(destination: StringBuilder) {
     JsonTextWriter(StringTextWriter(destination)).write(this, skipNullKeys = false)
 }
 
 @InternalSerializationApi
-fun String.toJsonString(): String = StringBuilder(length + 4).also { printJsonStringTo(it) }.toString()
+fun String.toJsonString(): String = StringBuilder(length + 4).also { appendJsonStringTo(it) }.toString()
 
 internal fun TextWriter.appendQuotes(escapingDepth: Int) {
     if (escapingDepth == EscapingDepth.INITIAL) {
