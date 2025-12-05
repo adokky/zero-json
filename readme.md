@@ -24,7 +24,7 @@ println(ZeroJson.decodeFromString<Base>(s))
 
 ## Differences from `kotlinx-serialization-json`
 
-* The input JSON string must be fully loaded into memory before decoding. This library is not suitable for deserializing large JSON files. This limitation is irrelevant for typical REST APIs, where request and response sizes are limited. Non-blocking setup also has a soft requirement for JSON to be moderately small (otherwise it will require offloading deserialization to a separate thread)
+* The input JSON string must be fully loaded into memory before decoding. This library is not suitable for deserializing large JSON files. This limitation is irrelevant for typical REST APIs, where request and response sizes are limited
 * No [array polymorphism](https://kotlinlang.org/api/kotlinx.serialization/kotlinx-serialization-json/kotlinx.serialization.json/-json-builder/use-array-polymorphism.html)
 * Option to serialize structured map keys as escaped strings.
 * [External][external-ser] serializers and [partial][partial-ser] custom serializers are not supported because of the [bug][descriptor-bug].
@@ -37,7 +37,7 @@ println(ZeroJson.decodeFromString<Base>(s))
   [partial-ser]: https://github.com/Kotlin/kotlinx.serialization/blob/master/formats/json-tests/commonTest/src/kotlinx/serialization/features/PartiallyCustomSerializerTest.kt
   [descriptor-bug]: https://github.com/Kotlin/kotlinx.serialization/issues/2549
 
-### Setup
+## Setup
 
 Setup Google repository (zero-json uses `androidx.collection:collection` under the hood):
 
@@ -47,7 +47,7 @@ repositories {
 }
 ```
 
-#### Standalone (`zero-json-core`)
+### Standalone (`zero-json-core`)
 
 This option allows you to use all the features specific to zero-json.
 
@@ -55,7 +55,7 @@ This option allows you to use all the features specific to zero-json.
 implementation("io.github.adokky:zero-json-core:0.2.0")
 ```
 
-#### Drop-in replacement  (`zero-json-kotlinx`)
+### Drop-in replacement  (`zero-json-kotlinx`)
 
 Use this if you only want faster `kotlinx-serialization-json` and nothing more.
 
@@ -75,7 +75,7 @@ configurations.all {
 
 Both `zero-json-core` and `zero-json-kotlinx` can be used simultaneously.
 
-### @JsonInline
+## @JsonInline
 
 Quick example:
 
