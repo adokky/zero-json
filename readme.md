@@ -6,8 +6,6 @@
 
 Fast and powerful implementation of JSON format for [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization).
 
-## Features
-
 * **Compatibility**: Can be used as a drop-in replacement for [kotlinx-serialization-json](https://github.com/Kotlin/kotlinx.serialization/tree/master).
 * **Zero extra allocation**: only deserialized objects are allocated. Exceptions include `Float`/`Double` types (zero allocations in most cases) and some kotlinx serializers that use `ChunkedDecoder`.
 * **Zero-copy**: deserialize objects without intermediate copies by wrapping any byte buffer. Buffer wrapping is done through a simple `Buffer` interface that requires only `size` property and `get` method to be implemented.
@@ -26,14 +24,12 @@ println(ZeroJson.decodeFromString<Base>(s))
 
 ## Differences from `kotlinx-serialization-json`
 
-* The input JSON string must be fully loaded into memory before decoding. This library is not suitable for deserializing large JSON files. However, this limitation is irrelevant for:
-    * Typical REST APIs, where request and response sizes are limited
-    * Non-blocking setups, since all existing serializers are blocking and share the same requirement of having complete data in memory before processing
+* The input JSON string must be fully loaded into memory before decoding. This library is not suitable for deserializing large JSON files. This limitation is irrelevant for typical REST APIs, where request and response sizes are limited. Non-blocking setup also has a soft requirement for JSON to be moderately small (otherwise it will require offloading deserialization to a separate thread)
 * No [array polymorphism](https://kotlinlang.org/api/kotlinx.serialization/kotlinx-serialization-json/kotlinx.serialization.json/-json-builder/use-array-polymorphism.html)
 * Option to serialize structured map keys as escaped strings.
 * [External][external-ser] serializers and [partial][partial-ser] custom serializers are not supported because of the [bug][descriptor-bug].
 * Duplicate JSON object keys are not allowed
-* On JS: no `dynamic` (de)serialization 
+* On JS: no `dynamic` support
 * On JVM: There is no support for `InputStream`/`OutputStream`. Nearly all I/O libraries and frameworks provide access to underlying array or buffer abstractions. Wrapping these is the intended way to use this library. If you absolutely require `InputStream` or `OutputStream`, you can wrap them around an `ArrayBuffer`. However, for any streaming workload, we recommend using the original `kotlinx-serialization-json` instead.
 
 
@@ -43,9 +39,7 @@ println(ZeroJson.decodeFromString<Base>(s))
 
 ### Setup
 
-3 options: drop-in replacement, standalone library and both.
-
-All of them require google repository because zero-json uses `androidx.collection:collection` under the hood:
+Setup Google repository (zero-json uses `androidx.collection:collection` under the hood):
 
 ```kotlin
 repositories {
@@ -58,9 +52,7 @@ repositories {
 This option allows you to use all the features specific to zero-json.
 
 ```kotlin
-dependencies {
-    commonMainImplementation("io.github.adokky:zero-json-core:0.1.2")
-}
+implementation("io.github.adokky:zero-json-core:0.2.0")
 ```
 
 #### Drop-in replacement  (`zero-json-kotlinx`)
@@ -68,9 +60,7 @@ dependencies {
 Use this if you only want faster `kotlinx-serialization-json` and nothing more.
 
 ```kotlin
-dependencies {
-    commonMainImplementation("io.github.adokky:zero-json-kotlinx:0.1.2")
-}
+implementation("io.github.adokky:zero-json-kotlinx:0.2.0")
 ```
 
 If you have transitive `kotlinx-serialization-json` somewhere in dependency graph, setup capability resolution:
@@ -83,9 +73,7 @@ configurations.all {
 }
 ```
 
-#### Mixed
-
-You can use both if you have a bunch of custom serializers tied to `kotlinx-serialization-json`, and you still want the advanced functionality of zero-json.
+Both `zero-json-core` and `zero-json-kotlinx` can be used simultaneously.
 
 ### @JsonInline
 
