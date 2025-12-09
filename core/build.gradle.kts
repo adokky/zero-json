@@ -38,6 +38,7 @@ dependencies {
 
     commonMainImplementation(libs.androidx.collection)
     commonMainImplementation(libs.kodec.struct)
+    jvmMainImplementation(libs.kodec.javaIo)
     commonMainImplementation(libs.kodec.strings.stream)
     commonMainImplementation(libs.kodec.strings.common)
     commonMainImplementation(libs.kodec.strings.utf)

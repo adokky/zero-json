@@ -52,6 +52,7 @@ dependencies {
         val c = libs.kotlinx.serialization.json.get()
         exclude(c.group, c.name)
     }
+    jvmTestImplementation(libs.kotlinx.coroutines.jdk8)
 }
 
 configurations.all {
@@ -60,10 +61,4 @@ configurations.all {
         capability("io.github.adokky:zero-json-kotlinx:$version")
         capability("${c.group}:${c.name}:${c.version}")
     }
-//    resolutionStrategy.dependencySubstitution {
-//        substitute(module("${c.group}:${c.name}")).using(project(":zero-json-kotlinx"))
-//    }
-//    resolutionStrategy.capabilitiesResolution.withCapability("org.jetbrains.kotlinx:kotlinx-serialization-json") {
-//        select(candidates.singleOrNull { (it.id as? ModuleComponentIdentifier)?.group == "io.github.adokky" } ?: candidates.first())
-//    }
 }
