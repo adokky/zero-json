@@ -11,7 +11,7 @@ internal object JsonCharClasses: AutoBitDescriptors(capacity = 8) {
     val STR_TERM = uniqueBit()
     val WHITESPACE = uniqueBit() + TOKEN + STR_TERM
     val WORD_TERM = uniqueBit() + STR_TERM
-    val INVALID = uniqueBit() + STR_TERM
+    val INVALID = uniqueBit()
 
     val mapper = CharToClassMapper<JsonCharClasses>().apply {
         assignClasses(-1, WORD_TERM) // EOF
