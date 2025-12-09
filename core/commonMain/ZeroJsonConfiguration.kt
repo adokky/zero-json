@@ -24,7 +24,8 @@ class ZeroJsonConfiguration internal constructor(
     override val stableDefaultProviders: Boolean = false,
     override val maxStructureDepth: Int = 60,
     override val maxKeyLengthBytes: Int = 1024,
-    override val maxOutputBytes: Int = 100 * 1024,
+    override val maxEncodedBytes: Int = 512 * 1024,
+    override val maxStringLength: Int = 300_000,
     override val maxInlineProperties: Int = 4096,
     override val fullStackTraces: Boolean = false,
     override val allowTrailingComma: Boolean = false,
@@ -60,7 +61,8 @@ class ZeroJsonConfiguration internal constructor(
         result = 31 * result + stableDefaultProviders.hashCode()
         result = 31 * result + maxStructureDepth
         result = 31 * result + maxKeyLengthBytes
-        result = 31 * result + maxOutputBytes
+        result = 31 * result + maxEncodedBytes
+        result = 31 * result + maxStringLength
         result = 31 * result + maxInlineProperties
         result = 31 * result + fullStackTraces.hashCode()
         result = 31 * result + serializersModule.hashCode()
@@ -87,7 +89,8 @@ class ZeroJsonConfiguration internal constructor(
         if (stableDefaultProviders != other.stableDefaultProviders) return false
         if (maxStructureDepth != other.maxStructureDepth) return false
         if (maxKeyLengthBytes != other.maxKeyLengthBytes) return false
-        if (maxOutputBytes != other.maxOutputBytes) return false
+        if (maxEncodedBytes != other.maxEncodedBytes) return false
+        if (maxStringLength != other.maxStringLength) return false
         if (maxInlineProperties != other.maxInlineProperties) return false
         if (fullStackTraces != other.fullStackTraces) return false
         if (serializersModule != other.serializersModule) return false
@@ -133,21 +136,16 @@ class ZeroJsonConfiguration internal constructor(
 fun ZeroJsonConfiguration(
     configuration: JsonConfiguration,
     serializersModule: SerializersModule
-): ZeroJsonConfiguration = ZeroJsonConfiguration(
-    serializersModule = serializersModule,
-    namingStrategy = configuration.namingStrategy,
-    ignoreUnknownKeys = configuration.ignoreUnknownKeys,
-    decodeEnumsCaseInsensitive = configuration.decodeEnumsCaseInsensitive,
-    useAlternativeNames = configuration.useAlternativeNames,
-    explicitNulls = configuration.explicitNulls,
-    encodeDefaults = configuration.encodeDefaults,
-    allowSpecialFloatingPointValues = configuration.allowSpecialFloatingPointValues,
-    allowComments = configuration.allowComments,
-    coerceInputValues = configuration.coerceInputValues,
-    isLenient = configuration.isLenient,
-    classDiscriminator = configuration.classDiscriminator,
-    allowTrailingComma = configuration.allowTrailingComma,
-    strictJsonPrimitives = false,
-    structuredMapKeysMode = if (configuration.allowStructuredMapKeys) StructuredMapKeysMode.LIST else StructuredMapKeysMode.DISABLED,
-    discriminatorConflict = DiscriminatorConflictDetection.SEALED,
-)
+): ZeroJsonConfiguration =
+    ZeroJsonConfiguration(ZeroJsonConfiguration.Default, configuration, serializersModule)
+
+@InternalSerializationApi
+fun ZeroJsonConfiguration(
+    base: ZeroJsonConfiguration,
+    override: JsonConfiguration,
+    serializersModule: SerializersModule
+): ZeroJsonConfiguration = ZeroJsonBuilder(base).run {
+    this.serializersModule = serializersModule
+    apply(override)
+    toConfig()
+}

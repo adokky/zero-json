@@ -293,12 +293,20 @@ sealed interface ZeroJsonConfigurationBase {
     val maxKeyLengthBytes: Int
 
     /**
-     * Maximum size of JSON output in bytes.
-     * The limit only applied when encoding into binary output ([io.kodec.buffers.MutableBuffer], [ByteArray], etc.)
+     * Maximum size of UTF-8 encoded JSON input/output in bytes.
      *
-     * `102400` (`100` KiB) by default.
+     * `102_400` (`100` KiB) by default.
      */
-    val maxOutputBytes: Int
+    val maxEncodedBytes: Int
+
+    /**
+     * Specifies the maximum allowed length of a JSON string value in characters ([Char]).
+     * If a string exceeds this limit, a [SerializationException] will be thrown during deserialization.
+     * This limit helps prevent potential memory issues or denial-of-service attacks caused by extremely large strings.
+     *
+     * `300_000` by default.
+     */
+    val maxStringLength: Int
 
     /**
      * Maximum number of inline properties allowed per object.

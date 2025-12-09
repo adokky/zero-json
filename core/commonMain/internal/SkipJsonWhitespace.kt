@@ -4,7 +4,7 @@ import io.kodec.text.TextReader
 import karamel.utils.toInt
 
 internal fun TextReader.skipJsonWhitespace(allowComments: Boolean) {
-    skipWhitespace()
+    while(JsonCharClasses.isWhitespace(nextCodePoint)) readCodePoint()
 
     if (nextCodePoint * allowComments.toInt() == '/'.code) {
         doSkipWhitespaceWithComments()

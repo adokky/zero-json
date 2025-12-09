@@ -50,7 +50,7 @@ internal fun RandomAccessTextReader.readPrimitive(
     tempResultBuffer: ReadNumberResult,
     expectStringQuotes: Boolean,
     allowSpecialFloatingPointValues: Boolean,
-    maxStringLength: Int = DEFAULT_MAX_STRING_LENGTH
+    maxStringLength: Int = ZeroJsonConfiguration.Default.maxStringLength
 ): ZeroJsonElement? {
     if (trySkipJsonNull()) return null
 

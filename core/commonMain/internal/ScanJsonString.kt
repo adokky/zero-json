@@ -1,5 +1,6 @@
 package dev.dokky.zerojson.internal
 
+import dev.dokky.zerojson.ZeroJsonConfiguration
 import io.kodec.DecodingErrorHandler
 import io.kodec.StringHashCode
 import io.kodec.StringsUTF16
@@ -21,7 +22,7 @@ import kotlin.jvm.JvmStatic
 @JvmOverloads
 internal fun JsonReaderImpl.scanString(
     requireQuotes: Boolean = config.expectStringQuotes,
-    maxLength: Int = DEFAULT_MAX_STRING_LENGTH,
+    maxLength: Int = ZeroJsonConfiguration.Default.maxStringLength,
     onMaxLength: DecodingErrorHandler<String>,
     allowEscapes: Boolean = true,
     allowNull: Boolean = false,

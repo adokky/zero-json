@@ -1,10 +1,11 @@
 package dev.dokky.zerojson.internal
 
+import dev.dokky.zerojson.ZeroJsonConfiguration
 import io.kodec.DecodingErrorHandler
 
 internal fun JsonReaderImpl.skipString(
     expectQuotes: Boolean = config.expectStringQuotes,
-    maxLength: Int = DEFAULT_MAX_STRING_LENGTH,
+    maxLength: Int = ZeroJsonConfiguration.Default.maxStringLength,
     onMaxLength: DecodingErrorHandler<String> = fail,
     allowNull: Boolean = false,
     allowBoolean: Boolean = true

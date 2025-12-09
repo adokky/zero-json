@@ -1,6 +1,7 @@
 package kotlinx.serialization.json
 
 import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.ZeroJsonConfiguration
 import dev.dokky.zerojson.setKtxJson
 import kotlinx.serialization.*
 import kotlinx.serialization.json.internal.FormatLanguage
@@ -226,7 +227,12 @@ public fun Json(from: Json = Json.Default, builderAction: JsonBuilder.() -> Unit
     val builder = JsonBuilder(from)
     builder.builderAction()
     val conf = builder.build()
-    return JsonImpl(conf, builder.serializersModule)
+    val zcfg = ZeroJsonConfiguration(
+        base = from.zeroJson.configuration,
+        override = conf,
+        serializersModule = builder.serializersModule
+    )
+    return JsonImpl(ZeroJson(zcfg), conf)
 }
 
 /**
@@ -546,7 +552,10 @@ public class JsonBuilder internal constructor(json: Json) {
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-private class JsonImpl(configuration: JsonConfiguration, module: SerializersModule) : Json(configuration, module) {
+internal class JsonImpl(
+    zeroJson: ZeroJson,
+    configuration: JsonConfiguration
+) : Json(zeroJson, configuration) {
     init {
         validateConfiguration()
     }

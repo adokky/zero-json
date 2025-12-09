@@ -1,5 +1,6 @@
 package dev.dokky.zerojson.internal
 
+import dev.dokky.zerojson.ZeroJsonConfiguration
 import io.kodec.DecodingErrorHandler
 import io.kodec.StringHashCode
 import io.kodec.StringsUTF8
@@ -9,14 +10,13 @@ import io.kodec.text.Utf8TextReader
 import karamel.utils.BitDescriptors
 import karamel.utils.Bits32
 
-internal const val DEFAULT_MAX_STRING_LENGTH = 65535
 internal const val MAX_STRING_LENGTH_ERR_MESSAGE = "string is too large"
 
 /** @return hash code */
 internal fun RandomAccessTextReader.readJsonString(
     output: StringBuilder,
     requireQuotes: Boolean,
-    maxLength: Int = DEFAULT_MAX_STRING_LENGTH,
+    maxLength: Int = ZeroJsonConfiguration.Default.maxStringLength,
     onMaxLength: DecodingErrorHandler<String> = fail,
     allowNull: Boolean = false,
     allowBoolean: Boolean = true

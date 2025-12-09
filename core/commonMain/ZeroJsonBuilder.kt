@@ -40,7 +40,8 @@ class ZeroJsonBuilder @PublishedApi internal constructor(config: ZeroJsonConfigu
     override var stableDefaultProviders: Boolean              = config.stableDefaultProviders
     override var maxStructureDepth: Int                       = config.maxStructureDepth
     override var maxKeyLengthBytes: Int                       = config.maxKeyLengthBytes
-    override var maxOutputBytes: Int                          = config.maxOutputBytes
+    override var maxEncodedBytes: Int                         = config.maxEncodedBytes
+    override var maxStringLength: Int                         = config.maxStringLength
     override var maxInlineProperties: Int                     = config.maxInlineProperties
     override var fullStackTraces: Boolean                     = config.fullStackTraces
     override var strictJsonPrimitives: Boolean                = config.strictJsonPrimitives
@@ -70,7 +71,8 @@ class ZeroJsonBuilder @PublishedApi internal constructor(config: ZeroJsonConfigu
         stableDefaultProviders = stableDefaultProviders,
         maxStructureDepth = maxStructureDepth,
         maxKeyLengthBytes = maxKeyLengthBytes,
-        maxOutputBytes = maxOutputBytes,
+        maxEncodedBytes = maxEncodedBytes,
+        maxStringLength = maxStringLength,
         maxInlineProperties = maxInlineProperties,
         fullStackTraces = fullStackTraces,
         strictJsonPrimitives = strictJsonPrimitives,
@@ -78,4 +80,23 @@ class ZeroJsonBuilder @PublishedApi internal constructor(config: ZeroJsonConfigu
         discriminatorConflict = discriminatorConflict,
         cacheMode = cacheMode,
     )
+}
+
+internal fun ZeroJsonBuilder.apply(configuration: JsonConfiguration): ZeroJsonBuilder {
+    namingStrategy = configuration.namingStrategy
+    ignoreUnknownKeys = configuration.ignoreUnknownKeys
+    decodeEnumsCaseInsensitive = configuration.decodeEnumsCaseInsensitive
+    useAlternativeNames = configuration.useAlternativeNames
+    explicitNulls = configuration.explicitNulls
+    encodeDefaults = configuration.encodeDefaults
+    allowSpecialFloatingPointValues = configuration.allowSpecialFloatingPointValues
+    allowComments = configuration.allowComments
+    coerceInputValues = configuration.coerceInputValues
+    isLenient = configuration.isLenient
+    classDiscriminator = configuration.classDiscriminator
+    allowTrailingComma = configuration.allowTrailingComma
+    strictJsonPrimitives = true
+    structuredMapKeysMode = if (configuration.allowStructuredMapKeys) StructuredMapKeysMode.LIST else StructuredMapKeysMode.DISABLED
+    discriminatorConflict = DiscriminatorConflictDetection.SEALED
+    return this
 }

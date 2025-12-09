@@ -1,5 +1,6 @@
 package dev.dokky.zerojson.internal
 
+import dev.dokky.zerojson.ZeroJsonConfiguration
 import io.kodec.DecodingErrorHandler
 import io.kodec.text.*
 import kotlin.jvm.JvmOverloads
@@ -16,7 +17,7 @@ internal fun JsonReaderImpl.readString(
     dest2: SimpleSubString,
     requireQuotes: Boolean = config.expectStringQuotes,
     allowNull: Boolean = false,
-    maxLength: Int = DEFAULT_MAX_STRING_LENGTH,
+    maxLength: Int = ZeroJsonConfiguration.Default.maxStringLength,
     onMaxLength: DecodingErrorHandler<String> = fail
 ): AbstractSubString {
     val stringStart = position
@@ -65,7 +66,7 @@ internal fun JsonReaderImpl.readString(
     dest: SimpleSubString,
     requireQuotes: Boolean = config.expectStringQuotes,
     allowNull: Boolean = false,
-    maxLength: Int = DEFAULT_MAX_STRING_LENGTH,
+    maxLength: Int = ZeroJsonConfiguration.Default.maxStringLength,
     onMaxLength: DecodingErrorHandler<String> = fail
 ) {
     val stringStart = position

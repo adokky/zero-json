@@ -12,6 +12,7 @@ import io.kodec.buffers.emptyByteArray
 import io.kodec.text.*
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.MissingFieldException
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -34,8 +35,8 @@ internal class JsonContext(
         }
     }
 
-    val dataBuilder = StringBuilderWrapper(256, maxCapacity = config.maxOutputBytes)
-    val messageBuilder = StringBuilderWrapper(256, maxCapacity = config.maxOutputBytes)
+    val dataBuilder = StringBuilderWrapper(256, maxCapacity = config.maxEncodedBytes)
+    val messageBuilder = StringBuilderWrapper(256, maxCapacity = config.maxEncodedBytes)
 
     private val bufferInput = ZeroUtf8TextReader(messageBuilder)
     val stringInput = ZeroStringTextReader(messageBuilder)
@@ -67,7 +68,8 @@ internal class JsonContext(
             stringBuilder = dataBuilder,
             messageBuilder = messageBuilder,
             depthLimit = config.maxStructureDepth,
-            allowTrailingComma = config.allowTrailingComma
+            allowTrailingComma = config.allowTrailingComma,
+            maxStringLength = config.maxStringLength
         )
     )
 
@@ -277,9 +279,16 @@ internal class JsonContext(
         }
     }
 
+    fun tempBuffer(): ArrayBuffer =
+        tempBuffer ?: (ArrayBuffer(config.maxEncodedBytes).also { tempBuffer = it })
+
     fun <T> encodeToByteArray(serializer: SerializationStrategy<T>, value: T): ByteArray {
-        val buf = tempBuffer ?: (ArrayBuffer(config.maxOutputBytes).also { tempBuffer = it })
-        val written = encode(value, serializer, buf)
+        val buf = tempBuffer()
+        val written = try {
+            encode(value, serializer, buf)
+        } catch (_: IndexOutOfBoundsException) {
+            throw SerializationException("reached maximum output size of ${config.maxEncodedBytes} bytes")
+        }
         return buf.toByteArray(endExclusive = written)
     }
 

@@ -32,13 +32,13 @@ internal class JsonReaderImpl private constructor(
 
     internal val readNumberResult = ReadNumberResult()
 
-    override fun readString(requireQuotes: Boolean): String = config.stringBuilder.buildString {
-        readString(this, requireQuotes = requireQuotes)
+    override fun readString(requireQuotes: Boolean, maxLength: Int): String = config.stringBuilder.buildString {
+        readString(this, requireQuotes = requireQuotes, maxLength = maxLength)
     }
 
     /** @return hash code */
-    override fun readString(output: StringBuilder, requireQuotes: Boolean): Int {
-        return input.readJsonString(output, requireQuotes = requireQuotes)
+    override fun readString(output: StringBuilder, requireQuotes: Boolean, maxLength: Int): Int {
+        return input.readJsonString(output, requireQuotes = requireQuotes, maxLength = maxLength)
             .also { skipWhitespace() }
     }
 

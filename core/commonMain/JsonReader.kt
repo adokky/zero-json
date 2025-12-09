@@ -34,18 +34,27 @@ abstract class JsonReader internal constructor(val config: JsonReaderConfig) {
      * Reads a JSON string.
      *
      * @param requireQuotes whether the string must be quoted
+     * @param maxLength maximum string length in characters
      * @return the string value without quotes
      */
-    abstract fun readString(requireQuotes: Boolean = config.expectStringQuotes): String
+    abstract fun readString(
+        requireQuotes: Boolean = config.expectStringQuotes,
+        maxLength: Int = config.maxStringLength
+    ): String
 
     /**
      * Reads a JSON string into [output].
      *
      * @param output the builder to append the string to
      * @param requireQuotes whether the string must be quoted
+     * @param maxLength maximum string length in characters
      * @return hash code of the string
      */
-    abstract fun readString(output: StringBuilder, requireQuotes: Boolean = config.expectStringQuotes): Int
+    abstract fun readString(
+        output: StringBuilder,
+        requireQuotes: Boolean = config.expectStringQuotes,
+        maxLength: Int = config.maxStringLength
+    ): Int
 
     /**
      * Reads a JSON number as a float.
