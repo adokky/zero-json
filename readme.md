@@ -22,7 +22,7 @@ println(ZeroJson.decodeFromString<Base>(s))
 ```
 * **Advanced deserializers (experimental)**: custom serializers has access to underlying parser (`JsonReader`). That allows implementing simple and efficient content-based polymorphism without extra allocations of `JsonElement`.
 
-## Differences from `kotlinx-serialization-json`
+## Other differences from `kotlinx-serialization-json`
 
 * The input JSON string must be fully loaded into memory before decoding. This library is not suitable for deserializing large JSON files. This limitation is irrelevant for typical REST APIs, where request and response sizes are limited
 * No [array polymorphism](https://kotlinlang.org/api/kotlinx.serialization/kotlinx-serialization-json/kotlinx.serialization.json/-json-builder/use-array-polymorphism.html)

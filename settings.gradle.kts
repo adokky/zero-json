@@ -13,6 +13,9 @@ project(":zero-json-core").projectDir = file("./core")
 include(":zero-json-kotlinx")
 project(":zero-json-kotlinx").projectDir = file("./kotlinx")
 
+include(":zero-json-spring-webflux")
+project(":zero-json-spring-webflux").projectDir = file("./spring-webflux")
+
 include(":benchmarks")
 include(":testing")
 

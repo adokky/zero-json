@@ -1,10 +1,13 @@
 [versions]
 kotlin = "2.3.0-RC2"
 kotlinx-serialization = "1.9.0"
+kotlinx-coroutines = "1.10.2"
 quickMpp = "0.21"
 jmh = "1.37"
 
 [libraries]
+kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 androidx-collection = { module = "androidx.collection:collection", version = "1.5.0" }
@@ -14,6 +17,7 @@ equalsTester = { module = "io.github.adokky:equals-tester", version = "1.1.0" }
 karamelUtils-core = { module = "io.github.adokky:karamel-utils-core", version = "0.2.0" }
 karamelUtils-tsbits = { module = "io.github.adokky:karamel-utils-ts-bits", version = "0.1.1" }
 kodec-struct = { module = "io.github.adokky:kodec-struct", version = "0.2.1" }
+kodec-javaIo = { module = "io.github.adokky:kodec-java-io", version = "0.1.0" }
 kodec-strings-stream = { module = "io.github.adokky:kodec-strings-stream", version = "0.9.1" }
 kodec-strings-common = { module = "io.github.adokky:kodec-strings-common", version = "0.1.2" }
 kodec-strings-utf = { module = "io.github.adokky:kodec-strings-utf", version = "0.3.8" }
