@@ -69,4 +69,4 @@ internal inline fun <reified T: Annotation> SerialDescriptor.hasElementAnnotatio
 
 internal fun SerialDescriptor.isMapWithStructuredKey(config: ZeroJsonConfiguration): Boolean =
     config.structuredMapKeysMode == StructuredMapKeysMode.LIST &&
-    getElementDescriptor(0).kind.getFlags().isCompound
+    getElementDescriptor(0).unnestInline().kind.getFlags().isCompound

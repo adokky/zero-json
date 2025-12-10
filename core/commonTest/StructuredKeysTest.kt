@@ -4,10 +4,12 @@ import dev.dokky.zerojson.framework.*
 import dev.dokky.zerojson.framework.transformers.RandomOrderInputTransformer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.addJsonObject
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.put
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class StructuredKeysTest: RandomizedJsonTest() {
@@ -92,5 +94,21 @@ class StructuredKeysTest: RandomizedJsonTest() {
             jsonElement = lv1
             disable<RandomOrderInputTransformer>()
         }
+    }
+
+    @Test
+    fun map_of_value_classes() {
+        val v = mapOf(SimpleValueInteger(1) to SimpleValueInteger(2))
+        val encoded = ZeroJson.encodeToString(v)
+        assertEquals("""{"1":2}""", encoded)
+        assertEquals(v, ZeroJson.decodeFromString(encoded))
+    }
+
+    @Test
+    fun map_of_lists() {
+        val v = mapOf(listOf("1") to SimpleValueInteger(2))
+        val encoded = ZeroJson.encodeToString(v)
+        assertEquals("""[["1"],2]""", encoded)
+        assertEquals(v, ZeroJson.decodeFromString(encoded))
     }
 }
