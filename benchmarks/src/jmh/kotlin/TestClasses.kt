@@ -1,4 +1,4 @@
-package karamel.benchmarks
+package dev.dokky.zerojson
 
 import kotlinx.serialization.Serializable
 import kotlin.random.Random
