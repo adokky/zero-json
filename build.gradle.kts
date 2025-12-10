@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.adokky"
-version = "0.2.0"
+version = "0.3.0"
 
 subprojects {
     group = rootProject.group

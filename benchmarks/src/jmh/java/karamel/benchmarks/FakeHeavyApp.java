@@ -25,7 +25,7 @@ public class FakeHeavyApp {
     @State(Scope.Thread)
     public static class TLS implements ThreadLocalState {
         private final byte[] shuffleBuf = new byte[6 * 1024 * 1024];
-        static final int BUF_SIZE = 10_000;
+        static final int BUF_SIZE = 40_000;
 
         public Json ktxJson = BenchmarksKt.createKotlinxJson();
         public ZeroJson zJson = ZeroJson.create(ktxJson.getConfiguration(), ktxJson.getSerializersModule());
@@ -132,12 +132,17 @@ public class FakeHeavyApp {
         return BenchmarksKt.encodeTreeZeroJson(state);
     }
 
-//    @Benchmark
+    @Benchmark
+    public Object decode_stream_zjson(TLS state) {
+        return BenchmarksKt.decodeInputStreamZeroJson(state);
+    }
+
+    @Benchmark
     public Object decode_bytes_zjson_thread_local(TLS state) {
         return BenchmarksKt.decodeBytesZeroJsonThreadLocal(state);
     }
 
-//    @Benchmark
+    @Benchmark
     public Object decode_bytes_zjson_two_level(TLS state) {
         return BenchmarksKt.decodeBytesZeroJsonTwoLevel(state);
     }

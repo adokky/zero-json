@@ -42,6 +42,10 @@ fun decodeBytesZeroJsonThreadLocal(state: ThreadLocalState): Any {
     return zJsonNonShared.decodeFromByteArray<Response<Person>>(ENCODED_DATA)
 }
 
+fun decodeInputStreamZeroJson(state: ThreadLocalState): Any {
+    return state.zJson.decodeFromStream<Response<Person>>(ByteArrayInputStream(ENCODED_DATA))
+}
+
 fun encodeBytesZeroJson(state: ThreadLocalState): Any {
     return state.zJson.encodeToByteArray(TEST_DATA)
 }
@@ -104,4 +108,8 @@ fun encodeTreeKtx(state: ThreadLocalState): Any {
 
 fun createKotlinxJson(): Json = Json {
     explicitNulls = false
+}
+
+fun main() {
+    println(ENCODED_DATA_STRING)
 }
