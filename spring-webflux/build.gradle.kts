@@ -4,6 +4,13 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
+mavenPublishing {
+    pom {
+        description = "Spring WebFlux integration for zero-json"
+        inceptionYear = "2025"
+    }
+}
+
 repositories {
     google()
 }
