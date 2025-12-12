@@ -28,13 +28,36 @@ import kotlin.jvm.JvmStatic
 
 internal class ZeroJsonDescriptor private constructor(
     serialDescriptorUnsafe: SerialDescriptor,
+    /** Only initialized for regular classes */
     private var elements: Array<ZeroJsonDescriptor?>,
+    /** Element index -> name. Only initialized for regular classes */
     private var elementNames: Array<String>?,
-    // key = AbstractSubString | String
+    /** key = AbstractSubString | String, value = ElementInfo */
     private var elementByName: MutableObjectIntMap<Any>,
     private var flags: Bits32<Unit>,
+    /**
+     * Information about the map-like element marked with [JsonInline].
+     *
+     * This field stores metadata about the element that:
+     * 1. Is marked with the [JsonInline] annotation
+     * 2. Has a [StructureKind] of [StructureKind.MAP]
+     *
+     * This field is only valid when [hasInlineMapElement] is true.
+     */
     inlineMapElement: ElementInfo,
     totalElementCount: Int,
+    /**
+     * Offsets for child elements of [JsonInline] properties.
+     *
+     * For each element in the descriptor:
+     * - If the element is NOT marked with [JsonInline], the value is 0.
+     * - If the element IS marked with [JsonInline], the value is the offset in the element list
+     *   where the child elements of this inline property start.
+     *
+     * This array is only populated when there are [JsonInline] elements present.
+     * It's used during serialization/deserialization to efficiently locate nested properties
+     * without needing to traverse the full descriptor hierarchy.
+     */
     private var elementOffsets: ShortArray?,
     val kindFlags: SerialKindFlags,
     val classDiscriminator: String?,
@@ -53,7 +76,11 @@ internal class ZeroJsonDescriptor private constructor(
     var inlineMapElement: ElementInfo = inlineMapElement
         private set
 
-    // initial value -1 is a marker of uninitialized descriptor
+    /**
+     * Total number of elements including all inlined elements from all child descriptors.
+     *
+     * Initial value of -1 is a marker of uninitialized descriptor.
+     */
     var totalElementCount: Int = totalElementCount
         private set
 
@@ -319,7 +346,9 @@ internal class ZeroJsonDescriptor private constructor(
         if (caseInsensitiveEnum && allNamesAreAscii) {
             elementByName.put(key.encodeToByteArray().asBuffer(), elementInfo.asInt)
         } else {
-            elementByName.put(key.asUtf8SubString(), elementInfo.asInt)
+            val ss = key.asUtf8SubString()
+            ss.toString() // initialize toString
+            elementByName.put(ss, elementInfo.asInt)
         }
     }
 
@@ -342,11 +371,13 @@ internal class ZeroJsonDescriptor private constructor(
     }
 
     /**
-     * WARN! For a nullable field returns a nullable descriptor,
-     * However, [kotlinx.serialization.encoding.Decoder.decodeSerializableValue]
-     * can be called with non-nullable descriptor.
+     * WARN! For a nullable field, returns a nullable descriptor,
+     * however, [kotlinx.serialization.encoding.Decoder.decodeSerializableValue]
+     * can be called with a non-nullable descriptor.
      * This discrepancy in nullability does not affect anything,
-     * because the parent descriptor will not be checked anywhere on nullability.
+     * because the parent descriptor will not be checked for nullability anywhere.
+     *
+     * @param index the index of the element in the parent descriptor
      */
     fun getElementDescriptor(index: Int, cache: DescriptorCache, elementDescriptor: SerialDescriptor): ZeroJsonDescriptor =
         elements.getOrNull(index) ?: cache.getOrCreate(elementDescriptor)

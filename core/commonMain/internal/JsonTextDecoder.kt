@@ -119,26 +119,12 @@ internal class JsonTextDecoder(
         get() = ktxJson ?: throwExpectedKotlinxEndec(decoder = true)
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
-        var zDescriptor: ZeroJsonDescriptor?
+        var zDescriptor: ZeroJsonDescriptor
         val discriminatorKeyStart = discriminatorKeyStart
         val discriminatorValueEnd = discriminatorValueEnd
 
-        if (discriminatorKeyStart != 0) {
-            zDescriptor = lookupResult?.descriptor
-            when {
-                zDescriptor == null -> zDescriptor = getZDescriptor(descriptor, context)
-                zDescriptor.kind == StructureKind.MAP && descriptor.isMapWithStructuredKey(config) ->
-                    zDescriptor = ZeroJsonDescriptor.LIST
-            }
-            checkEqualSerialNames(zDescriptor.serialName, descriptor.serialName)
-            assert { prepareInlineDecodingOffset == 0 }
-            stack.enterPolymorphic(
-                zDescriptor,
-                discriminatorKeyStart = discriminatorKeyStart,
-                discriminatorValueEnd = discriminatorValueEnd,
-                shouldSkipDiscriminator = !lookupResult.isDiscriminatorPresent()
-            )
-            clearDiscriminatorState()
+        if (this.discriminatorKeyStart != 0) {
+            zDescriptor = beginPolymorphicStructure(descriptor)
         } else {
             val elementIndex = stack.elementIndex
             val parentDescriptor = stack.descriptor()
@@ -155,15 +141,8 @@ internal class JsonTextDecoder(
         }
 
         // check if current descriptor is inline root
-        if (prepareInlineDecodingOffset <= 0 &&
-            zDescriptor.hasJsonInlineElements &&
-            stack.inlineRootStack.descriptorOrNull() !== zDescriptor)
-        {
-            stack.inlineRootStack.enter(zDescriptor, stack.depth)
-            if (!lookupResult.isDiscriminatorPresent()) stack.inlineRootStack.setDiscriminatorInfo(
-                keyStart = discriminatorKeyStart,
-                valueEnd = discriminatorValueEnd
-            )
+        if (prepareInlineDecodingOffset <= 0 && zDescriptor.hasJsonInlineElements) {
+            enterInlineRoot(zDescriptor, discriminatorKeyStart, discriminatorValueEnd)
         }
         prepareInlineDecodingOffset = 0
 
@@ -171,16 +150,40 @@ internal class JsonTextDecoder(
         return this
     }
 
+    private fun beginPolymorphicStructure(descriptor: SerialDescriptor): ZeroJsonDescriptor {
+        var zDescriptor = lookupResult?.descriptor
+        when {
+            zDescriptor == null -> zDescriptor = getZDescriptor(descriptor, context)
+            zDescriptor.kind == StructureKind.MAP && descriptor.isMapWithStructuredKey(config) ->
+                zDescriptor = ZeroJsonDescriptor.LIST
+        }
+        checkEqualSerialNames(zDescriptor.serialName, descriptor.serialName)
+        assert { prepareInlineDecodingOffset == 0 }
+        stack.enterPolymorphic(
+            zDescriptor,
+            discriminatorKeyStart = discriminatorKeyStart,
+            discriminatorValueEnd = discriminatorValueEnd,
+            shouldSkipDiscriminator = !lookupResult.isDiscriminatorPresent()
+        )
+        clearDiscriminatorState()
+        return zDescriptor
+    }
+
+    private fun enterInlineRoot(zDescriptor: ZeroJsonDescriptor, discriminatorKeyStart: Int, discriminatorValueEnd: Int) {
+        if (stack.inlineRootStack.descriptorOrNull() === zDescriptor) return
+
+        stack.inlineRootStack.enter(zDescriptor, stack.depth)
+        if (!lookupResult.isDiscriminatorPresent()) stack.inlineRootStack.setDiscriminatorInfo(
+            keyStart = discriminatorKeyStart,
+            valueEnd = discriminatorValueEnd
+        )
+    }
+
     override fun endStructure(descriptor: SerialDescriptor) {
         if (stack.depth == 0) unpairedEndStructure(descriptor)
 
         if (!stack.isInlined) {
-            if (stack.isInlineRoot) {
-                val inlineRootEnd = stack.inlineRootStack.getInlineRootEndPosition()
-                // For inline-map inlineRootEnd is not initialized
-                if (inlineRootEnd > 0) reader.position = inlineRootEnd
-                stack.inlineRootStack.leave(descriptor)
-            }
+            if (stack.isInlineRoot) endInlineRoot(descriptor)
 
             val closingBracket = stack.descriptor().kind.closingBracket()
             if (!reader.trySkipToken(closingBracket)) {
@@ -190,12 +193,21 @@ internal class JsonTextDecoder(
 
         stack.leave(descriptor)
 
-        if (stack.depth == 1) {
-            val parent = parentDecoder
-            if (parent != null) expectEndOfStructuredKey()
-            close() // must come before compositeChildDecoderReleased() to prevent any memory leaks
-            parent?.compositeChildDecoderReleased()
-        }
+        if (stack.depth == 1) endRootStructure()
+    }
+
+    private fun endInlineRoot(descriptor: SerialDescriptor) {
+        val inlineRootEnd = stack.inlineRootStack.getInlineRootEndPosition()
+        // For inline-map inlineRootEnd is not initialized
+        if (inlineRootEnd > 0) reader.position = inlineRootEnd
+        stack.inlineRootStack.leave(descriptor)
+    }
+
+    private fun endRootStructure() {
+        val parent = parentDecoder
+        if (parent != null) expectEndOfStructuredKey()
+        close() // must come before compositeChildDecoderReleased() to prevent any memory leaks
+        parent?.compositeChildDecoderReleased()
     }
 
     private fun expectEndOfStructuredKey() {
@@ -249,14 +261,20 @@ internal class JsonTextDecoder(
         val idx = prevIdx + 1
         stack.elementIndex = idx
         return when {
-            // index is odd -> reading value
-            idx and 1 == 1 -> { reader.expectColon(); idx }
-            stack.isInlined -> decodeInlinedMapKeyIndex(serialDesc, idx)
-            else -> {
-                stack.currentKeyStart = 0
-                trySkipCollectionComma(prevIdx = prevIdx, returnIdx = idx, closingBracket = '}').also { idx ->
-                    if (idx >= 0) stack.currentKeyStart = reader.position
-                }
+            idx and 1 != 1 -> decodeMapValueIndex(serialDesc, idx, prevIdx)
+            else -> { // index is odd -> reading value
+                reader.expectColon()
+                idx
+            }
+        }
+    }
+
+    private fun decodeMapValueIndex(serialDesc: SerialDescriptor, idx: Int, prevIdx: Int): Int = when {
+        stack.isInlined -> decodeInlinedMapKeyIndex(serialDesc, idx)
+        else -> {
+            stack.currentKeyStart = 0
+            trySkipCollectionComma(prevIdx = prevIdx, returnIdx = idx, closingBracket = '}').also { idx ->
+                if (idx >= 0) stack.currentKeyStart = reader.position
             }
         }
     }
@@ -492,20 +510,20 @@ internal class JsonTextDecoder(
                 // Switching to decoding inlined element instead of delaying.
                 // This can be considered as fast path when every inline element ordered depth-first.
                 return decodeFirstDirectInlinedChildElement(elementInfo, elementsOffset, keyStart, lastNonInlineDesc)
-            } else {
-                // Element is not belong to the current descriptor nor to inlined direct child.
-                if (stack.allElementsArePresent(descriptor)) {
-                    // All elements of the current inlined class are decoded -> leave it.
-                    // Decoder will go into a state of reading next key in parent class
-                    // and will expect the standard beginning of the key, which can be preceded by a comma,
-                    // Therefore, we return not to the beginning of the key, but to the position
-                    // of a token before the key (comma or opening bracket).
-                    reader.position = positionBeforeKey
-                    return CompositeDecoder.DECODE_DONE
-                }
-
-                savePropertyPositionAndSkipToNext(elementInfo, keyStart, lastNonInlineDesc)
             }
+
+            // Element is not belong to the current descriptor nor to inlined direct child.
+            if (stack.allElementsArePresent(descriptor)) {
+                // All elements of the current inlined class are decoded -> leave it.
+                // Decoder will go into a state of reading next key in parent class
+                // and will expect the standard beginning of the key, which can be preceded by a comma,
+                // Therefore, we return not to the beginning of the key, but to the position
+                // of a token before the key (comma or opening bracket).
+                reader.position = positionBeforeKey
+                return CompositeDecoder.DECODE_DONE
+            }
+
+            savePropertyPositionAndSkipToNext(elementInfo, keyStart, lastNonInlineDesc)
         }
     }
 
@@ -783,7 +801,9 @@ internal class JsonTextDecoder(
         }
 
         val objectEnd = if (!wrapped) 0 else beforeValueSubClass()
+
         val result = actualDeserializer.deserialize(this)
+
         if (wrapped) afterValueSubClass(objectEnd)
         if (outerPolyObjectEnd != 0) afterValueSubClass(outerPolyObjectEnd)
 

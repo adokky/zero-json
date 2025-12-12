@@ -28,14 +28,31 @@ internal fun RandomAccessTextReader.readJsonString(
         trySkip('"')
     }
 
-    if (quotes) {
-        val hash = if (this is Utf8TextReader)
-            readQuotedUtf8JsonStringContent(output, maxLength = maxLength, onMaxLength = onMaxLength) else
-            readQuotedJsonStringSlowContent(output, maxLength = maxLength, onMaxLength = onMaxLength)
-        trySkip('"')
-        return hash
+    return when {
+        quotes -> readQuotedString(output, maxLength, onMaxLength)
+        else -> readUnquotedString(output, maxLength, onMaxLength, allowNull, allowBoolean)
     }
+}
 
+private fun RandomAccessTextReader.readQuotedString(
+    output: StringBuilder,
+    maxLength: Int,
+    onMaxLength: DecodingErrorHandler<String>
+): Int {
+    val hash = if (this is Utf8TextReader)
+        readQuotedUtf8JsonStringContent(output, maxLength = maxLength, onMaxLength = onMaxLength) else
+        readQuotedJsonStringSlowContent(output, maxLength = maxLength, onMaxLength = onMaxLength)
+    trySkip('"')
+    return hash
+}
+
+private fun RandomAccessTextReader.readUnquotedString(
+    output: StringBuilder,
+    maxLength: Int,
+    onMaxLength: DecodingErrorHandler<String>,
+    allowNull: Boolean,
+    allowBoolean: Boolean
+): Int {
     val start = output.length
     val hash = if (this is Utf8TextReader)
         readUnquotedUtf8JsonString(output, maxLength = maxLength, onMaxLength = onMaxLength) else
