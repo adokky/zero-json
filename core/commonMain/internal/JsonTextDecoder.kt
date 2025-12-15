@@ -670,13 +670,16 @@ internal class JsonTextDecoder(
     ): AbstractSubString =
         when (val input = input) {
             is Utf8TextReader ->
-                readString(input, tempTrSubString, tempSimpleSubString,
+                readSubString(
+                    tempTrSubString, tempSimpleSubString,
                     requireQuotes = requireQuotes, allowNull = allowNull, maxLength = config.maxStringLength)
             is StringTextReader -> {
-                readString(input, tempSimpleSubString,
+                readSubString(input, tempSimpleSubString,
                     requireQuotes = requireQuotes, allowNull = allowNull, maxLength = config.maxStringLength)
                 tempSimpleSubString
             }
+        }.also {
+            skipWhitespace()
         }
 
     private fun ZeroJsonDescriptor.getElementInfo(substring: AbstractSubString): ElementInfo =

@@ -44,7 +44,7 @@ class SkipJsonStringTest: AbstractJsonStringTest<String>() {
         return result
     }
 
-    override fun checkResult(original: String, result: String) {
+    override fun checkResult(original: String, result: String, escaped: String?) {
         assertEquals(original, result)
     }
 }

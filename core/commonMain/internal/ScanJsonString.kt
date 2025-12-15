@@ -6,19 +6,13 @@ import io.kodec.StringHashCode
 import io.kodec.StringsUTF16
 import io.kodec.text.CharToClassMapper
 import io.kodec.text.RandomAccessTextReader
+import io.kodec.text.StringTextReader
 import io.kodec.text.TextReader
 import karamel.utils.*
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
-/**
- * Used only in [readString]. Marked as internal for testing purposes.
- *
- * WARN: the function does NOT:
- * * check validity of the escape sequences
- * * skip any white spaces
- */
 @JvmOverloads
 internal fun JsonReaderImpl.scanString(
     requireQuotes: Boolean = config.expectStringQuotes,
@@ -48,7 +42,7 @@ internal fun JsonReaderImpl.scanString(
     }
 }
 
-private fun JsonReaderImpl.scanKeyword(
+internal fun JsonReaderImpl.scanKeyword(
     maxLength: Int,
     onMaxLength: DecodingErrorHandler<String>,
     allowEscapes: Boolean,
@@ -56,14 +50,21 @@ private fun JsonReaderImpl.scanKeyword(
     allowBoolean: Boolean
 ): ScanResult {
     val start = position
-    val result = input.scanJsonStringContent(
-        allowEof = true,
-        charClasses = JsonCharClasses.mapper,
-        terminatorClass = JsonCharClasses.STR_TERM,
-        maxLength = maxLength,
-        onMaxLength = onMaxLength,
-        allowEscapes = allowEscapes
-    )
+    val result = when (val input = input) {
+        is StringTextReader -> input.scanKeywordContent(
+            maxLength = maxLength,
+            onMaxLength = onMaxLength,
+            allowEscapes = allowEscapes
+        )
+        else -> input.scanJsonStringContent(
+            allowEof = true,
+            charClasses = JsonCharClasses.mapper,
+            terminatorClass = JsonCharClasses.STR_TERM,
+            maxLength = maxLength,
+            onMaxLength = onMaxLength,
+            allowEscapes = allowEscapes
+        )
+    }
     checkUnquotedString(input,
         start = start,
         hash = result.hash,
@@ -78,14 +79,21 @@ private fun JsonReaderImpl.scanQuotedString(
     onMaxLength: DecodingErrorHandler<String>,
     allowEscapes: Boolean
 ): ScanResult {
-    val res = input.scanJsonStringContent(
-        allowEof = false,
-        charClasses = JsonCharClasses.mapper,
-        terminatorClass = JsonCharClasses.DOUBLE_QUOTES,
-        maxLength = maxLength,
-        onMaxLength = onMaxLength,
-        allowEscapes = allowEscapes
-    )
+    val res = when(val input = input) {
+        is StringTextReader -> input.scanQuotedStringContent(
+            maxLength = maxLength,
+            onMaxLength = onMaxLength,
+            allowEscapes = allowEscapes
+        )
+        else -> input.scanJsonStringContent(
+            allowEof = false,
+            charClasses = JsonCharClasses.mapper,
+            terminatorClass = JsonCharClasses.DOUBLE_QUOTES,
+            maxLength = maxLength,
+            onMaxLength = onMaxLength,
+            allowEscapes = allowEscapes
+        )
+    }
     input.trySkip('"')
     return res.markQuoted()
 }
@@ -97,8 +105,8 @@ internal fun <BDS : BitDescriptors> RandomAccessTextReader.scanJsonStringContent
     terminatorClass: Bits32<BDS>,
     maxLength: Int,
     onMaxLength: DecodingErrorHandler<String>
-): ScanResult = scanJsonStringContentTemplate(
-    allowEof,
+): ScanResult = scanStringContentTemplate(
+    allowEof = allowEof,
     terminator = { cp -> charClasses.hasClass(cp, terminatorClass) },
     maxLength = maxLength,
     onMaxLength = onMaxLength,
@@ -106,7 +114,83 @@ internal fun <BDS : BitDescriptors> RandomAccessTextReader.scanJsonStringContent
     acceptChar = {}
 )
 
-internal inline fun RandomAccessTextReader.scanJsonStringContentTemplate(
+internal fun StringTextReader.scanQuotedStringContent(
+    maxLength: Int,
+    onMaxLength: DecodingErrorHandler<String>,
+    allowEscapes: Boolean
+): ScanResult = scanStringContentTemplate(
+    allowEof = false,
+    maxLength = maxLength,
+    onMaxLength = onMaxLength,
+    terminator = { it == '"'.code },
+    allowEscapes = allowEscapes
+)
+
+private fun StringTextReader.scanKeywordContent(
+    maxLength: Int,
+    onMaxLength: DecodingErrorHandler<String>,
+    allowEscapes: Boolean
+): ScanResult = scanStringContentTemplate(
+    allowEof = true,
+    maxLength = maxLength,
+    onMaxLength = onMaxLength,
+    terminator = { JsonCharClasses.mapper.hasClass(it, JsonCharClasses.STR_TERM) },
+    allowEscapes = allowEscapes
+)
+
+// WARN: Dos not check unfinished surrogate pairs.
+// This function is only used for string key matching.
+private inline fun StringTextReader.scanStringContentTemplate(
+    allowEof: Boolean,
+    maxLength: Int,
+    onMaxLength: DecodingErrorHandler<String>,
+    terminator: (codepoint: Int) -> Boolean,
+    allowEscapes: Boolean
+): ScanResult {
+    val start = position
+    var hash = StringHashCode.init()
+    var isEscaped = false
+    var terminated = false
+    var codePoints = 0
+    var length = 0
+
+    var i = start
+    while (i < input.length) {
+        val i0 = i
+        var c = input[i]
+        when {
+            c == '\\' -> {
+                if (!allowEscapes) return ScanResult.EscapedString
+                isEscaped = true
+                position = i + 1
+                c = readEscapeChar()
+                i = position - 1
+            }
+            terminator(c.code) -> { terminated = true; break }
+        }
+        if (++length > maxLength) {
+            position = i0 - 1
+            onMaxLength(MAX_STRING_LENGTH_ERR_MESSAGE)
+            i = i0
+            terminated = true
+            break
+        }
+        codePoints += (!c.isLowSurrogate()).toInt()
+        hash = StringHashCode.next(hash, c)
+        i++
+    }
+    position = i
+
+    if (!terminated && !allowEof) unexpectedEof()
+
+    return ScanResult(
+        codePoints = codePoints,
+        computedHashCode = hash,
+        isEscaped = isEscaped
+    )
+}
+
+internal inline fun RandomAccessTextReader.scanStringContentTemplate(
     allowEof: Boolean,
     maxLength: Int,
     onMaxLength: DecodingErrorHandler<String>,

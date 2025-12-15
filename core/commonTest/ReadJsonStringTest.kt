@@ -25,7 +25,7 @@ class ReadJsonStringTest: AbstractJsonStringTest<String>() {
         )
     }
 
-    override fun checkResult(original: String, result: String) {
+    override fun checkResult(original: String, result: String, escaped: String?) {
         assertEquals(original, result)
     }
 

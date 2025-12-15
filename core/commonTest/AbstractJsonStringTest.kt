@@ -17,7 +17,7 @@ abstract class AbstractJsonStringTest<T>: AbstractJsonReaderTest() {
         allowBoolean: Boolean = true
     ): T
 
-    protected abstract fun checkResult(original: String, result: T)
+    protected abstract fun checkResult(original: String, result: T, escaped: String? = null)
 
     protected open val unquotedStringFixtures: List<String> = listOf(
         "a",
@@ -202,14 +202,19 @@ abstract class AbstractJsonStringTest<T>: AbstractJsonReaderTest() {
 
     @Test
     fun max_length_position_unquoted() {
-        test("12Ё4\\n5Г789", offset = 0) {
-            checkResult("12Ё4\n5Г", readTestString(maxLength = 7, onMaxLength = {}))
-            assertEquals(if (input is Utf8TextReader) 10 else 8, input.position)
+        fun test(s: String, expected: String, maxLength: Int, endOffset: Int, binaryEndOffset: Int = endOffset) {
+            test(s, offset = 0) {
+                checkResult(expected, readTestString(maxLength = maxLength, onMaxLength = {}), escaped = s.take(endOffset))
+                assertEquals(if (input is Utf8TextReader) binaryEndOffset else endOffset, input.position, "position")
+            }
         }
-        test("б1\\nY", offset = 0) {
-            checkResult("б1\n", readTestString(maxLength = 3, onMaxLength = {}))
-            assertEquals(if (input is Utf8TextReader) 5 else 4, input.position)
-        }
+        test("\\u1234", "\u1234", maxLength = 1, endOffset = 6)
+        test("\\u1234\\n", "\u1234", maxLength = 1, endOffset = 6)
+        test("\\u1234\\n", "\u1234\n", maxLength = 2, endOffset = 8)
+        test("12Ё4\\n5Г789", "12", maxLength = 2, endOffset = 2)
+        test("12Ё4\\n5Г789", "12Ё4\n5Г", maxLength = 7, endOffset = 8, binaryEndOffset = 10)
+        test("12Ё4\\n5Г789", "12Ё4\n5Г789", maxLength = 10, endOffset = 11, binaryEndOffset = 13)
+        test("б1\\nY", "б1\n", maxLength = 3, endOffset = 4, binaryEndOffset = 5)
     }
 
     @Test

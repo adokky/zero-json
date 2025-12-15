@@ -1,108 +1,89 @@
 package dev.dokky.zerojson.internal
 
-import dev.dokky.zerojson.ZeroJsonConfiguration
-import io.kodec.DecodingErrorHandler
-import io.kodec.text.*
-import kotlin.jvm.JvmOverloads
+import io.kodec.text.AbstractSubString
+import io.kodec.text.SimpleSubString
+import io.kodec.text.StringTextReader
+import io.kodec.text.TextReaderSubString
 
-/**
- * WARN: the function does NOT:
- * * check validity of the escape sequences
- * * skip any white spaces
- */
-@JvmOverloads
-internal fun JsonReaderImpl.readString(
-    reader: Utf8TextReader,
-    dest1: TextReaderSubString,
-    dest2: SimpleSubString,
-    requireQuotes: Boolean = config.expectStringQuotes,
-    allowNull: Boolean = false,
-    maxLength: Int = ZeroJsonConfiguration.Default.maxStringLength,
-    onMaxLength: DecodingErrorHandler<String> = fail
+internal fun JsonReaderImpl.readSubString(
+    destination1: TextReaderSubString,
+    destination2: SimpleSubString,
+    requireQuotes: Boolean,
+    allowNull: Boolean,
+    maxLength: Int
 ): AbstractSubString {
     val stringStart = position
     val scanResult = scanString(
         requireQuotes = requireQuotes,
         allowNull = allowNull,
         maxLength = maxLength,
-        onMaxLength = onMaxLength,
+        onMaxLength = fail,
         allowEscapes = false
     )
 
     if (scanResult.isEscaped) {
         position = stringStart
-        readStringSlow(dest2, allowNull = allowNull, maxLength = maxLength)
-        return dest2
+        readSubStringSlow(destination2, allowNull = allowNull, maxLength = maxLength)
+        return destination2
     }
 
     val quoted = scanResult.quoted
-    val stringEnd = position - quoted
+    destination1.setUnchecked(
+        input,
+        start = stringStart + quoted,
+        end = position - quoted,
+        codePoints = scanResult.codePoints,
+        hashCode = scanResult.hash
+    )
+    return destination1
+}
 
-    if (scanResult.codePoints == 0) {
-        dest1.setUnchecked(reader, start = stringStart, end = stringStart, codePoints = 0)
-    } else {
-        dest1.setUnchecked(
-            input,
-            start = stringStart + quoted,
-            end = stringEnd,
-            codePoints = scanResult.codePoints,
-            hashCode = scanResult.hash
+internal fun JsonReaderImpl.readSubString(
+    reader: StringTextReader,
+    destination: SimpleSubString,
+    requireQuotes: Boolean,
+    allowNull: Boolean,
+    maxLength: Int
+) {
+    val stringStart = position
+
+    val quotes = when {
+        requireQuotes -> { expectOpenQuotes(); true }
+        else -> input.trySkip('"')
+    }
+
+    val scanResult = when {
+        quotes -> {
+            reader.scanQuotedStringContent(maxLength = maxLength, onMaxLength = fail, allowEscapes = false)
+                .also { input.trySkip('"') }
+                .markQuoted()
+        }
+        else -> scanKeyword(
+            maxLength = maxLength,
+            onMaxLength = fail,
+            allowEscapes = false,
+            allowNull = allowNull,
+            allowBoolean = true
         )
     }
 
-    skipWhitespace()
-
-    return dest1
-}
-
-/**
- * WARN: the function does NOT:
- * * check validity of the escape sequences
- * * skip any white spaces
- */
-@JvmOverloads
-internal fun JsonReaderImpl.readString(
-    reader: StringTextReader,
-    dest: SimpleSubString,
-    requireQuotes: Boolean = config.expectStringQuotes,
-    allowNull: Boolean = false,
-    maxLength: Int = ZeroJsonConfiguration.Default.maxStringLength,
-    onMaxLength: DecodingErrorHandler<String> = fail
-) {
-    val stringStart = position
-    val scanResult = scanString(
-        requireQuotes = requireQuotes,
-        maxLength = maxLength,
-        onMaxLength = onMaxLength,
-        allowNull = allowNull,
-        allowEscapes = false
-    )
-
     if (scanResult.isEscaped) {
         position = stringStart
-        readStringSlow(dest, allowNull = allowNull, maxLength = maxLength)
+        readSubStringSlow(destination, allowNull = allowNull, maxLength = maxLength)
         return
     }
 
     val quoted = scanResult.quoted
-    val stringEnd = position - quoted
-
-    if (scanResult.codePoints == 0) {
-        dest.setUnchecked(reader.input, start = stringStart, end = stringStart)
-    } else {
-        dest.setUnchecked(
-            reader.input,
-            start = stringStart + quoted,
-            end = stringEnd,
-            hashCode = scanResult.hash
-        )
-    }
-
-    skipWhitespace()
+    destination.setUnchecked(
+        reader.input,
+        start = stringStart + quoted,
+        end = position - quoted,
+        hashCode = scanResult.hash
+    )
 }
 
-private fun JsonReaderImpl.readStringSlow(
-    dest: SimpleSubString,
+private fun JsonReaderImpl.readSubStringSlow(
+    destination: SimpleSubString,
     maxLength: Int,
     allowNull: Boolean
 ) {
@@ -114,6 +95,10 @@ private fun JsonReaderImpl.readStringSlow(
         allowNull = allowNull
     )
     config.stringBuilder.updateCapacity()
-    dest.setUnchecked(config.stringBuilder.builder, start = 0, end = config.stringBuilder.length, hashCode = hashCode)
-    skipWhitespace()
+    destination.setUnchecked(
+        source = config.stringBuilder.builder,
+        start = 0,
+        end = config.stringBuilder.length,
+        hashCode = hashCode
+    )
 }

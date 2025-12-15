@@ -91,7 +91,7 @@ private fun RandomAccessTextReader.readQuotedJsonStringSlowContent(
     output: StringBuilder,
     maxLength: Int,
     onMaxLength: DecodingErrorHandler<String>
-): Int = scanJsonStringContentTemplate(
+): Int = scanStringContentTemplate(
     allowEof = false,
     terminator = { it == '"'.code },
     maxLength = maxLength,
@@ -104,7 +104,7 @@ private fun RandomAccessTextReader.readUnquotedJsonStringSlow(
     output: StringBuilder,
     maxLength: Int,
     onMaxLength: DecodingErrorHandler<String>
-): Int = scanJsonStringContentTemplate(
+): Int = scanStringContentTemplate(
     allowEof = true,
     terminator = { cp -> JsonCharClasses.mapper.hasClass(cp, JsonCharClasses.STR_TERM) },
     maxLength = maxLength,

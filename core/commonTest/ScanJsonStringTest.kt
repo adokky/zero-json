@@ -29,10 +29,14 @@ internal class ScanJsonStringTest: AbstractJsonStringTest<ScanResult>() {
         )
     }
 
-    override fun checkResult(original: String, result: ScanResult) {
-        assertEquals(original.shouldBeEscaped(), result.isEscaped)
-        assertEquals(StringsUTF16.countCodePoints(original), result.codePoints)
-        assertEquals(original.hashCode(), result.hash)
+    override fun checkResult(original: String, result: ScanResult, escaped: String?) {
+        val expectedIsEscaped = when (escaped) {
+            null -> original.shouldBeEscaped()
+            else -> escaped != original
+        }
+        assertEquals(expectedIsEscaped, result.isEscaped, "isEscaped")
+        assertEquals(StringsUTF16.countCodePoints(original), result.codePoints, "codePoints")
+        assertEquals(original.hashCode(), result.hash, "hash")
     }
 
     @Test
