@@ -1,0 +1,122 @@
+{
+  "data": [
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 99657,
+      "name": "First 姓 Фамилия 1460013084",
+      "birthDate": "2025-12-12T11:30:24.294955116",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -1795664914",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "964": 340,
+        "707": 11
+      },
+      "friends": [
+        6665,
+        6969,
+        1539,
+        9393,
+        3232,
+        229
+      ],
+      "income": -600578755,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 9.536534084815429,
+          "longitude": 140.92978234572428
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 55268,
+      "name": "First 姓 Фамилия -482776834",
+      "birthDate": "2025-12-12T11:30:24.295247337",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -124709474",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        9797,
+        7084,
+        4262,
+        3026,
+        3237,
+        8083,
+        1688,
+        1634,
+        1320
+      ],
+      "income": -1352107011,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 112.28234308338631,
+          "longitude": 228.87342826712802
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 5117,
+      "name": "First 姓 Фамилия 224545522",
+      "birthDate": "2025-12-12T11:30:24.295475837",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 464004291",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "384": 495,
+        "442": 144
+      },
+      "friends": [
+        4340,
+        9048,
+        9919,
+        8555,
+        8713
+      ],
+      "income": 1539355064,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 15.724861631729892,
+          "longitude": 98.70016506377684
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 25.13262648282206,
+          "longitude": 192.35319798707712
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    }
+  ],
+  "total": 2094,
+  "version": 35353
+}

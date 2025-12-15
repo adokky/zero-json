@@ -2,15 +2,11 @@ package dev.dokky.zerojson
 
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.*
+import java.io.File
+import java.time.LocalDateTime
 
-var TEST_DATA: Response<Person> = Response(
-    data = (1..50).map { randomPerson() },
-    total = 2094,
-    version = 35353
-)
+var TEST_DATA: Response<Person> = Json.decodeFromStream(Response.javaClass.getResourceAsStream("/test_data_x3.json"))
 
 object DiscriminatorAtStart {
     var ENCODED_DATA: ByteArray = ZeroJson.encodeToByteArray(TEST_DATA)
@@ -22,15 +18,6 @@ object DiscriminatorInTheMiddle {
     var ENCODED_DATA_TREE: JsonElement = DiscriminatorAtStart.ENCODED_DATA_TREE.moveDiscriminators()
     var ENCODED_DATA_STRING: String = ENCODED_DATA_TREE.toString()
     var ENCODED_DATA: ByteArray = ENCODED_DATA_STRING.encodeToByteArray()
-}
-
-val DecodersTest.TLS.inputArray: ByteArray get() = when {
-    DITM -> DiscriminatorInTheMiddle.ENCODED_DATA
-    else -> DiscriminatorAtStart.ENCODED_DATA
-}
-val DecodersTest.TLS.inputString: String get() = when {
-    DITM -> DiscriminatorInTheMiddle.ENCODED_DATA_STRING
-    else -> DiscriminatorAtStart.ENCODED_DATA_STRING
 }
 
 private fun JsonElement.moveDiscriminators(): JsonElement = when(this) {
@@ -56,4 +43,18 @@ private fun JsonObject.moveDiscriminators(): JsonObject {
     }
 
     return JsonObject(new)
+}
+
+fun main() {
+    val testData = Response(
+        data = (1..10).map { randomPerson() },
+        total = 2094,
+        version = 35353
+    )
+
+    val file = File("benchmarks/src/jmh/resources/test_data_${LocalDateTime.now()}.json")
+    file.createNewFile()
+    file.outputStream().use { out ->
+        Json.encodeToStream(testData, out)
+    }
 }

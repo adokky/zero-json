@@ -14,6 +14,7 @@ dependencies {
     jmh(project(":zero-json-core"))
     jmh(libs.kotlinx.serialization.json)
     jmh(libs.kodec.buffers.core)
+    jmh(libs.karamelUtils.core)
 }
 
 jmh {
@@ -22,4 +23,15 @@ jmh {
     forceGC = true
     failOnError = true
     duplicateClassesStrategy = DuplicatesStrategy.EXCLUDE
+//    profilers.add("gc")
+}
+
+kotlin {
+    sourceSets.configureEach {
+        languageSettings {
+            optIn("kotlinx.serialization.InternalSerializationApi")
+            optIn("kotlinx.serialization.SealedSerializationApi")
+            optIn("kotlinx.serialization.ExperimentalSerializationApi")
+        }
+    }
 }

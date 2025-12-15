@@ -1,0 +1,43 @@
+{
+  "data": [
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 99657,
+      "name": "First 姓 Фамилия 1460013084",
+      "birthDate": "2025-12-12T11:30:24.294955116",
+      "description": "Kotlin is a cross-platform, statically typed, general-purpose high-level programming language with type inference. Kotlin is designed to interoperate fully with Java, and the JVM version of Kotlin's standard library depends on the Java Class Library, but type inference allows its syntax to be more concise",
+      "department": {
+        "name": "Dep Name -1795664914",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "964": 340,
+        "707": 11
+      },
+      "friends": [
+        6665,
+        6969,
+        1539,
+        9393,
+        3232,
+        229
+      ],
+      "income": -600578755,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 9.536534084815429,
+          "longitude": 140.92978234572428
+        }
+      ],
+      "extra": {
+        "iCXcd0": "3333",
+        "id##rr1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "i%gbd2": "2222",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    }
+  ],
+  "total": 2094,
+  "version": 35353
+}

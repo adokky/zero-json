@@ -1,11 +1,8 @@
 package dev.dokky.zerojson
 
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.decodeFromByteArray
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.decodeFromStream
 import org.openjdk.jmh.annotations.Benchmark
-import org.openjdk.jmh.annotations.Param
 import org.openjdk.jmh.annotations.Scope
 import org.openjdk.jmh.annotations.State
 import java.io.ByteArrayInputStream
@@ -13,15 +10,15 @@ import java.io.ByteArrayInputStream
 @OptIn(ExperimentalSerializationApi::class)
 open class DecodersTest: BenchmarkBase() {
     @State(Scope.Thread)
-    open class TLS : ThreadLocalStateBase() {
+    open class TLS : ThreadLocalStateBase(CacheInvalidation.ALL_CORES) {
         /** Discriminator In The Middle  */
-        @Param("true", "false")
+//        @Param("true", "false")
         var DITM: Boolean = false
     }
 
     @Benchmark
     fun bytes_kotlinx(state: TLS): Any {
-        return state.ktxJson.decodeFromStream<Response<Person>>(ByteArrayInputStream(state.copyOf(state.inputArray)))
+        return state.ktxJson.decodeFromStream(state.serializer, ByteArrayInputStream(state.copyOf(state.inputArray)))
     }
 
     @Benchmark
@@ -31,22 +28,32 @@ open class DecodersTest: BenchmarkBase() {
 
     @Benchmark
     fun string_kotlinx(state: TLS): Any {
-        return state.ktxJson.decodeFromString<Response<Person>>(state.inputString)
+        return state.ktxJson.decodeFromString(state.serializer, state.inputString)
     }
 
     @Benchmark
     fun bytes_zjson(state: TLS): Any {
-        return state.zJson.decodeFromByteArray<Response<Person>>(state.inputArray)
+        return state.zJson.decodeFromByteArray(state.serializer, state.inputArray)
     }
 
     @Benchmark
     fun stream_zjson(state: TLS): Any {
-        return state.zJson.decodeFromStream<Response<Person>>(ByteArrayInputStream(state.inputArray))
+        return state.zJson.decodeFromStream(state.serializer, ByteArrayInputStream(state.inputArray))
     }
 
     @Benchmark
     fun string_zjson(state: TLS): Any {
-        return state.zJson.decodeFromString<Response<Person>>(state.inputString)
+        return state.zJson.decodeFromString(state.serializer, state.inputString)
+    }
+
+    val TLS.inputArray: ByteArray get() = when {
+        DITM -> DiscriminatorInTheMiddle.ENCODED_DATA
+        else -> DiscriminatorAtStart.ENCODED_DATA
+    }
+
+    val TLS.inputString: String get() = when {
+        DITM -> DiscriminatorInTheMiddle.ENCODED_DATA_STRING
+        else -> DiscriminatorAtStart.ENCODED_DATA_STRING
     }
 }
 

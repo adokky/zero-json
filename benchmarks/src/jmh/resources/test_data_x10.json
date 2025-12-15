@@ -1,0 +1,1733 @@
+{
+  "data": [
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 87535,
+      "name": "First 姓 Фамилия 871776531",
+      "birthDate": "2025-12-12T10:54:19.557145931",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -1468361327",
+        "address": "Address 45, 67",
+        "description": "Kotlin is a cross-platform, statically typed, general-purpose high-level programming language with type inference. Kotlin is designed to interoperate fully with Java, and the JVM version of Kotlin's standard library depends on the Java Class Library, but type inference allows its syntax to be more concise. Kotlin mainly targets the JVM, but also compiles to JavaScript (e.g. for frontend web applications using React) or native code via LLVM (e.g. for native iOS apps sharing business logic with Android apps)"
+      },
+      "participation": {
+        "20": 21
+      },
+      "friends": [
+        927,
+        2707,
+        4156,
+        6725
+      ],
+      "income": -1852591640,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 132.58223345219375,
+          "longitude": 192.37850834594633
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 198.68871883499406,
+          "longitude": 166.7896832337871
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "",
+        "id3": "",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id7": "Some Value 343 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 1596,
+      "name": "First 姓 Фамилия 91231112",
+      "birthDate": "2025-12-12T10:54:19.567529783",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 1906507638",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        8114
+      ],
+      "income": 489576935,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 89.02282449906396,
+          "longitude": 29.11013255827275
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 160.32853496470395,
+          "longitude": 297.4090186834627
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 19400,
+      "name": "First 姓 Фамилия 45528898",
+      "birthDate": "2025-12-12T10:54:19.567697178",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 1216476440",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "699": 568
+      },
+      "friends": [
+        8571
+      ],
+      "income": -1322487661,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 164.51681765567972,
+          "longitude": 124.65739053665689
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 35746,
+      "name": "First 姓 Фамилия 342635024",
+      "birthDate": "2025-12-12T10:54:19.567873290",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 942750023",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "338": 989,
+        "570": 2
+      },
+      "friends": [
+        2531,
+        9948,
+        5166,
+        8289,
+        319,
+        3498,
+        31,
+        7136
+      ],
+      "income": 483974743,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 137.31948141293728,
+          "longitude": 173.8825464345979
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "",
+        "id3": "",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Guest",
+      "name": "Guest 2118067807",
+      "roleId": 475,
+      "enum": "another_entry2",
+      "birthDate": "2025-12-12T10:54:19.570243012"
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 5978,
+      "name": "First 姓 Фамилия 310916121",
+      "birthDate": "2025-12-12T10:54:19.570412872",
+      "description": null,
+      "department": {
+        "name": "Dep Name -600751915",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "996": 901
+      },
+      "friends": [
+        1563,
+        6804,
+        3904,
+        4107,
+        3398,
+        2024,
+        5434,
+        8461
+      ],
+      "income": -1770706933,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 138.57467419967438,
+          "longitude": 155.227214166538
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 3496,
+      "name": "First 姓 Фамилия 1899703110",
+      "birthDate": "2025-12-12T10:54:19.570518020",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -1580301856",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "817": 251
+      },
+      "friends": [
+        624,
+        4843,
+        4285,
+        8477,
+        9500,
+        2372
+      ],
+      "income": -354371494,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 144.89612704925426,
+          "longitude": 157.88507699918205
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 253.85863300636456,
+          "longitude": 108.89113259735397
+        }
+      ]
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 8480,
+      "name": "First 姓 Фамилия -2116486954",
+      "birthDate": "2025-12-12T10:54:19.570678201",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -907175640",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "800": 592
+      },
+      "friends": [
+        3753,
+        985,
+        1869,
+        3779,
+        496,
+        4145,
+        9550,
+        9970,
+        7372
+      ],
+      "income": 84908235,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 195.09613392278374,
+          "longitude": 157.2742068483895
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "",
+        "id2": "",
+        "id3": "",
+        "id4": "",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 89294,
+      "name": "First 姓 Фамилия 1860901125",
+      "birthDate": "2025-12-12T10:54:19.570810861",
+      "description": "The guanaco (Lama guanicoe) is a species of mammal in the family Camelidae, the camelids. Closely related to the llama, the guanaco is native to the steppes, scrublands and mountainous regions of South America, including Peru, Bolivia, Chile, Paraguay and Argentina. It is a diurnal animal, living in small herds consisting of either one male and several females with their young, or separate bachelor herds. It can run at speeds of up to 64 km/h (40 mph), important for avoiding predation. A herbivore, the guanaco grazes on grasses, shrubs, herbs, lichens, fungi, cacti, and flowers, while its natural predators include the puma and the culpeo (Andean fox). Some guanacos are found domesticated in zoos and private herds around the world, and its fiber is also harvested for use in luxury fabrics, being noted for its soft, warm feel.",
+      "department": {
+        "name": "Dep Name 1083306478",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "625": 501
+      },
+      "friends": [
+        2947,
+        7705,
+        315,
+        1962,
+        4469,
+        5580,
+        2173,
+        6388
+      ],
+      "income": 2033492506,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 33.552235286000396,
+          "longitude": 69.44059457357496
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 4087,
+      "name": "First 姓 Фамилия -666096167",
+      "birthDate": "2025-12-12T10:54:19.571067544",
+      "description": null,
+      "department": {
+        "name": "Dep Name 343380929",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "149": 826,
+        "540": 140
+      },
+      "friends": [],
+      "income": -1712719496,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 293.25858143773013,
+          "longitude": 23.104662160276824
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 91.08449818902739,
+          "longitude": 161.0760355844063
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "",
+        "id5": "",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id7": "",
+        "id8": "Some Value 512 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 74499,
+      "name": "First 姓 Фамилия 740460397",
+      "birthDate": "2025-12-12T10:54:19.571259716",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -378947222",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        6145,
+        4655,
+        9422,
+        7636,
+        5921
+      ],
+      "income": 179097387,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 20.99325745436823,
+          "longitude": 96.94031178036731
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 252.4302689211435,
+          "longitude": 50.667375996725916
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 78709,
+      "name": "First 姓 Фамилия -1011319694",
+      "birthDate": "2025-12-12T10:54:19.571414347",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 1858734878",
+        "address": "Address 45, 67",
+        "description": "Kotlin is a cross-platform, statically typed, general-purpose high-level programming language with type inference. Kotlin is designed to interoperate fully with Java, and the JVM version of Kotlin's standard library depends on the Java Class Library, but type inference allows its syntax to be more concise. Kotlin mainly targets the JVM, but also compiles to JavaScript (e.g. for frontend web applications using React) or native code via LLVM (e.g. for native iOS apps sharing business logic with Android apps)"
+      },
+      "participation": {
+        "149": 10,
+        "537": 489
+      },
+      "friends": [
+        9356,
+        8011,
+        8061,
+        2091,
+        8961,
+        7405,
+        3864,
+        5718
+      ],
+      "income": 1241921080,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 254.36219892271438,
+          "longitude": 92.77732032153119
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 278.51716910666084,
+          "longitude": 6.230601814115088
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 8917,
+      "name": "First 姓 Фамилия -1455796607",
+      "birthDate": "2025-12-12T10:54:19.571490090",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -173814493",
+        "address": "Address 45, 67",
+        "description": "Kotlin is a cross-platform, statically typed, general-purpose high-level programming language with type inference. Kotlin is designed to interoperate fully with Java, and the JVM version of Kotlin's standard library depends on the Java Class Library, but type inference allows its syntax to be more concise. Kotlin mainly targets the JVM, but also compiles to JavaScript (e.g. for frontend web applications using React) or native code via LLVM (e.g. for native iOS apps sharing business logic with Android apps)"
+      },
+      "participation": {
+        "88": 611,
+        "766": 242
+      },
+      "friends": [
+        1793
+      ],
+      "income": 991066847,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 105.03153963769606,
+          "longitude": 104.56285740805478
+        }
+      ]
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 77299,
+      "name": "First 姓 Фамилия 961913509",
+      "birthDate": "2025-12-12T10:54:19.571587233",
+      "description": null,
+      "department": {
+        "name": "Dep Name -608119339",
+        "address": "Address 45, 67",
+        "description": "Kotlin is a cross-platform, statically typed, general-purpose high-level programming language with type inference. Kotlin is designed to interoperate fully with Java, and the JVM version of Kotlin's standard library depends on the Java Class Library, but type inference allows its syntax to be more concise. Kotlin mainly targets the JVM, but also compiles to JavaScript (e.g. for frontend web applications using React) or native code via LLVM (e.g. for native iOS apps sharing business logic with Android apps)"
+      },
+      "participation": {
+        "42": 553
+      },
+      "friends": [
+        4102
+      ],
+      "income": -2139381168,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 204.7071445961823,
+          "longitude": 272.63593992576773
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 138.55493495726472,
+          "longitude": 100.28986365657696
+        }
+      ]
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 10561,
+      "name": "First 姓 Фамилия 676097584",
+      "birthDate": "2025-12-12T10:54:19.571677293",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -524612704",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "919": 293,
+        "692": 673
+      },
+      "friends": [
+        6353,
+        4958,
+        1163,
+        200,
+        3654,
+        8501,
+        5673,
+        4255,
+        1193
+      ],
+      "income": 1575532315,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 219.93878967421944,
+          "longitude": 62.46831581892241
+        }
+      ]
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 80773,
+      "name": "First 姓 Фамилия -319005255",
+      "birthDate": "2025-12-12T10:54:19.571789504",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 1859059466",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        8050,
+        165,
+        5109,
+        3297,
+        1864,
+        5336,
+        1336
+      ],
+      "income": -605358154,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 199.66540243751888,
+          "longitude": 224.2470489313189
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 68545,
+      "name": "First 姓 Фамилия 473882806",
+      "birthDate": "2025-12-12T10:54:19.571871238",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 1849631862",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "876": 880,
+        "614": 405
+      },
+      "friends": [],
+      "income": 1806221694,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 281.16925623877694,
+          "longitude": 284.4158361757362
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 286.1117180743127,
+          "longitude": 122.99747219524363
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 1692,
+      "name": "First 姓 Фамилия -1905925153",
+      "birthDate": "2025-12-12T10:54:19.571951689",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 139455198",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "876": 347,
+        "212": 72
+      },
+      "friends": [
+        8998,
+        4802,
+        3452,
+        6470
+      ],
+      "income": 576607858,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 240.48454861893538,
+          "longitude": 125.17205859406309
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 255.1527565835558,
+          "longitude": 178.13802838895637
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 29945,
+      "name": "First 姓 Фамилия -704042814",
+      "birthDate": "2025-12-12T10:54:19.572066175",
+      "description": null,
+      "department": {
+        "name": "Dep Name -856292853",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "142": 855
+      },
+      "friends": [],
+      "income": 1907338739,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 162.6636479473225,
+          "longitude": 75.9958028655856
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 12.033298610512844,
+          "longitude": 134.06496776161
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id7": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 72557,
+      "name": "First 姓 Фамилия 1475033875",
+      "birthDate": "2025-12-12T10:54:19.572174228",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -1920607024",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "935": 188
+      },
+      "friends": [
+        4131,
+        83,
+        5745
+      ],
+      "income": -938144621,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 9.816251334516824,
+          "longitude": 299.2286038717004
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "",
+        "id2": "",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 12177,
+      "name": "First 姓 Фамилия -1930723017",
+      "birthDate": "2025-12-12T10:54:19.572226677",
+      "description": null,
+      "department": {
+        "name": "Dep Name -2064170272",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "858": 634
+      },
+      "friends": [
+        9844,
+        2091,
+        5753
+      ],
+      "income": -1051125096,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 195.54809674798673,
+          "longitude": 132.16316881434398
+        }
+      ]
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 78984,
+      "name": "First 姓 Фамилия 23794232",
+      "birthDate": "2025-12-12T10:54:19.572330873",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 1209914401",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "810": 35,
+        "787": 840
+      },
+      "friends": [
+        5350
+      ],
+      "income": 815339565,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 25.29743234166539,
+          "longitude": 146.4872029588375
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 217.53218592824834,
+          "longitude": 256.73859119574695
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 34111,
+      "name": "First 姓 Фамилия 1924143678",
+      "birthDate": "2025-12-12T10:54:19.572473502",
+      "description": null,
+      "department": {
+        "name": "Dep Name 1054529928",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "125": 392,
+        "29": 404
+      },
+      "friends": [
+        3485,
+        130,
+        2427
+      ],
+      "income": 1813127831,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 276.00870004043674,
+          "longitude": 104.93508025300667
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "",
+        "id4": "",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 39643,
+      "name": "First 姓 Фамилия -1230821740",
+      "birthDate": "2025-12-12T10:54:19.572531601",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -1024417819",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "520": 761
+      },
+      "friends": [
+        8117,
+        4373,
+        4775,
+        3065,
+        6682
+      ],
+      "income": 318446820,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 57.84721090713343,
+          "longitude": 120.65234292320731
+        }
+      ]
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 88071,
+      "name": "First 姓 Фамилия -1394107659",
+      "birthDate": "2025-12-12T10:54:19.572616651",
+      "description": null,
+      "department": {
+        "name": "Dep Name 784288548",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "281": 728
+      },
+      "friends": [],
+      "income": -2136112317,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 279.886033198745,
+          "longitude": 190.1673442929169
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "",
+        "id4": "",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 15246,
+      "name": "First 姓 Фамилия 556727158",
+      "birthDate": "2025-12-12T10:54:19.572684870",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -1136208583",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        7058,
+        1381,
+        5161,
+        7310,
+        518,
+        6347
+      ],
+      "income": 443213021,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 270.84489405071275,
+          "longitude": 234.85717101063827
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 11284,
+      "name": "First 姓 Фамилия -1848328573",
+      "birthDate": "2025-12-12T10:54:19.572792132",
+      "description": "The guanaco (Lama guanicoe) is a species of mammal in the family Camelidae, the camelids. Closely related to the llama, the guanaco is native to the steppes, scrublands and mountainous regions of South America, including Peru, Bolivia, Chile, Paraguay and Argentina. It is a diurnal animal, living in small herds consisting of either one male and several females with their young, or separate bachelor herds. It can run at speeds of up to 64 km/h (40 mph), important for avoiding predation. A herbivore, the guanaco grazes on grasses, shrubs, herbs, lichens, fungi, cacti, and flowers, while its natural predators include the puma and the culpeo (Andean fox). Some guanacos are found domesticated in zoos and private herds around the world, and its fiber is also harvested for use in luxury fabrics, being noted for its soft, warm feel.",
+      "department": {
+        "name": "Dep Name -1964393238",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "421": 102,
+        "488": 676
+      },
+      "friends": [
+        3406,
+        8455,
+        36,
+        4123,
+        5327
+      ],
+      "income": 669394664,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 105.10728647200385,
+          "longitude": 16.11010958733603
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 276.43571403685945,
+          "longitude": 136.73810545474203
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 50360,
+      "name": "First 姓 Фамилия -548230609",
+      "birthDate": "2025-12-12T10:54:19.572977130",
+      "description": null,
+      "department": {
+        "name": "Dep Name -960465110",
+        "address": "Address 45, 67",
+        "description": "Kotlin is a cross-platform, statically typed, general-purpose high-level programming language with type inference. Kotlin is designed to interoperate fully with Java, and the JVM version of Kotlin's standard library depends on the Java Class Library, but type inference allows its syntax to be more concise. Kotlin mainly targets the JVM, but also compiles to JavaScript (e.g. for frontend web applications using React) or native code via LLVM (e.g. for native iOS apps sharing business logic with Android apps)"
+      },
+      "participation": {
+        "636": 984,
+        "741": 615
+      },
+      "friends": [
+        6633
+      ],
+      "income": 1093117471,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 64.34891138570956,
+          "longitude": 91.76248618354113
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 253.19641497610863,
+          "longitude": 127.7754736497147
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id7": "",
+        "id8": "Some Value 512 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Guest",
+      "name": "Guest 298143886",
+      "roleId": 576,
+      "enum": "another_entry2",
+      "birthDate": "2025-12-12T10:54:19.573009711"
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 82860,
+      "name": "First 姓 Фамилия 692503566",
+      "birthDate": "2025-12-12T10:54:19.573101073",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 1489047193",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "733": 41
+      },
+      "friends": [
+        8066,
+        6570
+      ],
+      "income": -344116890,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 246.0806510890701,
+          "longitude": 191.27734627257664
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 18.077551802621315,
+          "longitude": 172.0889953346722
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "",
+        "id5": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 72489,
+      "name": "First 姓 Фамилия 953177612",
+      "birthDate": "2025-12-12T10:54:19.573208355",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 1069466242",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "743": 399
+      },
+      "friends": [
+        5826,
+        3082,
+        3431,
+        7350,
+        6760,
+        602,
+        4169,
+        6906
+      ],
+      "income": 1482049849,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 297.49318969076154,
+          "longitude": 55.754370408910994
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 285.60111981221894,
+          "longitude": 263.91866182902066
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 91142,
+      "name": "First 姓 Фамилия 916036418",
+      "birthDate": "2025-12-12T10:54:19.573290059",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -1141979413",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "366": 765
+      },
+      "friends": [],
+      "income": -671593966,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 38.241470052201684,
+          "longitude": 69.45889835129509
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id6": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 44848,
+      "name": "First 姓 Фамилия -962800411",
+      "birthDate": "2025-12-12T10:54:19.573396490",
+      "description": null,
+      "department": {
+        "name": "Dep Name 1508596012",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "741": 851,
+        "213": 489
+      },
+      "friends": [
+        1070,
+        675,
+        5179,
+        2570,
+        9674,
+        4857,
+        8726,
+        2987,
+        3673
+      ],
+      "income": -1379208975,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 72.21634139536293,
+          "longitude": 220.93915016197096
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 229.20319349293223,
+          "longitude": 185.5142991947318
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id6": "",
+        "id7": "Some Value 343 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 24690,
+      "name": "First 姓 Фамилия -1698691962",
+      "birthDate": "2025-12-12T10:54:19.573476981",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 1668199104",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "949": 252,
+        "543": 419
+      },
+      "friends": [
+        4525,
+        3068
+      ],
+      "income": -1342617462,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 273.94372865787324,
+          "longitude": 193.29529778538026
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 198.1894241081071,
+          "longitude": 177.43046586473147
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 42349,
+      "name": "First 姓 Фамилия 1806367898",
+      "birthDate": "2025-12-12T10:54:19.573575928",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 154440628",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "694": 615,
+        "991": 390
+      },
+      "friends": [
+        978
+      ],
+      "income": -1112631226,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 171.03601291783775,
+          "longitude": 207.5282590129432
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "",
+        "id6": "",
+        "id7": "Some Value 343 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 37741,
+      "name": "First 姓 Фамилия -1098968897",
+      "birthDate": "2025-12-12T10:54:19.573681957",
+      "description": null,
+      "department": {
+        "name": "Dep Name -1216319433",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "254": 453
+      },
+      "friends": [
+        2437,
+        6685,
+        9324,
+        8660,
+        7218,
+        2427,
+        6995,
+        6504
+      ],
+      "income": -773278070,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 116.35429424924966,
+          "longitude": 153.88386831229386
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 84991,
+      "name": "First 姓 Фамилия -1950416821",
+      "birthDate": "2025-12-12T10:54:19.573729627",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 2086096128",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [],
+      "income": 92766328,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 173.40203664869537,
+          "longitude": 11.633355057770888
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 78952,
+      "name": "First 姓 Фамилия 1510356012",
+      "birthDate": "2025-12-12T10:54:19.573795150",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -778811497",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        3704,
+        1778,
+        593,
+        2038
+      ],
+      "income": -348201434,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 213.77016970091455,
+          "longitude": 241.57137144699752
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 119.50941436842926,
+          "longitude": 236.35605868184655
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 28149,
+      "name": "First 姓 Фамилия 1657914080",
+      "birthDate": "2025-12-12T10:54:19.573865633",
+      "description": null,
+      "department": {
+        "name": "Dep Name 773829837",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "776": 419,
+        "976": 416
+      },
+      "friends": [
+        159,
+        9621,
+        5196,
+        6950,
+        6228,
+        7534,
+        6188
+      ],
+      "income": 789736381,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 64.29207055842603,
+          "longitude": 185.81001498650485
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 56.0002955557571,
+          "longitude": 61.5361874569781
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Guest",
+      "name": "Guest -418359070",
+      "roleId": 371,
+      "enum": "another_entry2",
+      "birthDate": "2025-12-12T10:54:19.573887745"
+    },
+    {
+      "type": "dev.dokky.zerojson.Guest",
+      "name": "Guest -451278366",
+      "roleId": 638,
+      "enum": "UPPERCASE_ENTRY",
+      "birthDate": "2025-12-12T10:54:19.573906049"
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 32027,
+      "name": "First 姓 Фамилия -1075794460",
+      "birthDate": "2025-12-12T10:54:19.573993824",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 134477757",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        1128,
+        1348,
+        6546,
+        6891,
+        3643,
+        9176,
+        6070,
+        6612
+      ],
+      "income": -688126501,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 274.7251808526097,
+          "longitude": 62.068908824029144
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 262.94947189532655,
+          "longitude": 160.77903252304662
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id7": "Some Value 343 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id8": "Some Value 512 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 64453,
+      "name": "First 姓 Фамилия -1049830840",
+      "birthDate": "2025-12-12T10:54:19.574054208",
+      "description": null,
+      "department": {
+        "name": "Dep Name -1871704289",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "955": 669,
+        "27": 749
+      },
+      "friends": [
+        1372,
+        7441,
+        2801
+      ],
+      "income": -543744894,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 194.84306924760142,
+          "longitude": 127.1206299290946
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 40490,
+      "name": "First 姓 Фамилия 1678987753",
+      "birthDate": "2025-12-12T10:54:19.574129630",
+      "description": "The guanaco (Lama guanicoe) is a species of mammal in the family Camelidae, the camelids. Closely related to the llama, the guanaco is native to the steppes, scrublands and mountainous regions of South America, including Peru, Bolivia, Chile, Paraguay and Argentina. It is a diurnal animal, living in small herds consisting of either one male and several females with their young, or separate bachelor herds. It can run at speeds of up to 64 km/h (40 mph), important for avoiding predation. A herbivore, the guanaco grazes on grasses, shrubs, herbs, lichens, fungi, cacti, and flowers, while its natural predators include the puma and the culpeo (Andean fox). Some guanacos are found domesticated in zoos and private herds around the world, and its fiber is also harvested for use in luxury fabrics, being noted for its soft, warm feel.",
+      "department": {
+        "name": "Dep Name 1407583676",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        6802,
+        5538,
+        7939,
+        503,
+        8299,
+        5608,
+        7087,
+        2573,
+        9406
+      ],
+      "income": -1281922227,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 119.64089624676635,
+          "longitude": 1.1673610326295103
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 12638,
+      "name": "First 姓 Фамилия 1834203857",
+      "birthDate": "2025-12-12T10:54:19.574215041",
+      "description": null,
+      "department": {
+        "name": "Dep Name -374371318",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "666": 463,
+        "730": 897
+      },
+      "friends": [
+        6263,
+        232,
+        2757,
+        4301,
+        1278,
+        6409
+      ],
+      "income": -1618511036,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 168.71901928649726,
+          "longitude": 33.915511072763906
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 83.36297496453803,
+          "longitude": 130.58096874390654
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "",
+        "id4": "",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 83533,
+      "name": "First 姓 Фамилия 987676229",
+      "birthDate": "2025-12-12T10:54:19.574297095",
+      "description": null,
+      "department": {
+        "name": "Dep Name 1642700258",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        1512,
+        2403,
+        6255,
+        4388,
+        2118,
+        6823,
+        9829,
+        2130
+      ],
+      "income": 593041769,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 220.36072230722843,
+          "longitude": 219.4438408228622
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "Some Value 1 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id7": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 98485,
+      "name": "First 姓 Фамилия 420361811",
+      "birthDate": "2025-12-12T10:54:19.574361777",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name -567287542",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        5702,
+        5028,
+        3413,
+        6123,
+        7235,
+        5750
+      ],
+      "income": -1358172403,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 88.36010801287907,
+          "longitude": 183.88383310064057
+        },
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 125.45033408288056,
+          "longitude": 13.057394081273754
+        }
+      ],
+      "extra": {
+        "id0": ""
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 24318,
+      "name": "First 姓 Фамилия 273475740",
+      "birthDate": "2025-12-12T10:54:19.574436177",
+      "description": "The guanaco (Lama guanicoe) is a species of mammal in the family Camelidae, the camelids. Closely related to the llama, the guanaco is native to the steppes, scrublands and mountainous regions of South America, including Peru, Bolivia, Chile, Paraguay and Argentina. It is a diurnal animal, living in small herds consisting of either one male and several females with their young, or separate bachelor herds. It can run at speeds of up to 64 km/h (40 mph), important for avoiding predation. A herbivore, the guanaco grazes on grasses, shrubs, herbs, lichens, fungi, cacti, and flowers, while its natural predators include the puma and the culpeo (Andean fox). Some guanacos are found domesticated in zoos and private herds around the world, and its fiber is also harvested for use in luxury fabrics, being noted for its soft, warm feel.",
+      "department": {
+        "name": "Dep Name -18477222",
+        "address": "Address 45, 67"
+      },
+      "participation": {},
+      "friends": [
+        6491,
+        1428,
+        5096,
+        4124,
+        3561,
+        1019
+      ],
+      "income": -1619454613,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 82.16167849314452,
+          "longitude": 183.75575519502866
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id5": "Some Value 125 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 33560,
+      "name": "First 姓 Фамилия 1163907046",
+      "birthDate": "2025-12-12T10:54:19.574548609",
+      "description": "Длинное описание. 很多線. Long description. ",
+      "department": {
+        "name": "Dep Name 779681396",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "230": 814
+      },
+      "friends": [
+        6338,
+        4910
+      ],
+      "income": 554184578,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 119.03967353138907,
+          "longitude": 295.62359628840903
+        }
+      ],
+      "extra": {
+        "id0": "",
+        "id1": "",
+        "id2": "Some Value 8 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id3": "Some Value 27 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id4": "",
+        "id5": "",
+        "id6": "Some Value 216 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id7": "",
+        "id8": "Some Value 512 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    },
+    {
+      "type": "dev.dokky.zerojson.Employee",
+      "id": 41080,
+      "name": "First 姓 Фамилия 1259641072",
+      "birthDate": "2025-12-12T10:54:19.574639861",
+      "description": null,
+      "department": {
+        "name": "Dep Name -1153757590",
+        "address": "Address 45, 67"
+      },
+      "participation": {
+        "771": 795,
+        "273": 372
+      },
+      "friends": [
+        4219,
+        5792
+      ],
+      "income": -469314855,
+      "locations": [
+        {
+          "address": "Some Address, 1 2",
+          "latitude": 24.477887926610688,
+          "longitude": 11.12264375870523
+        }
+      ],
+      "extra": {
+        "id0": "Some Value 0 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc",
+        "id1": "",
+        "id2": "",
+        "id3": "",
+        "id4": "Some Value 64 /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc"
+      }
+    }
+  ],
+  "total": 2094,
+  "version": 35353
+}
