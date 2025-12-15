@@ -100,6 +100,9 @@ internal class ZeroJsonDescriptor private constructor(
     val hasInlineMapElement: Boolean get() = inlineMapElement.isValid
     val isInitialized: Boolean get() = totalElementCount >= 0
 
+    // effectively devirtualizes SerialDescriptor.kind
+    val kind = serialDescriptorUnsafe.kind
+
     fun copyAsNullable(nullableDescriptor: SerialDescriptor = serialDescriptorUnsafe.nullable): ZeroJsonDescriptor {
         require(isInitialized) { "attempt to copy uninitialized descriptor" }
         assert { nullableDescriptor.isNullable }
@@ -548,7 +551,6 @@ internal class ZeroJsonDescriptor private constructor(
 internal val ZeroJsonDescriptor.isNullable: Boolean get() = serialDescriptorUnsafe.isNullable
 internal val ZeroJsonDescriptor.serialName: String  get() = serialDescriptorUnsafe.serialName
 internal val ZeroJsonDescriptor.elementsCount: Int  get() = serialDescriptorUnsafe.elementsCount
-internal val ZeroJsonDescriptor.kind: SerialKind    get() = serialDescriptorUnsafe.kind
 
 internal fun ZeroJsonDescriptor.needWrappingIfSubclass(): Boolean =
     isNullable || !kind.let { it == StructureKind.CLASS || it == StructureKind.OBJECT }
