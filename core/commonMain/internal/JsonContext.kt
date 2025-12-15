@@ -35,8 +35,14 @@ internal class JsonContext(
         }
     }
 
-    val dataBuilder = StringBuilderWrapper(256, maxCapacity = config.maxEncodedBytes)
-    val messageBuilder = StringBuilderWrapper(256, maxCapacity = config.maxEncodedBytes)
+    val dataBuilder = StringBuilderWrapper(
+        initialCapacity = (10 * 1024).coerceAtMost(config.maxEncodedBytes),
+        maxCapacity = config.maxEncodedBytes
+    )
+    val messageBuilder = StringBuilderWrapper(
+        initialCapacity = 10 * 1024,
+        maxCapacity = 40 * 1024
+    )
 
     private val bufferInput = ZeroUtf8TextReader(messageBuilder)
     val stringInput = ZeroStringTextReader(messageBuilder)
