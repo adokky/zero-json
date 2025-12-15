@@ -55,7 +55,7 @@ class ReadJsonStringTest: AbstractJsonStringTest<String>() {
     }
 
     @Test
-    fun chucked_read_unquoted() {
+    fun chunked_read_unquoted() {
         val s = "12П45\""
         test(s) {
             readChunks()
@@ -68,7 +68,7 @@ class ReadJsonStringTest: AbstractJsonStringTest<String>() {
     }
 
     @Test
-    fun chucked_read_quoted() {
+    fun chunked_read_quoted() {
         val s = "\"12П45\""
         test(s) {
             readChunks()
