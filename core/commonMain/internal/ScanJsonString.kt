@@ -88,7 +88,7 @@ private fun JsonReaderImpl.scanQuotedString(
         else -> input.scanJsonStringContent(
             allowEof = false,
             charClasses = JsonCharClasses.mapper,
-            terminatorClass = JsonCharClasses.DOUBLE_QUOTES,
+            terminatorClass = JsonCharClasses.DOUBLE_QUOTE,
             maxLength = maxLength,
             onMaxLength = onMaxLength,
             allowEscapes = allowEscapes
@@ -138,7 +138,7 @@ private fun StringTextReader.scanKeywordContent(
     allowEscapes = allowEscapes
 )
 
-// WARN: Dos not check unfinished surrogate pairs.
+// WARN: Does not check unfinished surrogate pairs.
 // This function is only used for string key matching.
 private inline fun StringTextReader.scanStringContentTemplate(
     allowEof: Boolean,

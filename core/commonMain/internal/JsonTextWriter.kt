@@ -20,13 +20,13 @@ internal class JsonTextWriter(
     }
 
     override fun beginString() {
-        quotes()
+        quote()
         escapingDepth = EscapingDepth.next(escapingDepth)
     }
 
     override fun endString() {
         escapingDepth = EscapingDepth.prev(escapingDepth)
-        quotes()
+        quote()
     }
 
     override fun writeNumber(num: Float) {
@@ -52,15 +52,15 @@ internal class JsonTextWriter(
     override fun writeBoolean(bool: Boolean) { textWriter.append(bool) }
 
     override fun writeString(char: Char) {
-        quotes()
+        quote()
         textWriter.appendEscapedChar(char, escapingDepth)
-        quotes()
+        quote()
     }
 
     override fun writeString(string: String, start: Int, end: Int) {
-        quotes()
+        quote()
         textWriter.appendJsonString(string, start, end, escapingDepth)
-        quotes()
+        quote()
     }
 
     override fun beginObject(size: Int) { textWriter.append('{') }
@@ -69,7 +69,7 @@ internal class JsonTextWriter(
     override fun endArray() { textWriter.append(']') }
     override fun colon() { textWriter.append(':') }
     override fun comma() { textWriter.append(',') }
-    fun quotes() { textWriter.appendQuotes(escapingDepth) }
+    fun quote() { textWriter.appendQuotes(escapingDepth) }
 
     override fun writeNull() { textWriter.append("null") }
 
@@ -85,7 +85,7 @@ internal class JsonTextWriter(
         val content = element.content
 
         var depth = escapingDepth
-        if (element.isString) quotes() else {
+        if (element.isString) quote() else {
             if (depth == 0) {
                 textWriter.append(element.content)
                 return
@@ -94,7 +94,7 @@ internal class JsonTextWriter(
         }
 
         textWriter.appendJsonString(content, start = 0, end = content.length, escapeDepth = depth)
-        if (element.isString) quotes()
+        if (element.isString) quote()
     }
 
     fun write(array: JsonArray, skipNullKeys: Boolean) {

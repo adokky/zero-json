@@ -91,19 +91,11 @@ abstract class AbstractJsonStringTest<T>: AbstractJsonReaderTest() {
         for (c in stringTerminators) {
             test(s + c, s)
             if (c.isEmpty()) reader.expectEof() else {
-                // todo should require readTestString to skip all whitespaces
                 if (c != " ") reader.expectNextIs(c.first())
             }
         }
 
         test("$s long,suffix", s)
-
-        // not implemented - too costly to check every time
-//        assertFailsWith<SerializationException> {
-//            test(s + '\"') {
-//                readTestString(requireQuotes = false)
-//            }
-//        }
 
         test("${s}_") {
             val result = readTestString(requireQuotes = false)
@@ -133,7 +125,7 @@ abstract class AbstractJsonStringTest<T>: AbstractJsonReaderTest() {
         data.forEach { string ->
             test(if (quoted) "\"$string\"" else string) {
                 assertFailsWithSerialMessage(expectedMessage) {
-                    reader.readTestString()
+                    readTestString()
                 }
             }
         }
@@ -156,7 +148,7 @@ abstract class AbstractJsonStringTest<T>: AbstractJsonReaderTest() {
     fun quotes_requirement() {
         test("abc") {
             assertFailsWith<SerializationException> {
-                reader.readTestString(requireQuotes = true)
+                readTestString(requireQuotes = true)
             }
         }
     }
@@ -169,7 +161,7 @@ abstract class AbstractJsonStringTest<T>: AbstractJsonReaderTest() {
                 input.expect('y')
                 input.expect('z')
                 assertFailsWithMessage<SerializationException>("expected string") {
-                    reader.readTestString(requireQuotes = false)
+                    readTestString(requireQuotes = false)
                 }
             }
         }
@@ -219,9 +211,29 @@ abstract class AbstractJsonStringTest<T>: AbstractJsonReaderTest() {
 
     @Test
     fun max_length_position_quoted() {
+        test("\"\"", offset = 0) {
+            checkResult("", readTestString(maxLength = 1, onMaxLength = {}))
+            assertEquals(2, input.position)
+        }
+        test("\"A\"", offset = 0) {
+            checkResult("A", readTestString(maxLength = 1, onMaxLength = {}))
+            assertEquals(3, input.position)
+        }
+        test("\"\\t123\"", offset = 0) {
+            checkResult("\t1", readTestString(requireQuotes = false, maxLength = 2, onMaxLength = {}))
+            assertEquals(4, input.position)
+        }
+        test("\"\\u1234\\u4321\"", offset = 0) {
+            checkResult("\u1234", readTestString(maxLength = 1, onMaxLength = {}), escaped = "\\u1234")
+            assertEquals(7, input.position)
+        }
         test("\"12Ё4\\n5Г789\"", offset = 0) {
             checkResult("12Ё4\n5Г", readTestString(maxLength = 7, onMaxLength = {}))
             assertEquals(if (input is Utf8TextReader) 11 else 9, input.position)
+        }
+        test(""" "\"\"\"\"" """.trim(), offset = 0) {
+            checkResult("\"\"\"", readTestString(maxLength = 3, onMaxLength = {}))
+            assertEquals(7, input.position)
         }
         test("\"б1\\nY\"", offset = 0) {
             checkResult("б1\n", readTestString(maxLength = 3, onMaxLength = {}))
@@ -250,14 +262,14 @@ abstract class AbstractJsonStringTest<T>: AbstractJsonReaderTest() {
         for (s in listOf("null", "null,", "null ")) {
             test(s) {
                 val msg = assertFailsWith<SerializationException> {
-                    reader.readTestString(requireQuotes = false, allowNull = false, allowBoolean = true)
+                    readTestString(requireQuotes = false, allowNull = false, allowBoolean = true)
                 }.message
                 assertNotNull(msg)
                 assertContains(msg, "string")
                 assertContains(msg, "null")
             }
             test(s) {
-                checkResult("null", reader.readTestString(requireQuotes = false, allowNull = true, allowBoolean = false))
+                checkResult("null", readTestString(requireQuotes = false, allowNull = true, allowBoolean = false))
             }
         }
     }
@@ -272,14 +284,33 @@ abstract class AbstractJsonStringTest<T>: AbstractJsonReaderTest() {
         )) {
             test(input) {
                 val msg = assertFailsWith<SerializationException> {
-                    reader.readTestString(requireQuotes = false, allowNull = true, allowBoolean = false)
+                    readTestString(requireQuotes = false, allowNull = true, allowBoolean = false)
                 }.message
                 assertNotNull(msg)
                 assertContains(msg, "string")
                 assertContains(msg, "boolean")
             }
             test(input) {
-                checkResult(original, reader.readTestString(requireQuotes = false, allowNull = false, allowBoolean = true))
+                checkResult(original, readTestString(requireQuotes = false, allowNull = false, allowBoolean = true))
+            }
+        }
+    }
+
+    @Test
+    fun missing_closing_quote() {
+        test("\"") {
+            assertFailsWithMessage<SerializationException>("EOF") {
+                readTestString(requireQuotes = true)
+            }
+        }
+        test("\"\\t123") {
+            assertFailsWithMessage<SerializationException>("EOF") {
+                readTestString(requireQuotes = false)
+            }
+        }
+        test("\"A") {
+            assertFailsWithMessage<SerializationException>("EOF") {
+                readTestString(requireQuotes = false, maxLength = 1, onMaxLength = {})
             }
         }
     }

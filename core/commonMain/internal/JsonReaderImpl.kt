@@ -37,8 +37,8 @@ internal class JsonReaderImpl private constructor(
     }
 
     /** @return hash code */
-    override fun readString(output: StringBuilder, requireQuotes: Boolean, maxLength: Int): Int {
-        return input.readJsonString(output, requireQuotes = requireQuotes, maxLength = maxLength)
+    override fun readString(output: StringBuilder, requireQuotes: Boolean, maxLength: Int) {
+        input.readJsonString(output, requireQuotes = requireQuotes, maxLength = maxLength)
             .also { skipWhitespace() }
     }
 

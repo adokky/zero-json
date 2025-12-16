@@ -48,13 +48,12 @@ abstract class JsonReader internal constructor(val config: JsonReaderConfig) {
      * @param output the builder to append the string to
      * @param requireQuotes whether the string must be quoted
      * @param maxLength maximum string length in characters
-     * @return hash code of the string
      */
     abstract fun readString(
         output: StringBuilder,
         requireQuotes: Boolean = config.expectStringQuotes,
         maxLength: Int = config.maxStringLength
-    ): Int
+    )
 
     /**
      * Reads a JSON number as a float.

@@ -385,7 +385,7 @@ internal class JsonEncoderImpl(
         encodeString(enumDescriptor.getElementName(index))
     }
 
-    /** @return `true` if closing double quotes (") is needed */
+    /** @return `true` if closing double quote (") is needed */
     private fun beforeElement(): Boolean {
         val index = elementIndex
         val flags = zDescriptor.kindFlags

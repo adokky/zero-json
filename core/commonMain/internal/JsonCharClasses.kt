@@ -4,7 +4,7 @@ import io.kodec.text.CharToClassMapper
 import karamel.utils.AutoBitDescriptors
 
 internal object JsonCharClasses: AutoBitDescriptors(capacity = 8) {
-    val DOUBLE_QUOTES = uniqueBit()
+    val DOUBLE_QUOTE = uniqueBit()
     val FLOAT = uniqueBit()
     val DIGIT = uniqueBit() + FLOAT
     val TOKEN = uniqueBit()
@@ -46,7 +46,7 @@ internal object JsonCharClasses: AutoBitDescriptors(capacity = 8) {
         assignClasses('}', TOKEN + WORD_TERM)
         assignClasses('[', TOKEN + WORD_TERM)
         assignClasses(']', TOKEN + WORD_TERM)
-        assignClasses('"', DOUBLE_QUOTES + TOKEN + WORD_TERM)
+        assignClasses('"', DOUBLE_QUOTE + TOKEN + WORD_TERM)
     }
 
     fun isToken(codePoint: Int): Boolean = TOKEN in mapper.getClasses(codePoint)

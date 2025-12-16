@@ -52,7 +52,7 @@ private fun JsonReaderImpl.skipQuotedString(maxLength: Int, onMaxLength: Decodin
         allowEof = false,
         allowEscapes = true,
         JsonCharClasses.mapper,
-        JsonCharClasses.DOUBLE_QUOTES,
+        JsonCharClasses.DOUBLE_QUOTE,
         maxLength = maxLength,
         onMaxLength = onMaxLength
     )
