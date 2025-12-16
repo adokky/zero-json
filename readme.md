@@ -6,11 +6,13 @@
 
 Fast and powerful implementation of JSON format for [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization).
 
+## Features
+
 * **Compatibility**: Can be used as a drop-in replacement for [kotlinx-serialization-json](https://github.com/Kotlin/kotlinx.serialization/tree/master).
-* **Zero extra allocation**: only deserialized objects are allocated. Exceptions include `Float`/`Double` types (zero allocations in most cases) and some kotlinx serializers that use `ChunkedDecoder`.
-* **Zero-copy**: deserialize objects without intermediate copies by wrapping any byte buffer. Buffer wrapping is done through a simple `Buffer` interface that requires only `size` property and `get` method to be implemented.
-* **Map and object inlining**: mark a class property with `@JsonInline` to inline its serialized form. Only final classes and `Map` instances can be inlined.
-* **Value subclasses**: zero-json provides out-of-the-box support for polymorphic value subclasses, automatically serializing them with a type and value field:
+* **Zero extra allocation**: Only deserialized objects are allocated. Exceptions include kotlinx serializers (that use `ChunkedDecoder`) and `Float`/`Double` types (still allocates much less than most serializers). On Kotlin/JS, it may allocate much more — not much we can do about it.
+* **Zero-copy**: Deserialize objects without intermediate copies by wrapping any byte buffer. Buffer wrapping is done through a simple `Buffer` interface that requires only `size` property and `get` method to be implemented.
+* **Map and object [inlining](#jsoninline)**: Mark a class property with [`@JsonInline`](#jsoninline) to inline its serialized form. Only final classes and `Map` instances can be inlined.
+* **Value subclasses**: Out-of-the-box support for polymorphic value subclasses, automatically serializing them with a type and value field:
 ```kotlin
 @Serializable sealed interface Base
 @Serializable value class Foo(val int: Int): Base
@@ -19,6 +21,7 @@ println(s)
 // { "type": "Foo", "value": 42 }
 println(ZeroJson.decodeFromString<Base>(s))
 // 42
+
 ```
 * **Advanced deserializers (experimental)**: custom serializers has access to underlying parser (`JsonReader`). That allows implementing simple and efficient content-based polymorphism without extra allocations of `JsonElement`.
 
@@ -30,7 +33,7 @@ println(ZeroJson.decodeFromString<Base>(s))
 * [External][external-ser] serializers and [partial][partial-ser] custom serializers are not supported because of the [bug][descriptor-bug].
 * Duplicate JSON object keys are not allowed
 * On JS: no `dynamic` support
-* On JVM: Serialization using `InputStream`/`OutputStream` is slower. Nearly all I/O libraries and frameworks provide access to underlying array or buffer abstractions. Wrapping these is the intended way to use this library. For any streaming workload, we recommend using the original `kotlinx-serialization-json` instead.
+* On JVM: Serialization using `InputStream`/`OutputStream` is not recommended. Nearly all I/O libraries and frameworks provide access to underlying array or buffer abstractions. Wrapping these is the intended way to use this library. For any streaming workload, we recommend using the original `kotlinx-serialization-json` instead.
 * No `prettyPrint` option
 
   [external-ser]: https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serializers.md#deriving-external-serializer-for-another-kotlin-class-experimental
@@ -110,3 +113,33 @@ println(ZeroJson.encodeToString(
     "avatar": "https://cdn.com/avatar23535"
 }
 ```
+
+## Performance
+
+zero-json is built for fast UTF-8 encoding/decoding — super common in network-related workloads. It's tuned for JVM backend services which handle tons of client requests, so serialization is one of the main bottlenecks. Client apps rarely hit serialization limits — they're more bogged down by UI or network delays. 
+
+Benchmarks use JMH, so results may vary on other platforms.
+
+Decoding (smaller is better):
+```
+bytes_kotlinx            136.218 ±  1.453  us/op
+bytes_zjson              107.799 ±  0.891  us/op
+string_kotlinx            80.194 ±  0.751  us/op
+string_zjson             100.707 ±  0.770  us/op
+tree_kotlinx              42.197 ±  3.291  us/op
+tree_zjson                28.922 ±  0.574  us/op
+```
+
+Encoding (smaller is better):
+```
+bytes_kotlinx             36.517 ±  0.587  us/op
+bytes_zjson               29.325 ±  0.553  us/op
+string_kotlinx            27.550 ±  0.635  us/op
+string_zjson              42.241 ±  4.009  us/op
+tree_kotlinx              31.760 ±  3.394  us/op
+tree_zjson                19.541 ±  0.352  us/op
+```
+
+* `bytes` - encoding/decoding UTF-8 bytes.
+* `string` - encoding/decoding `String` instances.
+* `tree` - encoding/decoding `JsonElement` tree.
