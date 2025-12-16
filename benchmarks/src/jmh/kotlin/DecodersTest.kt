@@ -3,6 +3,7 @@ package dev.dokky.zerojson
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.decodeFromStream
 import org.openjdk.jmh.annotations.Benchmark
+import org.openjdk.jmh.annotations.Param
 import org.openjdk.jmh.annotations.Scope
 import org.openjdk.jmh.annotations.State
 import java.io.ByteArrayInputStream
@@ -12,7 +13,7 @@ open class DecodersTest: BenchmarkBase() {
     @State(Scope.Thread)
     open class TLS : ThreadLocalStateBase(CacheInvalidation.ALL_CORES) {
         /** Discriminator In The Middle  */
-//        @Param("true", "false")
+        @Param("true", "false")
         var DITM: Boolean = false
     }
 
@@ -36,7 +37,7 @@ open class DecodersTest: BenchmarkBase() {
         return state.zJson.decodeFromByteArray(state.serializer, state.inputArray)
     }
 
-    @Benchmark
+//    @Benchmark
     fun stream_zjson(state: TLS): Any {
         return state.zJson.decodeFromStream(state.serializer, ByteArrayInputStream(state.inputArray))
     }

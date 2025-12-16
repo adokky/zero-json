@@ -1,6 +1,7 @@
 package dev.dokky.zerojson
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import org.openjdk.jmh.annotations.Level
@@ -18,32 +19,39 @@ enum class CacheInvalidation {
 
 @OptIn(ExperimentalSerializationApi::class)
 abstract class ThreadLocalStateBase(val cacheInvalidation: CacheInvalidation = CacheInvalidation.NONE) {
-    private val shuffleBuf = ThreadLocal.withInitial { ByteArray(2 * 1024 * 1024) }
+    private val shuffleBuf = ThreadLocal.withInitial { ByteArray(1 * 1024 * 1024) }
 
-    var ktxJson: Json = Json {
-        explicitNulls = false
-    }
+    var ktxJson: Json = Json { explicitNulls = false }
+        private set
     var zJson: ZeroJson = ZeroJson(ktxJson.configuration, ktxJson.serializersModule)
-
-    var serializer = serializer<Response<Person>>()
+        private set
+    var serializer: KSerializer<Response<Person>> = serializer()
+        private set
 
     private fun prepare() {
-//         imitate complex business logic:
-//         invalidate CPU caches by shuffling large array
         Arrays.fill(shuffleBuf.get(), ThreadLocalRandom.current().nextInt().toByte())
         shuffleBuf.get().shuffle()
     }
 
-    @Setup(Level.Invocation)
+    private var iteration = 0
+
+    @Setup(Level.Trial)
+    fun beforeTrial(blackhole: Blackhole) {
+        iteration = 0
+    }
+
+    @Setup(Level.Iteration)
     fun imitateComplexBuisnesLogic(blackhole: Blackhole) {
-        when(cacheInvalidation) {
+        if (iteration++ < WARM_UP_ITERATIONS) return
+
+        when (cacheInvalidation) {
+            CacheInvalidation.NONE -> {}
+            CacheInvalidation.SINGLE_CORE -> prepare()
             CacheInvalidation.ALL_CORES -> {
                 (1..Runtime.getRuntime().availableProcessors())
                     .map { CompletableFuture.runAsync(::prepare) }
                     .forEach { it.join() }
             }
-            CacheInvalidation.SINGLE_CORE -> prepare()
-            CacheInvalidation.NONE -> {}
         }
     }
 

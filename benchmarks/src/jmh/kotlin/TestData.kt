@@ -6,7 +6,7 @@ import kotlinx.serialization.json.*
 import java.io.File
 import java.time.LocalDateTime
 
-var TEST_DATA: Response<Person> = Json.decodeFromStream(Response.javaClass.getResourceAsStream("/test_data_x3.json"))
+var TEST_DATA: Response<Person> = Json.decodeFromStream(Response::class.java.getResourceAsStream("/test_data_x3.json")!!)
 
 object DiscriminatorAtStart {
     var ENCODED_DATA: ByteArray = ZeroJson.encodeToByteArray(TEST_DATA)

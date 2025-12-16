@@ -77,7 +77,7 @@ private fun randomEmployee() = Employee(
     department = Department(
         "Dep Name ${Random.nextInt()}",
         "Address 45, 67",
-        description = """Kotlin is a cross-platform, statically typed, general-purpose high-level programming language with type inference. Kotlin is designed to interoperate fully with Java, and the JVM version of Kotlin's standard library depends on the Java Class Library, but type inference allows its syntax to be more concise. Kotlin mainly targets the JVM, but also compiles to JavaScript (e.g. for frontend web applications using React) or native code via LLVM (e.g. for native iOS apps sharing business logic with Android apps)"""
+        description = """Kotlin is a cross-platform, statically typed, general-purpose high-level programming language with type inference.\nKotlin is designed to interoperate fully with Java, and the JVM version of Kotlin's standard library depends on the Java Class Library, but type inference allows its syntax to be more concise.\nKotlin mainly targets the JVM, but also compiles to JavaScript (e.g. for frontend web applications using React) or native code via LLVM (e.g. for native iOS apps sharing business logic with Android apps)"""
             .takeIf { Random.nextInt(10) == 0 }
 
     ),
@@ -93,7 +93,8 @@ private fun randomEmployee() = Employee(
     },
     extra = buildMap {
         repeat(Random.nextInt(10)) { i->
-            put("id$i", "Some Value ${i*i*i} /dfp39czx828dda;l,v,358qc,=caserdxVOI*TJ(9HXc".repeat(Random.nextInt(2)))
+            put("id$i", ("Some Value ${i*i*i} /dfp39czx828dda;l,v,358qc," +
+                " ${if (Random.nextInt(10) == 1)"\t" else ""}  =caserdxVOI*TJ(9HXc").repeat(Random.nextInt(2)))
         }
     },
     locations = (0..Random.nextInt(2)).map { Location("Some Address, 1 2", Random.nextDouble(300.0), Random.nextDouble(300.0)) },

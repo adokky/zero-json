@@ -1,30 +1,30 @@
 package dev.dokky.zerojson
 
 import io.kodec.buffers.asArrayBuffer
-import io.kodec.buffers.asBuffer
 import kotlinx.serialization.json.decodeFromStream
-import org.openjdk.jmh.annotations.*
+import kotlinx.serialization.serializer
+import org.openjdk.jmh.annotations.Benchmark
+import org.openjdk.jmh.annotations.Scope
+import org.openjdk.jmh.annotations.State
 import java.io.ByteArrayInputStream
-import java.util.concurrent.TimeUnit
 
-@Measurement(iterations = 300, time = 100, timeUnit = TimeUnit.MILLISECONDS)
-@Warmup(iterations = 100, time = 100, timeUnit = TimeUnit.MILLISECONDS)
 open class ArrayDecodersTest: BenchmarkBase() {
     @State(Scope.Thread)
-    open class TLS : ThreadLocalStateBase(cacheInvalidation = CacheInvalidation.NONE)
+    open class TLS : ThreadLocalStateBase(cacheInvalidation = CacheInvalidation.ALL_CORES) {
+        var ser = serializer<List<List<Double>>>()
+    }
 
     @Benchmark
     fun bytes_kotlinx(state: TLS): Any {
-        return state.ktxJson.decodeFromStream<List<List<Float>>>(ByteArrayInputStream(TEST_DATA))
+        return state.ktxJson.decodeFromStream(state.ser, ByteArrayInputStream(TEST_DATA))
     }
 
     @Benchmark
     fun bytes_zjson_rc(state: TLS): Any {
-        return state.zJson.decode<List<List<Float>>>(TEST_DATA.asArrayBuffer())
+        return state.zJson.decode(state.ser, TEST_DATA.asArrayBuffer())
     }
 
     companion object {
-        var TEST_DATA: ByteArray = Response.javaClass.getResourceAsStream("/test_array.json").readAllBytes()
-        val buffer = TEST_DATA.asBuffer()
+        var TEST_DATA: ByteArray = Response::class.java.getResourceAsStream("/test_array.json").readAllBytes()
     }
 }
