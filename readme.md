@@ -6,13 +6,20 @@
 
 Fast and powerful implementation of JSON format for [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization).
 
-## Features
+## Key Features
 
 * **Compatibility**: Can be used as a drop-in replacement for [kotlinx-serialization-json](https://github.com/Kotlin/kotlinx.serialization/tree/master).
+* **Map and object [inlining](#jsoninline)**: Mark a class property with [`@JsonInline`](#jsoninline) to inline its serialized form. Only final classes and `Map` instances can be inlined.
 * **Zero extra allocation**: Only deserialized objects are allocated. Exceptions include kotlinx serializers (that use `ChunkedDecoder`) and `Float`/`Double` types (still allocates much less than most serializers). On Kotlin/JS, it may allocate much more — not much we can do about it.
 * **Zero-copy**: Deserialize objects without intermediate copies by wrapping any byte buffer. Buffer wrapping is done through a simple `Buffer` interface that requires only `size` property and `get` method to be implemented.
-* **Map and object [inlining](#jsoninline)**: Mark a class property with [`@JsonInline`](#jsoninline) to inline its serialized form. Only final classes and `Map` instances can be inlined.
-* **Value subclasses**: Out-of-the-box support for polymorphic value subclasses, automatically serializing them with a type and value field:
+* **Advanced deserializers (experimental)**: custom serializers has access to underlying parser (`JsonReader`). That allows implementing simple and efficient content-based polymorphism without extra allocations of `JsonElement`.
+
+## Other differences from `kotlinx-serialization-json`
+
+### Extra features
+
+* Option to serialize structured map keys as escaped strings.
+* Out-of-the-box support for polymorphic value subclasses, automatically serializing them with a type and value field:
 ```kotlin
 @Serializable sealed interface Base
 @Serializable value class Foo(val int: Int): Base
@@ -23,13 +30,11 @@ println(ZeroJson.decodeFromString<Base>(s))
 // 42
 
 ```
-* **Advanced deserializers (experimental)**: custom serializers has access to underlying parser (`JsonReader`). That allows implementing simple and efficient content-based polymorphism without extra allocations of `JsonElement`.
 
-## Other differences from `kotlinx-serialization-json`
+### Limitations
 
 * The input JSON string must be fully loaded into memory before decoding. This library is not suitable for deserializing large JSON files. This limitation is irrelevant for typical REST APIs, where request and response sizes are limited
 * No [array polymorphism](https://kotlinlang.org/api/kotlinx.serialization/kotlinx-serialization-json/kotlinx.serialization.json/-json-builder/use-array-polymorphism.html)
-* Option to serialize structured map keys as escaped strings.
 * [External][external-ser] serializers and [partial][partial-ser] custom serializers are not supported because of the [bug][descriptor-bug].
 * Duplicate JSON object keys are not allowed
 * On JS: no `dynamic` support
@@ -93,27 +98,42 @@ class Person(
 )
 
 @Serializable
-class Location(val country: String, val city: String)
+class Location(val country: Country, val city: String)
 
-println(ZeroJson.encodeToString(
+@Serializable
+class Country(
+    @JsonNames("countryName") val name: String,
+    @JsonNames("countryCode") val code: Int
+)
+
+ZeroJson.encodeToString(
     Person(
         name = "Alex",
-        age = 20,
-        location = Location("France", "Paris"),
-        extra = mapOf("avatar" to "https://cdn.com/avatar23535")
+        age = 44,
+        location = Location(
+            country = Country("Dreamland", 1234),
+            city = "SimCity"
+        ),
+        extra = mapOf("avatar" to "https://cdn.example/profile_picture23535")
     )
-))
+)
 ```
+
+Result:
 
 ```json
 {
     "name": "Alex",
-    "age": 20,
-    "country":  "France",
-    "city": "Paris",
-    "avatar": "https://cdn.com/avatar23535"
+    "age": 44,
+    "countryName":  "Dreamland",
+    "countryCode":  1234,
+    "city": "SimCity",
+    "avatar": "https://cdn.example/profile_picture23535"
 }
 ```
+
+* Applicable only for serializable elements of kinds `StructureKind.MAP` and `StructureKind.CLASS`
+* Nested inline properties are supported
 
 ## Performance
 

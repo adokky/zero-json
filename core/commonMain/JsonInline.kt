@@ -6,42 +6,49 @@ import kotlinx.serialization.SerialInfo
  * Serialized form of property marked with [JsonInline] will be inlined into parent class.
  * Applicable only for serializable elements of kinds:
  * * [kotlinx.serialization.descriptors.StructureKind.MAP]
- * * [kotlinx.serialization.descriptors.StructureKind.OBJECT]
+ * * [kotlinx.serialization.descriptors.StructureKind.CLASS]
  *
  * Example:
  *
- *    @Serializable
- *    class Person(
- *        val name: String,
- *        val age: Int,
- *        @JsonInline val location: Location,
- *        @JsonInline val extra: Map<String, String>?
- *    )
+ *     @Serializable
+ *     class Person(
+ *         val name: String,
+ *         val age: Int,
+ *         @JsonInline val location: Location,
+ *         @JsonInline val extra: Map<String, String>?
+ *     )
  *
- *    @Serializable
- *    class Location(
- *        val country: String,
- *        val address: String
- *    )
+ *     @Serializable
+ *     class Location(val country: Country, val city: String)
  *
- *    println(ZeroJson.encodeToString(
- *        Person(
- *            name = "Alex",
- *            age = 20,
- *            location = Location("France", "Paris, Bd Carnot, 37"),
- *            extra = mapOf("avatar" to "https://cdn.com/avatar23535")
- *        )
- *    ))
+ *     @Serializable
+ *     class Country(
+ *         @JsonNames("countryName") val name: String,
+ *         @JsonNames("countryCode") val code: Int
+ *     )
+ *
+ *     println(ZeroJson.encodeToString(
+ *         Person(
+ *             name = "Alex",
+ *             age = 44,
+ *             location = Location(
+ *                 country = Country("Dreamland", 1234),
+ *                 city = "SimCity"
+ *             ),
+ *             extra = mapOf("avatar" to "https://cdn.example/picture23535")
+ *         )
+ *     ))
  *
  * prints:
  *
  * ```json
  * {
  *     "name": "Alex",
- *     "age": 20,
- *     "country":  "France",
- *     "address": "Paris, Bd Carnot, 37",
- *     "avatar": "https://cdn.com/avatar23535"
+ *     "age": 44,
+ *     "countryName":  "Dreamland",
+ *     "countryCode":  1234,
+ *     "city": "SimCity",
+ *     "avatar": "https://cdn.example/picture23535"
  * }
  * ```
  */
