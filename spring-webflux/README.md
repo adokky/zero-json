@@ -3,7 +3,7 @@
 ## Setup
 
 ```kotlin
-implementation("io.github.adokky:zero-json-spring-webflux:0.4.0")
+implementation("io.github.adokky:zero-json-spring-webflux:0.5.0")
 ```
 
 Compatible with Spring Framework 5.3+
