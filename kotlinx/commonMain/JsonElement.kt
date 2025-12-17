@@ -5,6 +5,7 @@ package kotlinx.serialization.json
 import dev.dokky.zerojson.JsonReader
 import dev.dokky.zerojson.ZeroJsonDecodingException
 import dev.dokky.zerojson.internal.appendJsonTo
+import dev.dokky.zerojson.internal.readLong
 import dev.dokky.zerojson.internal.toJsonString
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable

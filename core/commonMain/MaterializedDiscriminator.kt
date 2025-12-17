@@ -1,5 +1,6 @@
 package dev.dokky.zerojson
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialInfo
 
 /**
@@ -9,6 +10,7 @@ import kotlinx.serialization.SerialInfo
  *
  * If base class is marked then all **direct** subclasses are also allowed to have discriminator property.
  */
+@ExperimentalSerializationApi
 @Suppress("OPT_IN_USAGE")
 @SerialInfo
 @Retention(AnnotationRetention.BINARY)

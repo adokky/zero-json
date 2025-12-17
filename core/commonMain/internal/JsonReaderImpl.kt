@@ -11,6 +11,7 @@ import io.kodec.buffers.Buffer
 import io.kodec.text.*
 import karamel.utils.assert
 import karamel.utils.unsafeCast
+import kotlinx.serialization.InternalSerializationApi
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
@@ -96,7 +97,15 @@ internal class JsonReaderImpl private constructor(
         })
     }
 
-    override fun readFloat(allowSpecial: Boolean, skipWhitespace: Boolean): Float {
+    override fun readBoolean(): Boolean = readBoolean(skipWhitespace = true)
+    override fun readByte(): Byte = readByte(skipWhitespace = true)
+    override fun readShort(): Short = readShort(skipWhitespace = true)
+    override fun readInt(): Int = readInt(skipWhitespace = true)
+    override fun readLong(): Long = readLong(skipWhitespace = true)
+    override fun readFloat(allowSpecial: Boolean): Float = readFloat(allowSpecial, skipWhitespace = true)
+    override fun readDouble(allowSpecial: Boolean): Double = readDouble(allowSpecial, skipWhitespace = true)
+
+    fun readFloat(allowSpecial: Boolean, skipWhitespace: Boolean): Float {
         positionBeforeNumber = position
         val result = input.readFloat(onFormatError = floatFormatErrorHandler, allowSpecialValues = true).also { v ->
             if (!allowSpecial && !v.isFinite()) specialFloatsProhibited(v.toDouble())
@@ -105,7 +114,7 @@ internal class JsonReaderImpl private constructor(
         return result
     }
 
-    override fun readDouble(allowSpecial: Boolean, skipWhitespace: Boolean): Double {
+    fun readDouble(allowSpecial: Boolean, skipWhitespace: Boolean): Double {
         positionBeforeNumber = position
         val result = input.readDouble(onFormatError = floatFormatErrorHandler, allowSpecialValues = true).also { v ->
             if (!allowSpecial && !v.isFinite()) specialFloatsProhibited(v)
@@ -119,7 +128,7 @@ internal class JsonReaderImpl private constructor(
         throwNansAreNotAllowed(v, position = positionBeforeNumber)
     }
 
-    override fun readByte(skipWhitespace: Boolean): Byte {
+    fun readByte(skipWhitespace: Boolean): Byte {
         val v = readLong(skipWhitespace)
         if (v.toByte().toLong() != v) throw JsonNumberIsOutOfRange(
             Byte.MIN_VALUE,
@@ -129,7 +138,7 @@ internal class JsonReaderImpl private constructor(
         return v.toByte()
     }
 
-    override fun readShort(skipWhitespace: Boolean): Short {
+    fun readShort(skipWhitespace: Boolean): Short {
         val v = readLong(skipWhitespace)
         if (v.toShort().toLong() != v) throw JsonNumberIsOutOfRange(
             Short.MIN_VALUE,
@@ -139,7 +148,7 @@ internal class JsonReaderImpl private constructor(
         return v.toShort()
     }
 
-    override fun readInt(skipWhitespace: Boolean): Int {
+    fun readInt(skipWhitespace: Boolean): Int {
         val v = readLong(skipWhitespace)
         if (v.toInt().toLong() != v) throw JsonNumberIsOutOfRange(
             Int.MIN_VALUE,
@@ -149,7 +158,7 @@ internal class JsonReaderImpl private constructor(
         return v.toInt()
     }
 
-    override fun readLong(skipWhitespace: Boolean): Long {
+    fun readLong(skipWhitespace: Boolean): Long {
         positionBeforeNumber = input.position
         return input.readLong(onFormatError = integerFormatErrorHandler).also {
             if (skipWhitespace) skipWhitespace()
@@ -329,15 +338,59 @@ internal class JsonReaderImpl private constructor(
 
     override fun skipWhitespace() { input.skipJsonWhitespace(allowComments = config.allowComments) }
 
-    override fun readBoolean(skipWhitespace: Boolean): Boolean = tryReadBoolean(skipWhitespace) ?: throwExpectedBoolean()
+    fun readBoolean(skipWhitespace: Boolean): Boolean = tryReadBoolean(skipWhitespace) ?: throwExpectedBoolean()
 
-    override fun tryReadBoolean(skipWhitespace: Boolean): Boolean? = input.tryReadJsonBoolean()
+    fun tryReadBoolean(skipWhitespace: Boolean = true): Boolean? = input.tryReadJsonBoolean()
         ?.also { if (skipWhitespace) skipWhitespace() }
 
     private fun throwExpectedBoolean(): Nothing = input.fail("expected 'true' or 'false'")
 
     override val fail: DecodingErrorHandler<Any> get() = input.fail
     override fun fail(message: String): Nothing = input.fail(message)
+
+    override fun nextValueType(quickGuess: Boolean): ValueType = when {
+        quickGuess && config.expectStringQuotes -> nextValueTypeFast()
+        else -> nextUnquotedValueTypeSlow(quickGuess)
+    }
+
+    private fun nextValueTypeFast(): ValueType = when(nextCodePoint) {
+        '"'.code -> ValueType.STRING
+        '{'.code -> ValueType.OBJECT
+        '['.code -> ValueType.ARRAY
+        'n'.code -> ValueType.NULL
+        't'.code, 'f'.code  -> ValueType.BOOLEAN
+        else -> ValueType.NUMBER
+    }
+
+    private fun nextUnquotedValueTypeSlow(quickGuess: Boolean): ValueType {
+        val start = position
+
+        when(nextCodePoint) {
+            '"'.code -> return ValueType.STRING
+            '{'.code -> return ValueType.OBJECT
+            '['.code -> return ValueType.ARRAY
+            'n'.code -> when {
+                quickGuess && config.expectStringQuotes -> return ValueType.NULL
+                else -> if (trySkipNull()) {
+                    position = start
+                    return ValueType.NULL
+                }
+            }
+            't'.code, 'f'.code -> when {
+                quickGuess && config.expectStringQuotes -> return ValueType.BOOLEAN
+                else -> if (tryReadBoolean(skipWhitespace = false) != null) {
+                    position = start
+                    return ValueType.BOOLEAN
+                }
+            }
+        }
+
+        if (!quickGuess && !trySkipNumber(config.allowSpecialFloatingPointValues)) {
+            unexpectedChar(nextCodePoint)
+        }
+        position = start
+        return ValueType.NUMBER
+    }
 
     companion object {
         private fun startReadingFrom(input: ZeroTextReader, config: JsonReaderConfig) =
@@ -371,3 +424,6 @@ internal inline fun <R> JsonReaderImpl.maybeQuoted(allowQuotes: Boolean = true, 
     skipWhitespace()
     return result
 }
+
+@InternalSerializationApi
+fun JsonReader.readLong(skipWhitespace: Boolean) = (this as JsonReaderImpl).readLong(skipWhitespace)

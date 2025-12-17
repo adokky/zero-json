@@ -31,6 +31,31 @@ abstract class JsonReader internal constructor(val config: JsonReaderConfig) {
     abstract var position: Int
 
     /**
+     * Determines the type of the next JSON value.
+     *
+     * This function examines the next token in the input stream and returns
+     * corresponding [ValueType] without consuming the actual token.
+     *
+     * @param quickGuess if `true` performs a fast check without exhaustive validation of the next token type.
+     * Use with caution, as reading the exact type after this check may result in
+     * misleading error messages.
+     *
+     * For example, the code below will throw `"expected number"`:
+     * ```
+     * when(JsonReader.startReadingFrom("no_a_JSON").nextValueType(true)) {
+     *     ValueType.STRING -> readString()
+     *     ValueType.NUMBER -> readInt()
+     *     else -> reader.fail("expected string or int")
+     * }
+     * ```
+     */
+    abstract fun nextValueType(quickGuess: Boolean = false): ValueType
+
+    enum class ValueType {
+        OBJECT, ARRAY, STRING, NUMBER, BOOLEAN, NULL
+    }
+
+    /**
      * Reads a JSON string.
      *
      * @param requireQuotes whether the string must be quoted
@@ -58,70 +83,59 @@ abstract class JsonReader internal constructor(val config: JsonReaderConfig) {
     /**
      * Reads a JSON number as a float.
      *
-     * @param allowSpecial whether to allow NaN, Infinity, -Infinity
+     * @param allowSpecial whether to allow `NaN`, `Infinity`, `-Infinity`
      * @param skipWhitespace whether to skip whitespace after the number
      * @return the float value
      */
     abstract fun readFloat(
-        allowSpecial: Boolean = config.allowSpecialFloatingPointValues,
-        skipWhitespace: Boolean = true
+        allowSpecial: Boolean = config.allowSpecialFloatingPointValues
     ): Float
 
     /**
      * Reads a JSON number as a double.
      *
-     * @param allowSpecial whether to allow NaN, Infinity, -Infinity
+     * @param allowSpecial whether to allow `NaN`, `Infinity`, `-Infinity`
      * @param skipWhitespace whether to skip whitespace after the number
      * @return the double value
      */
     abstract fun readDouble(
-        allowSpecial: Boolean = config.allowSpecialFloatingPointValues,
-        skipWhitespace: Boolean = true
+        allowSpecial: Boolean = config.allowSpecialFloatingPointValues
     ): Double
 
     /**
      * Reads a JSON boolean.
      *
-     * @param skipWhitespace whether to skip whitespace after the boolean
      * @return the boolean value
      */
-    abstract fun readBoolean(skipWhitespace: Boolean = true): Boolean
-
-    /**
-     * Tries to read a JSON boolean.
-     *
-     * @param skipWhitespace whether to skip whitespace after the boolean
-     * @return the boolean value or `null` if next token is not a boolean
-     */
-    abstract fun tryReadBoolean(skipWhitespace: Boolean = true): Boolean?
+    abstract fun readBoolean(): Boolean
 
     /**
      * Reads a JSON number as a byte.
      *
      * @param skipWhitespace whether to skip whitespace after the number
      */
-    abstract fun readByte(skipWhitespace: Boolean = true): Byte
+    abstract fun readByte(): Byte
 
     /**
      * Reads a JSON number as a short.
      *
      * @param skipWhitespace whether to skip whitespace after the number
      */
-    abstract fun readShort(skipWhitespace: Boolean = true): Short
+    abstract fun readShort(): Short
 
     /**
      * Reads a JSON number as an int.
      *
      * @param skipWhitespace whether to skip whitespace after the number
      */
-    abstract fun readInt(skipWhitespace: Boolean = true): Int
+    abstract fun readInt(): Int
 
     /**
      * Reads a JSON number as a long.
      *
      * @param skipWhitespace whether to skip whitespace after the number
      */
-    abstract fun readLong(skipWhitespace: Boolean = true): Long
+    abstract fun readLong(): Long
 
     /**
      * Reads a JSON null.

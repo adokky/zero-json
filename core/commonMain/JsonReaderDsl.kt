@@ -68,6 +68,20 @@ value class JsonArrayReader @PublishedApi internal constructor(
     fun hasMoreItems(): Boolean = reader.nextCodePoint != ']'.code
 }
 
+/**
+ * Example:
+ * ```
+ * reader: JsonReader
+ * reader.readArray {
+ *     while (hasMoreItems()) {
+ *         readItem {
+ *             print(readString())
+ *         }
+ *     }
+ * }
+ * ```
+ * For input `["a", "b", "c"]`, it will print `abc`
+ */
 inline fun <R> JsonReader.readArray(body: JsonArrayReader.() -> R): R {
     expectBeginArray()
     val reader = JsonArrayReader(this)
