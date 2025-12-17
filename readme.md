@@ -60,7 +60,7 @@ repositories {
 This option allows you to use all the features specific to zero-json.
 
 ```kotlin
-implementation("io.github.adokky:zero-json-core:0.3.1")
+implementation("io.github.adokky:zero-json-core:0.4.0")
 ```
 
 ### Drop-in replacement  (`zero-json-kotlinx`)
@@ -69,7 +69,7 @@ Use this if you only want faster `kotlinx-serialization-json` and nothing more.
 Compatible with `1.9.0`.
 
 ```kotlin
-implementation("io.github.adokky:zero-json-kotlinx:0.3.1")
+implementation("io.github.adokky:zero-json-kotlinx:0.4.0")
 ```
 
 If you have transitive `kotlinx-serialization-json` somewhere in dependency graph, setup capability resolution:
