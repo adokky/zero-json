@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialInfo
  *     )
  *
  *     @Serializable
- *     class Location(val country: Country, val city: String)
+ *     class Location(@JsonInline val country: Country, val city: String)
  *
  *     @Serializable
  *     class Country(
