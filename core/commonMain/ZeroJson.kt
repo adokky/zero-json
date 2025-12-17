@@ -84,7 +84,7 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
      *
      * @throws [ZeroJsonDecodingException] if the given JSON string is not a valid JSON input for the type [T]
      */
-    fun <T> decode(deserializer: DeserializationStrategy<T>, input: Buffer, offset: Int = 0): T =
+    fun <T> decodeFromBuffer(deserializer: DeserializationStrategy<T>, input: Buffer, offset: Int = 0): T =
         JsonContext.useThreadLocal(this) { decode(deserializer, input, offset) }
 
     /**
@@ -100,7 +100,7 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
      *
      * @throws [ZeroJsonDecodingException] if the given JSON string is not a valid JSON input for the type [T]
      */
-    fun <T> decode(deserializer: DeserializationStrategy<T>, input: CharSequence, offset: Int = 0): T =
+    fun <T> decodeFromCharSequence(deserializer: DeserializationStrategy<T>, input: CharSequence, offset: Int = 0): T =
         JsonContext.useThreadLocal(this) { decode(deserializer, input, offset) }
 
     /**
@@ -124,7 +124,7 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
      *
      * @return end position (exclusive) = (index of last written byte + 1)
      */
-    fun <T> encode(serializer: SerializationStrategy<T>, value: T, output: MutableBuffer, offset: Int = 0): Int =
+    fun <T> encodeToBuffer(serializer: SerializationStrategy<T>, value: T, output: MutableBuffer, offset: Int = 0): Int =
         JsonContext.useThreadLocal(this) { encode(value, serializer, output, offset) }
 
     /**
@@ -147,7 +147,7 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
      *
      * @return end position (exclusive) = (index of last written byte + 1)
      */
-    fun <T> encode(serializer: SerializationStrategy<T>, value: T, output: StringBuilder) {
+    fun <T> encodeToStringBuilder(serializer: SerializationStrategy<T>, value: T, output: StringBuilder) {
         JsonContext.useThreadLocal(this) { encode(value, serializer, output) }
     }
 
@@ -185,7 +185,7 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
      * @throws [ZeroJsonDecodingException] if the given JSON string is not a valid JSON input for the type [T]
      */
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T =
-        decode(deserializer, string)
+        decodeFromCharSequence(deserializer, string)
 
     /**
      * Serializes the [value] into an equivalent JSON using the given [serializer].
@@ -249,7 +249,7 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
      * @throws [ZeroJsonDecodingException] if the given string is not a valid JSON
      */
     fun parseToJsonElement(@FormatLanguage("json", "", "") string: CharSequence): JsonElement =
-        decode(JsonElementSerializer, string)
+        decodeFromCharSequence(JsonElementSerializer, string)
 
     /**
      * Deserializes the given JSON UTF-8 string encoded in [bytes] starting from [offset]
@@ -267,7 +267,7 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
      * @throws [ZeroJsonDecodingException] if the given string is not a valid JSON
      */
     fun parseToJsonElement(buffer: Buffer, offset: Int = 0): JsonElement =
-        decode(JsonElementSerializer, buffer, offset = offset)
+        decodeFromBuffer(JsonElementSerializer, buffer, offset = offset)
 
     /**
      * Deserializes the given [element] into a value of type [T] using the given [deserializer].
@@ -337,28 +337,28 @@ sealed class ZeroJson(val configuration: ZeroJsonConfiguration): StringFormat, B
 
 // decode shortcuts
 
-inline fun <reified T> ZeroJson.decode(@FormatLanguage("json", "", "") input: CharSequence): T =
-    decode(serializersModule.serializer<T>(), input)
+inline fun <reified T> ZeroJson.decodeFromCharSequence(@FormatLanguage("json", "", "") input: CharSequence): T =
+    decodeFromCharSequence(serializersModule.serializer<T>(), input)
 
 /**
- * A concise equivalent of `decode(serializersModule.serializer<T>(), input)` 
+ * A concise equivalent of `decodeFromBuffer(serializersModule.serializer<T>(), input)`
  * with automatically inferred serializer.
  * 
- * @see [ZeroJson.decode]
+ * @see [ZeroJson.decodeFromBuffer]
  */
-inline fun <reified T> ZeroJson.decode(input: Buffer): T =
-    decode(serializersModule.serializer<T>(), input)
+inline fun <reified T> ZeroJson.decodeFromBuffer(input: Buffer): T =
+    decodeFromBuffer(serializersModule.serializer<T>(), input)
 
 // encode shortcuts
 
 /**
- * A concise equivalent of `encode(serializersModule.serializer<T>(), output)`
+ * A concise equivalent of `encodeToBuffer(serializersModule.serializer<T>(), output)`
  * with automatically inferred deserializer.
  *
- * @see [ZeroJson.encode]
+ * @see [ZeroJson.encodeToBuffer]
  */
-inline fun <reified T> ZeroJson.encode(value: T, output: MutableBuffer): Int =
-    encode(serializersModule.serializer<T>(), value, output)
+inline fun <reified T> ZeroJson.encodeToBuffer(value: T, output: MutableBuffer): Int =
+    encodeToBuffer(serializersModule.serializer<T>(), value, output)
 
 /**
  * Deserializes the given [json] element into a value of type [T] using a deserializer retrieved

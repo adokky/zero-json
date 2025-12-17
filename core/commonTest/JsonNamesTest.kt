@@ -20,11 +20,11 @@ class JsonNamesTest: AbstractDecoderTest() {
         val expected = AlternativeJsonNames("Hello world!", 3434)
 
         assertEquals(expected,
-            zjson.decode<AlternativeJsonNames>("""{ "prop1": "${expected.prop1}", "ЦелочисленноеПоле": ${expected.ЦелочисленноеПоле} }"""))
+            zjson.decodeFromCharSequence<AlternativeJsonNames>("""{ "prop1": "${expected.prop1}", "ЦелочисленноеПоле": ${expected.ЦелочисленноеПоле} }"""))
         assertEquals(expected,
-            zjson.decode<AlternativeJsonNames>("""{ "prop2": "${expected.prop1}", "ЦелочисленноеПоле": ${expected.ЦелочисленноеПоле} }"""))
+            zjson.decodeFromCharSequence<AlternativeJsonNames>("""{ "prop2": "${expected.prop1}", "ЦелочисленноеПоле": ${expected.ЦелочисленноеПоле} }"""))
         assertEquals(expected,
-            zjson.decode<AlternativeJsonNames>("""{ "имя поля": "${expected.prop1}", "ЦелочисленноеПоле": ${expected.ЦелочисленноеПоле} }"""))
+            zjson.decodeFromCharSequence<AlternativeJsonNames>("""{ "имя поля": "${expected.prop1}", "ЦелочисленноеПоле": ${expected.ЦелочисленноеПоле} }"""))
     }
 
     @Suppress("PropertyName", "NonAsciiCharacters", "OPT_IN_USAGE", "unused")
@@ -48,13 +48,13 @@ class JsonNamesTest: AbstractDecoderTest() {
     fun duplicate_json_names() {
         val json = """{"":0}"""
 
-        assertFailsWith<SerializationException> { zjson.decode<DuplicateJsonNames1>(json) }
+        assertFailsWith<SerializationException> { zjson.decodeFromCharSequence<DuplicateJsonNames1>(json) }
             .message.let {
                 assertNotNull(it)
                 assertTrue("ЦелочисленноеПоле" in it)
             }
 
-        assertFailsWith<SerializationException> { zjson.decode<DuplicateJsonNames2>(json) }
+        assertFailsWith<SerializationException> { zjson.decodeFromCharSequence<DuplicateJsonNames2>(json) }
             .message.let {
                 assertNotNull(it)
                 assertTrue("prop3" in it)

@@ -57,7 +57,7 @@ class JunkFuzzer: AbstractDecoderTest() {
 
     private fun check(input: ArrayDataBuffer, chars: Int) {
         try {
-            zjson.decode<ComplexClass>(input)
+            zjson.decodeFromBuffer<ComplexClass>(input)
         } catch (e: Throwable) {
             if (e !is SerializationException && e !is ZeroJsonDecodingException)
                 throw AssertionError(input.getStringAscii(0, chars), e)

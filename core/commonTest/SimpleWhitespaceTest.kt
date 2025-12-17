@@ -54,7 +54,7 @@ class SimpleWhitespaceTest: AbstractDecoderTest() {
                         selfNested = null
                     ),
                 ),
-                zjson.decode(string),
+                zjson.decodeFromCharSequence(string),
                 string
             )
         }

@@ -16,7 +16,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun single_quotes() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<String>("\"")
+            zjson.decodeFromCharSequence<String>("\"")
         }
         assertEquals("$", ex.path)
     }
@@ -25,7 +25,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun unpaired_brackets() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<List<String>>("[}")
+            zjson.decodeFromCharSequence<List<String>>("[}")
         }
         assertEquals("$[0]", ex.path)
     }
@@ -34,7 +34,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun empty_string() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<List<String>>("[s,]")
+            zjson.decodeFromCharSequence<List<String>>("[s,]")
         }
         assertContains(ex.message, "trailing comma")
         assertEquals("$", ex.path)
@@ -44,7 +44,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun nested_list() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<List<List<String>>>("[[],[s,],[]]")
+            zjson.decodeFromCharSequence<List<List<String>>>("[[],[s,],[]]")
         }
         assertContains(ex.message, "trailing comma")
         assertEquals("$[1]", ex.path)
@@ -54,7 +54,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun nested_map() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<Map<Int, Map<String, String>>>("""{"11":{},"22":{"k":"v",},"33":{}}""")
+            zjson.decodeFromCharSequence<Map<Int, Map<String, String>>>("""{"11":{},"22":{"k":"v",},"33":{}}""")
         }
         assertContains(ex.message, "trailing comma")
         assertEquals("$['22']", ex.path)
@@ -67,7 +67,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
                 val q = if (quoted) '"' else ""
                 val input = """{"k1":123, $q${key.jsonEscape()}$q:"not a number"}"""
                 val ex = assertFailsWith<ZeroJsonDecodingException> {
-                    decode<Map<String, Int>>(input)
+                    decodeFromCharSequence<Map<String, Int>>(input)
                 }
                 val message = "text input: $input"
                 assertContains(ex.message, "expected integer", message = message)
@@ -100,7 +100,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun malformed_key() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<SimpleDataClass>("""{ "u }""")
+            zjson.decodeFromCharSequence<SimpleDataClass>("""{ "u }""")
         }
         assertEquals("$", ex.path)
     }
@@ -109,7 +109,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun missing_key_quote_1() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<SimpleDataClass>("""{ unknownKey": "value" }""")
+            zjson.decodeFromCharSequence<SimpleDataClass>("""{ unknownKey": "value" }""")
         }
         assertEquals("$", ex.path, ex.stackTraceToString())
     }
@@ -118,7 +118,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun missing_key_quote_2() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<SimpleDataClass>("""{ "unknownKey: "value" }""")
+            zjson.decodeFromCharSequence<SimpleDataClass>("""{ "unknownKey: "value" }""")
         }
         assertEquals("$", ex.path, ex.stackTraceToString())
     }
@@ -126,7 +126,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     @Test
     fun unknown_key() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
-            zjson.decode<SimpleDataClass>("""{ "unknownKey": "value" }""")
+            zjson.decodeFromCharSequence<SimpleDataClass>("""{ "unknownKey": "value" }""")
         }
         assertEquals("$.unknownKey", ex.path, ex.stackTraceToString())
     }
@@ -135,7 +135,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun empty_key() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<SimpleDataClass>("""{""""")
+            zjson.decodeFromCharSequence<SimpleDataClass>("""{""""")
         }
         assertEquals("$", ex.path)
     }
@@ -147,7 +147,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun missing_comma() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<SimpleClass>("""{ "string": "value" "int": 232 }""")
+            zjson.decodeFromCharSequence<SimpleClass>("""{ "string": "value" "int": 232 }""")
         }
         assertEquals("$", ex.path)
     }
@@ -156,7 +156,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
     fun missing_closing_bracket() {
         val ex = assertFailsWith<ZeroJsonDecodingException> {
             // language=text
-            zjson.decode<SimpleClass>("""{ "string": "value", "int": 232, """)
+            zjson.decodeFromCharSequence<SimpleClass>("""{ "string": "value", "int": 232, """)
         }
         assertEquals("$", ex.path)
     }
@@ -180,7 +180,7 @@ class JsonDecodingErrors: AbstractDecoderTest() {
             key: String = "\"_\""
         ) {
             val ex = assertFailsWith<ZeroJsonDecodingException> {
-                json.decode<InlineRoot>("""
+                json.decodeFromCharSequence<InlineRoot>("""
                     {
                         "enum": $enum,
                         "string": $string,

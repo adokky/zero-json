@@ -29,7 +29,7 @@ open class ZeroJsonHttpMessageReader(
     ): Flux<Any> {
         val serializer = serializer(elementType.type)
         return message.body.map { dataBuffer ->
-            json.decode(serializer, dataBuffer.asByteBuffer().asBuffer())
+            json.decodeFromBuffer(serializer, dataBuffer.asByteBuffer().asBuffer())
         }
     }
 

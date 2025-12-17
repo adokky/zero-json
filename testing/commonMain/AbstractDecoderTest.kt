@@ -109,8 +109,8 @@ abstract class AbstractDecoderTest(config: ZeroJsonConfiguration = DefaultTestCo
 
         val encodedString = jsonElement.toString()
 
-        check("source=text") { json.decode(ser, encodedString) }
-        check("source=binary") { json.decode(ser, encodedString.encodeToArrayBuffer()) }
+        check("source=text") { json.decodeFromCharSequence(ser, encodedString) }
+        check("source=binary") { json.decodeFromBuffer(ser, encodedString.encodeToArrayBuffer()) }
         check("source=tree") { json.decodeFromJsonElement(ser, jsonElement) }
     }
 
@@ -131,9 +131,9 @@ abstract class AbstractDecoderTest(config: ZeroJsonConfiguration = DefaultTestCo
         binary: Boolean
     ) {
         val decoded = if (binary) {
-            decode(ser, encodedString.encodeToArrayBuffer())
+            decodeFromBuffer(ser, encodedString.encodeToArrayBuffer())
         } else {
-            decode(ser, encodedString)
+            decodeFromCharSequence(ser, encodedString)
         }
 
         assertDecodedEquals(expected = value, actual = decoded, encodedString = encodedString)
@@ -162,7 +162,7 @@ abstract class AbstractDecoderTest(config: ZeroJsonConfiguration = DefaultTestCo
         expected: T,
         ser: KSerializer<T>
     ) {
-        val decoded = decode(ser, json)
+        val decoded = decodeFromCharSequence(ser, json)
         assertEquals(expected, decoded)
     }
 

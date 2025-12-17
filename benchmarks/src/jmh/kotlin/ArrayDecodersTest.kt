@@ -21,7 +21,7 @@ open class ArrayDecodersTest: BenchmarkBase() {
 
     @Benchmark
     fun bytes_zjson_rc(state: TLS): Any {
-        return state.zJson.decode(state.ser, TEST_DATA.asArrayBuffer())
+        return state.zJson.decodeFromBuffer(state.ser, TEST_DATA.asArrayBuffer())
     }
 
     companion object {

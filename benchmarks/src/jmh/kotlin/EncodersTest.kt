@@ -44,7 +44,7 @@ open class EncodersTest: BenchmarkBase() {
 
     @Benchmark
     fun bytes_zjson_no_copy(state: TLS): Any {
-        state.zJson.encode(state.serializer, TEST_DATA, state.outputBuf)
+        state.zJson.encodeToBuffer(state.serializer, TEST_DATA, state.outputBuf)
         return state.outputBuf
     }
 

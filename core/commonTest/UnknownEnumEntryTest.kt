@@ -19,10 +19,10 @@ class UnknownEnumEntryTest: AbstractDecoderTest() {
     @Test
     fun streaming_decoder() {
         assertFailsWithMessage<SerializationException>("unknown entry '$unknownEntry'") {
-            zjson.decode<TestEnum>("Entry2")
+            zjson.decodeFromCharSequence<TestEnum>("Entry2")
         }
         assertFailsWithMessage<SerializationException>("unknown entry '$unknownEntry'") {
-            zjson.decode<Box<TestEnum>>("{ value: Entry2 }")
+            zjson.decodeFromCharSequence<Box<TestEnum>>("{ value: Entry2 }")
         }
     }
 

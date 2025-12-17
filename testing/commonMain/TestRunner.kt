@@ -101,7 +101,7 @@ class TestRunner(
     private fun testObjectToBinary(input: TestInputImpl, mode: JsonTestMode, iteration: Int): Boolean =
         testCaseRunner.run(mode, input, input.domainObject, iteration) {
             val offset = Random.nextInt(7)
-            val end = input.json.encode(input.serializer, input.domainObject, encoderBuffer, offset = offset)
+            val end = input.json.encodeToBuffer(input.serializer, input.domainObject, encoderBuffer, offset = offset)
             val inputBuf = encoderBuffer.subBuffer(0, end)
             val actual = try {
                 input.json.parseToJsonElement(inputBuf, offset = offset)
@@ -149,7 +149,7 @@ class TestRunner(
         testCaseRunner.run(mode, input, input.stringInput, iteration = iteration) {
             compareObjects(
                 input.domainObject,
-                input.json.decode(input.serializer, input.binaryInput, offset = input.binaryOffset)
+                input.json.decodeFromBuffer(input.serializer, input.binaryInput, offset = input.binaryOffset)
             )
         }
 

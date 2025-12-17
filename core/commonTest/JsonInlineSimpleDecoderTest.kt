@@ -30,7 +30,7 @@ class JsonInlineSimpleDecoderTest: AbstractDecoderTest() {
             }
         """.trimIndent()
 
-        val actual = TestZeroJson.decode<Parent>(json)
+        val actual = TestZeroJson.decodeFromCharSequence<Parent>(json)
 
         assertEquals(simpleParent, actual)
     }
@@ -58,7 +58,7 @@ class JsonInlineSimpleDecoderTest: AbstractDecoderTest() {
             }
         """.trimIndent()
 
-        val actual = TestZeroJson.decode<MapFast>(json)
+        val actual = TestZeroJson.decodeFromCharSequence<MapFast>(json)
 
         assertEquals(expected, actual)
     }
@@ -84,7 +84,7 @@ class JsonInlineSimpleDecoderTest: AbstractDecoderTest() {
 
         val json = expected.json()
 
-        val actual = TestZeroJson.decode<MapSlow>(json)
+        val actual = TestZeroJson.decodeFromCharSequence<MapSlow>(json)
 
         assertEquals(expected, actual)
     }

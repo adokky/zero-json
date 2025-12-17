@@ -159,6 +159,8 @@ tree_kotlinx              31.760 ±  3.394  us/op
 tree_zjson                19.541 ±  0.352  us/op
 ```
 
-* `bytes` - encoding/decoding UTF-8 bytes.
-* `string` - encoding/decoding `String` instances.
-* `tree` - encoding/decoding `JsonElement` tree.
+* `bytes`:
+    - kotlinx: `decodeFromStream`, `encodeToStream` (`ByteArrayOutputStream`/`ByteArrayInputStream`)
+    - zero-json: `decodeFromBuffer`, `encodeToBuffer` (`ArrayBuffer`)
+* `string` - `decodeFromString`, `encodeToString`
+* `tree` - `decodeFromJsonElement`, `encodeToJsonElement`
