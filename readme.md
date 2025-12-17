@@ -6,8 +6,6 @@
 
 Fast and powerful implementation of JSON format for [kotlinx-serialization](https://github.com/Kotlin/kotlinx.serialization).
 
-## Key Features
-
 * **Compatibility**: Can be used as a drop-in replacement for [kotlinx-serialization-json](https://github.com/Kotlin/kotlinx.serialization/tree/master).
 * **Map and object [inlining](#jsoninline)**: Mark a class property with [`@JsonInline`](#jsoninline) to inline its serialized form. Only final classes and `Map` instances can be inlined.
 * **Zero extra allocation**: Only deserialized objects are allocated. Exceptions include kotlinx serializers (that use `ChunkedDecoder`) and `Float`/`Double` types (still allocates much less than most serializers). On Kotlin/JS, it may allocate much more — not much we can do about it.
@@ -86,6 +84,9 @@ Both `zero-json-core` and `zero-json-kotlinx` can be used simultaneously.
 
 ## @JsonInline
 
+* Applicable only for serializable elements of kinds `StructureKind.MAP` and `StructureKind.CLASS`
+* Nested inline properties are supported
+
 Quick example:
 
 ```kotlin
@@ -125,15 +126,12 @@ Result:
 {
     "name": "Alex",
     "age": 44,
-    "countryName":  "Dreamland",
-    "countryCode":  1234,
+    "countryName": "Dreamland",
+    "countryCode": 1234,
     "city": "SimCity",
     "avatar": "https://cdn.example/profile_picture23535"
 }
 ```
-
-* Applicable only for serializable elements of kinds `StructureKind.MAP` and `StructureKind.CLASS`
-* Nested inline properties are supported
 
 ## Performance
 

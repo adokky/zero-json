@@ -45,8 +45,8 @@ import kotlinx.serialization.SerialInfo
  * {
  *     "name": "Alex",
  *     "age": 44,
- *     "countryName":  "Dreamland",
- *     "countryCode":  1234,
+ *     "countryName": "Dreamland",
+ *     "countryCode": 1234,
  *     "city": "SimCity",
  *     "avatar": "https://cdn.example/picture23535"
  * }
