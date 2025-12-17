@@ -63,8 +63,9 @@ implementation("io.github.adokky:zero-json-core:0.5.0")
 
 ### Drop-in replacement  (`zero-json-kotlinx`)
 
-Use this if you only want faster `kotlinx-serialization-json` and nothing more.
-Compatible with `1.9.0`.
+Compatible with `kotlinx-serialization-json` `1.9.0`. 
+
+Not available for JavaScript, though WasmJs is supported.
 
 ```kotlin
 implementation("io.github.adokky:zero-json-kotlinx:0.5.0")

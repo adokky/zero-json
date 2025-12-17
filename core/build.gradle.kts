@@ -27,6 +27,24 @@ kotlin {
             optIn("kotlinx.serialization.ExperimentalSerializationApi")
         }
     }
+
+    js().browser {
+        testTask {
+            useMocha {
+                timeout = (60 * 60 * 1000).toString()
+            }
+        }
+    }
+
+    @Suppress("OPT_IN_USAGE")
+    wasmJs().browser {
+        testTask {
+            useKarma {
+                useFirefox()
+                useConfigDirectory(rootDir.resolve("karma.config.d"))
+            }
+        }
+    }
 }
 
 dependencies {
@@ -65,33 +83,6 @@ tasks.withType<Test> {
     systemProperty("test-mode", properties["test-mode"] as? String ?: "default")
     systemProperty("zero-json-debug", properties["zero-json-debug"] as? String ?: "true")
     jvmArgs = listOf("-XX:+HeapDumpOnOutOfMemoryError")
-}
-
-val generateKarmaConfig by project.tasks.registering {
-    group = "JS test setup"
-    description = "Generates a Karma configuration that passes test arguments."
-
-    val karmaConfigFile = layout.projectDirectory.file("karma.config.d/custom-args.js")
-    outputs.file(karmaConfigFile)
-
-    val testMode = properties["test-mode"] as? String ?: "default"
-
-    doFirst {
-        // language=javascript
-        karmaConfigFile.asFile.writeText("""            
-            // Passing test-mode parameter
-            // https://karma-runner.github.io/5.0/config/configuration-file.html#clientargs
-            config.set({
-                client: {
-                    args: ["--test_mode=$testMode"]
-                }
-            });
-        """.trimIndent())
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest> {
-    dependsOn(generateKarmaConfig)
 }
 
 kover.reports {

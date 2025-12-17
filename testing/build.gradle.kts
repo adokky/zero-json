@@ -19,6 +19,24 @@ kotlin {
             optIn("kotlinx.serialization.ExperimentalSerializationApi")
         }
     }
+
+    js().browser {
+        testTask {
+            useMocha {
+                timeout = (60 * 60 * 1000).toString()
+            }
+        }
+    }
+
+    @Suppress("OPT_IN_USAGE")
+    wasmJs().browser {
+        testTask {
+            useKarma {
+                useFirefox()
+                useConfigDirectory(rootDir.resolve("karma.config.d"))
+            }
+        }
+    }
 }
 
 dependencies {

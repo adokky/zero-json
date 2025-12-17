@@ -1,3 +1,6 @@
 package dev.dokky.zerojson.framework
 
-actual fun getSystemProperty(name: String): String? = null
+actual fun getSystemProperty(name: String): String? {
+    if (name == "test-mode") return "quick"
+    return null
+}

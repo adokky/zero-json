@@ -52,7 +52,7 @@ class TrailingCommaTest: RandomizedJsonTest() {
     @Test
     fun polymorphism() {
         val value = PolyInterface.SubClass1.Concrete2("123", 345)
-        val serialName = PolyInterface.SubClass1.Concrete2::class.qualifiedName
+        val serialName = "dev.dokky.zerojson.PolyInterface.SubClass1.Concrete2"
         test<PolyInterface>(value, """{"type":"$serialName","string":"123","int":345,}""")
         test<PolyInterface>(value, """{"string":"123","type":"$serialName","int":345,}""")
         test<PolyInterface>(value, """{"string":"123","int":345,"type":"$serialName",}""")

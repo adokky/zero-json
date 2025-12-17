@@ -2,6 +2,8 @@ package dev.dokky.zerojson.ktx
 
 import dev.dokky.zerojson.IntData
 import dev.dokky.zerojson.ZeroJson
+import dev.dokky.zerojson.framework.isJs
+import dev.dokky.zerojson.framework.isWasm
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -24,10 +26,10 @@ class PolymorphismWithAnyTest: JsonTestBase() {
         @Polymorphic val polyBase: PolyBase
     )
 
-    // KClass.toString() on JS prints simple name, not FQ one
-    @Suppress("NAME_SHADOWING")
     private fun checkNotRegisteredMessage(className: String, scopeName: String, exception: SerializationException) {
-        val expectedText = "Serializer for subclass '$className' is not found in the polymorphic scope of '$scopeName'"
+        val expectedClassName = if (isJs() || isWasm()) className.substringAfterLast('.') else className
+        val expectedScopeName = if (isJs() || isWasm()) scopeName.substringAfterLast('.') else scopeName
+        val expectedText = "Serializer for subclass '$expectedClassName' is not found in the polymorphic scope of '$expectedScopeName'"
         assertTrue(exception.message!!.startsWith(expectedText),
             "Found $exception, but expected to start with: $expectedText")
     }

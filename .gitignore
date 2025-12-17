@@ -32,7 +32,6 @@ gradle-app.setting
 
 ### JS
 
-karma.config.d
 kotlin-js-store
 yarn.lock
 

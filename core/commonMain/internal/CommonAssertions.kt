@@ -1,10 +1,9 @@
 package dev.dokky.zerojson.internal
 
-import karamel.utils.assertionsEnabled
 import kotlinx.serialization.descriptors.SerialDescriptor
 
 internal fun checkEqualSerialNames(name1: String, name2: String) {
-    if (assertionsEnabled) {
+    if (DebugMode) {
         doCheckSerialNamesEqual(name1, name2)
     }
 }

@@ -1,5 +1,6 @@
 package dev.dokky.zerojson
 
+import dev.dokky.zerojson.framework.isJs
 import dev.dokky.zerojson.framework.jsonObject
 import kotlin.test.Test
 
@@ -56,12 +57,13 @@ class PolymorphicEncodingTest: EncoderTest() {
 
     @Test
     fun polymorphic_value_subclasses_2() {
+        val value = if (isJs()) "6556" else "6556.0"
         test<PolyInterface>(
-            """{"type":"dev.dokky.zerojson.PolyInterface.SubInterface.Value2","value":6556.0}""",
+            """{"type":"dev.dokky.zerojson.PolyInterface.SubInterface.Value2","value":$value}""",
             PolyInterface.SubInterface.Value2(6556f)
         )
         test<PolyInterface.SubInterface>(
-            """{"type":"dev.dokky.zerojson.PolyInterface.SubInterface.Value2","value":6556.0}""",
+            """{"type":"dev.dokky.zerojson.PolyInterface.SubInterface.Value2","value":$value}""",
             PolyInterface.SubInterface.Value2(6556f)
         )
     }

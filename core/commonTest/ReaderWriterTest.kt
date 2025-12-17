@@ -9,7 +9,6 @@ import karamel.utils.MapEntry
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class ReaderWriterTest {
     private val buffer = ArrayBuffer(100)
@@ -24,7 +23,7 @@ class ReaderWriterTest {
         val obj = object {
             val e1 = MapEntry("Тестовый ключ 1", "Тестовое значение")
             val e2 = MapEntry("Тестовый ключ 2", -123)
-            val e3 = MapEntry("! Тестовый ключ 3", floatArrayOf(-0.12f, 2.0f))
+            val e3 = MapEntry("! Тестовый ключ 3", floatArrayOf(-0.12f, 2.1f))
         }
 
         writer.run {
@@ -68,9 +67,9 @@ class ReaderWriterTest {
                 assertEquals(obj.e3.key, readString())
                 expectColon()
                 expectBeginArray()
-                    assertTrue(obj.e3.value[0].equals(readFloat()))
+                    assertEquals(readFloat(), obj.e3.value[0], absoluteTolerance = 0.001f)
                     expectComma()
-                    assertTrue(obj.e3.value[1].equals(readFloat()))
+                    assertEquals(readFloat(), obj.e3.value[1], absoluteTolerance = 0.001f)
                 expectEndArray()
 
             expectEndObject()

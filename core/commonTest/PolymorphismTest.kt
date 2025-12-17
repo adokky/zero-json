@@ -86,7 +86,7 @@ class PolymorphismTest: RandomizedJsonTest() {
 
     @Test
     fun sub_value_float() {
-        val obj = PolyInterface.SubInterface.Value2(235.0f)
+        val obj = PolyInterface.SubInterface.Value2(235.1f)
         randomizedTest<PolyInterface>(obj) {
             discriminator<PolyInterface.SubInterface.Value2>()
             "value" eq obj.float

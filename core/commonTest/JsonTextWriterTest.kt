@@ -1,5 +1,6 @@
 package dev.dokky.zerojson
 
+import dev.dokky.zerojson.framework.isJs
 import dev.dokky.zerojson.internal.JsonTextWriter
 import io.kodec.text.StringTextWriter
 import kotlin.test.Test
@@ -16,8 +17,13 @@ class JsonTextWriterTest {
 
     @Test
     fun simple() {
-        check("0.0") { writeNumber(0.0) }
-        check("0.0") { writeNumber(0.0f) }
+        if (isJs()) {
+            check("0") { writeNumber(0.0) }
+            check("0") { writeNumber(0.0f) }
+        } else {
+            check("0.0") { writeNumber(0.0) }
+            check("0.0") { writeNumber(0.0f) }
+        }
         check("-42") { writeNumber(-42L) }
         check("-42") { writeNumber(-42) }
         check("-42") { writeNumber((-42).toShort()) }

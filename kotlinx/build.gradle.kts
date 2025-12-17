@@ -30,6 +30,18 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.add("-Xwarning-level=REDUNDANT_VISIBILITY_MODIFIER:disabled")
     }
+
+    targets.removeIf { it.targetName == "browser" }
+
+    @Suppress("OPT_IN_USAGE")
+    wasmJs().browser {
+        testTask {
+            useKarma {
+                useFirefox()
+                useConfigDirectory(rootDir.resolve("karma.config.d"))
+            }
+        }
+    }
 }
 
 tasks.withType<Test> {

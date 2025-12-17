@@ -42,6 +42,10 @@ inline fun jvmOnly(test: () -> Unit) {
     if (isJvm()) test()
 }
 
+inline fun jsOnly(test: () -> Unit) {
+    if (isJs()) test()
+}
+
 inline fun assertFailsWithMissingField(block: () -> Unit) {
     val e = assertFailsWith<SerializationException>(block = block)
     assertTrue(e.message?.contains("but it was missing") ?: false)

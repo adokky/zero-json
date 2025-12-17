@@ -1,9 +1,6 @@
 package dev.dokky.zerojson
 
-import dev.dokky.zerojson.framework.assertFailsWithMessage
-import dev.dokky.zerojson.framework.format
-import dev.dokky.zerojson.framework.generateRandomJsonArray
-import dev.dokky.zerojson.framework.generateRandomJsonObject
+import dev.dokky.zerojson.framework.*
 import kotlinx.serialization.SerializationException
 import kotlin.random.Random
 import kotlin.test.Test
@@ -59,8 +56,10 @@ class SkipJsonObjectOrArrayTest: AbstractJsonReaderTest() {
         }
 
         // skipObjectOrArray expects an opening bracket
-        assertFailsWith<AssertionError>("]")
-        assertFailsWith<AssertionError>("}")
+        jvmOnly {
+            assertFailsWith<AssertionError>("]")
+            assertFailsWith<AssertionError>("}")
+        }
 
         assertFails("[")
         assertFails("{")
