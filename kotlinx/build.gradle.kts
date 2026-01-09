@@ -67,10 +67,12 @@ dependencies {
     jvmTestImplementation(libs.kotlinx.coroutines.jdk8)
 }
 
-configurations.all {
-    val c = libs.kotlinx.serialization.json.get()
-    outgoing {
-        capability("io.github.adokky:zero-json-kotlinx:$version")
-        capability("${c.group}:${c.name}:${c.version}")
-    }
-}
+//configurations.configureEach {
+//    if (isCanBeConsumed) {
+//        val c = libs.kotlinx.serialization.json.get()
+//        outgoing {
+//            capability("io.github.adokky:zero-json-kotlinx:$version")
+//            capability("${c.group}:${c.name}:${c.version}")
+//        }
+//    }
+//}
