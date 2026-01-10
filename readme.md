@@ -71,12 +71,12 @@ Not available for JavaScript, though WasmJs is supported.
 implementation("io.github.adokky:zero-json-kotlinx:0.5.2")
 ```
 
-If you have transitive `kotlinx-serialization-json` somewhere in dependency graph, setup capability resolution:
+Exclude the original `kotlinx-serialization-json`:
 
 ```kotlin
-configurations.all {
-    resolutionStrategy.capabilitiesResolution.withCapability("org.jetbrains.kotlinx:kotlinx-serialization-json") {
-        select(candidates.single { (it.id as? ModuleComponentIdentifier)?.group == "io.github.adokky" })
+configurations.configureEach {
+    resolutionStrategy {
+        exclude("org.jetbrains.kotlinx", "kotlinx-serialization-json")
     }
 }
 ```
